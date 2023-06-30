@@ -1,5 +1,6 @@
 import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Bullet } from "./bullet";
+import GunData from "../../../assets/json/data.json"
 import TWEEN from "@tweenjs/tween.js"
 
 export class Gun extends Container{
@@ -21,7 +22,7 @@ export class Gun extends Container{
         this.sprite.anchor.set(0.5);
         this.sprite.zIndex = 2;
 
-        const gunData = Assets.get("gunData")
+        const gunData = GunData
 
         this.type = gunData[this.name].type;
         this.radius = gunData[this.name].radius;

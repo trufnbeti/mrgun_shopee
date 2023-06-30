@@ -89,7 +89,7 @@ export class PlayScene extends Container{
             bullet.update(dt);
             const bound = bullet.getBounds();
             // this.graphics.drawRect(bound.x, bound.y, bound.width, bound.height)
-            if(this.checkCollision(bullet, this.enemy.head) ){ // kiểm tra va chạm giữa đạn và địch
+            if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
             }

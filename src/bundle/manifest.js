@@ -4,10 +4,7 @@ export const manifest = {
             name: 'gun',
             assets: [
                 //gun
-                {
-                    name: 'gunData',
-                    srcs: '/assets/json/data.json'
-                },
+                
                 {
                     name: 'ak',
                     srcs: '/assets/images/guns/ak.png'
