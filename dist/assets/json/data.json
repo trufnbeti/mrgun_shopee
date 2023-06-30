@@ -1,0 +1,101 @@
+{
+    "ak":
+        {
+            "radius": 100,
+            "speed": 0.2,
+            "type": "rapid",
+            "bulletNumber": 3,
+            "bulletRadius": 4,
+            "bulletSpeed": 2,
+            "deviation": 10,
+            "damage": 5
+        },
+    "sawed_off":
+        {
+            "radius": 50,
+            "speed": 1.2,
+            "type": "shotgun",
+            "bulletNumber": 5,
+            "bulletRadius": 2,
+            "bulletSpeed": 4,
+            "deviation": 15,
+            "damage": 10
+        },
+    "aug":
+        {
+            "radius": 80,
+            "speed": 0.7,
+            "type": "rapid",
+            "bulletNumber": 2,
+            "bulletRadius": 3, 
+            "bulletSpeed": 6,
+            "deviation": 5,
+            "damage": 10
+        },
+    "desert_eagle":
+    {
+        "radius": 40,
+        "speed": 0.4,
+        "type": "singer",
+        "bulletNumber": 1,
+        "bulletRadius": 4, 
+        "bulletSpeed": 5,
+        "deviation": 5,
+        "damage": 20
+    },
+    "r8":
+    {
+        "radius": 50,
+        "speed": 0.3,
+        "type": "singer",
+        "bulletNumber": 1,
+        "bulletRadius": 3, 
+        "bulletSpeed": 5,
+        "deviation": 5,
+        "damage": 15
+    },
+    "mp5":
+    {
+        "radius": 50,
+        "speed": 0.5,
+        "type": "rapid",
+        "bulletNumber": 4,
+        "bulletRadius": 2, 
+        "bulletSpeed": 3,
+        "deviation": 20,
+        "damage": 2
+    },
+    "negev":
+    {
+        "radius": 100,
+        "speed": 0.6,
+        "type": "rapid",
+        "bulletNumber": 8,
+        "bulletRadius": 2, 
+        "bulletSpeed": 4,
+        "deviation": 30,
+        "damage": 1
+    },
+    "scout":
+    {
+        "radius": 110,
+        "speed": 0.3,
+        "type": "sniper",
+        "bulletNumber": 1,
+        "bulletRadius": 3, 
+        "bulletSpeed": 7,
+        "deviation": 5,
+        "damage": 20
+    },
+    "usp_s":
+    {
+        "radius": 50,
+        "speed": 0.3,
+        "type": "singer",
+        "bulletNumber": 1,
+        "bulletRadius": 4, 
+        "bulletSpeed": 4,
+        "deviation": 5,
+        "damage": 4
+    }
+}
