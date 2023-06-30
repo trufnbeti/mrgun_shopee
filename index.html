@@ -806,10 +806,6 @@ const manifest = {
       assets: [
         //gun
         {
-          name: "gunData",
-          srcs: "/assets/json/data.json"
-        },
-        {
           name: "ak",
           srcs: "/assets/images/guns/ak.png"
         },
@@ -1784,7 +1780,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _bullet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bullet */ "./src/objects/player/bullet.js");
-/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _assets_json_data_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../assets/json/data.json */ "./assets/json/data.json");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
 
 
 
@@ -1806,7 +1804,7 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5);
     this.sprite.zIndex = 2;
-    const gunData = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("gunData");
+    const gunData = _assets_json_data_json__WEBPACK_IMPORTED_MODULE_2__;
     this.type = gunData[this.name].type;
     this.radius = gunData[this.name].radius;
     this.speed = gunData[this.name].speed;
@@ -1828,7 +1826,7 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.drawAimBar(dt);
     this.dt += pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS;
     this.sprite.angle = this.parent.direction == -1 ? this.currentAnlge : -this.currentAnlge;
-    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__["default"].update(this.dt * 1e3);
+    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].update(this.dt * 1e3);
   }
   runAngle(dt) {
     if (this.isIncresing) {
@@ -1877,7 +1875,7 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   shoot(dt) {
     if (this.type == "rapid") {
-      new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__["default"].Tween({ t: 0 }).to({ t: 1 }, 100 * 1e3 * Math.abs(1 - dt)).repeat(this.bulletNumber).onRepeat(() => {
+      new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].Tween({ t: 0 }).to({ t: 1 }, 100 * 1e3 * Math.abs(1 - dt)).repeat(this.bulletNumber).onRepeat(() => {
         this.isShooting = true;
         this.bullets.push(new _bullet__WEBPACK_IMPORTED_MODULE_1__.Bullet(this));
       }).start(this.dt * 1e3).onComplete(() => {
@@ -2190,7 +2188,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     bullets.forEach((bullet) => {
       bullet.update(dt);
       const bound = bullet.getBounds();
-      if (this.checkCollision(bullet, this.enemy.head)) {
+      if (this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)) {
         bulletsToRemove.push(bullet);
         this.hitEnemy();
       } else {
@@ -41926,6 +41924,17 @@ __webpack_require__.r(__webpack_exports__);
 
 //# sourceMappingURL=index.mjs.map
 
+
+/***/ }),
+
+/***/ "./assets/json/data.json":
+/*!*******************************!*\
+  !*** ./assets/json/data.json ***!
+  \*******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"ak":{"radius":100,"speed":0.2,"type":"rapid","bulletNumber":3,"bulletRadius":4,"bulletSpeed":2,"deviation":10,"damage":5},"sawed_off":{"radius":50,"speed":1.2,"type":"shotgun","bulletNumber":5,"bulletRadius":2,"bulletSpeed":4,"deviation":15,"damage":10},"aug":{"radius":80,"speed":0.7,"type":"rapid","bulletNumber":2,"bulletRadius":3,"bulletSpeed":6,"deviation":5,"damage":10},"desert_eagle":{"radius":40,"speed":0.4,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":5,"deviation":5,"damage":20},"r8":{"radius":50,"speed":0.3,"type":"singer","bulletNumber":1,"bulletRadius":3,"bulletSpeed":5,"deviation":5,"damage":15},"mp5":{"radius":50,"speed":0.5,"type":"rapid","bulletNumber":4,"bulletRadius":2,"bulletSpeed":3,"deviation":20,"damage":2},"negev":{"radius":100,"speed":0.6,"type":"rapid","bulletNumber":8,"bulletRadius":2,"bulletSpeed":4,"deviation":30,"damage":1},"scout":{"radius":110,"speed":0.3,"type":"sniper","bulletNumber":1,"bulletRadius":3,"bulletSpeed":7,"deviation":5,"damage":20},"usp_s":{"radius":50,"speed":0.3,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":4,"deviation":5,"damage":4}}');
 
 /***/ })
 
