@@ -19,7 +19,7 @@ export class Game {
         viewStyle.padding = "0px 300px"; 
 
         this.loadingScene = new LoadingScene();
-        this.app.stage.addChild(this.loadingScene);
+        // this.app.stage.addChild(this.loadingScene);
 
         this._loadGameAssets().then((asset)=> {
             this._initScene();
