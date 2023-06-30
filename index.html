@@ -1289,8 +1289,6 @@ class Game {
     viewStyle.position = "absolute";
     viewStyle.display = "block";
     viewStyle.padding = "0px 300px";
-    this.loadingScene = new _scenes_loadingScene__WEBPACK_IMPORTED_MODULE_5__.LoadingScene();
-    this.app.stage.addChild(this.loadingScene);
     this._loadGameAssets().then((asset) => {
       this._initScene();
       this.loadingScene.destroy();
