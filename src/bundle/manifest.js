@@ -7,39 +7,39 @@ export const manifest = {
                 
                 {
                     name: 'ak',
-                    srcs: '/assets/images/guns/ak.png'
+                    srcs: '../../assets/images/guns/aug.png'
                 },
                 {
                     name: 'aug',
-                    srcs: '/assets/images/guns/aug.png'
+                    srcs: '../../assets/images/guns/aug.png'
                 },
                 {
                     name: 'desert_eagle',
-                    srcs: '/assets/images/guns/desert_eagle.png'
+                    srcs: '../../assets/images/guns/desert_eagle.png'
                 },
                 {
                     name: 'mp5',
-                    srcs: '/assets/images/guns/mp5.png'
+                    srcs: '../../assets/images/guns/mp5.png'
                 },
                 {
                     name: 'negev',
-                    srcs: '/assets/images/guns/negev.png'
+                    srcs: '../../assets/images/guns/negev.png'
                 },
                 {
                     name: 'r8',
-                    srcs: '/assets/images/guns/r8.png'
+                    srcs: '../../assets/images/guns/r8.png'
                 },
                 {
                     name: 'sawed_off',
-                    srcs: '/assets/images/guns/sawed_off.png'
+                    srcs: '../../assets/images/guns/sawed_off.png'
                 },
                 {
                     name: 'scout',
-                    srcs: '/assets/images/guns/scout.png'
+                    srcs: '../../assets/images/guns/scout.png'
                 },
                 {
                     name: 'usp_s',
-                    srcs: '/assets/images/guns/usp_s.png'
+                    srcs: '../../assets/images/guns/usp_s.png'
                 }
             ]
         },
@@ -48,39 +48,39 @@ export const manifest = {
             assets :[
                 {
                     name: 'classic',
-                    srcs: '/assets/images/character/classic.png'
+                    srcs: '../../assets/images/character/classic.png'
                 },
                 {
                     name: 'camouflage',
-                    srcs: '/assets/images/character/camouflage.png'
+                    srcs: '../../assets/images/character/camouflage.png'
                 },
                 {
                     name: 'charged',
-                    srcs: '/assets/images/character/charged.png'
+                    srcs: '../../assets/images/character/charged.png'
                 },
                 {
                     name: 'commando',
-                    srcs: '/assets/images/character/commando.png'
+                    srcs: '../../assets/images/character/commando.png'
                 },
                 {
                     name: 'cowboy',
-                    srcs: '/assets/images/character/cowboy.png'
+                    srcs: '../../assets/images/character/cowboy.png'
                 },
                 {
                     name: 'gunner',
-                    srcs: '/assets/images/character/gunner.png'
+                    srcs: '../../assets/images/character/gunner.png'
                 },
                 {
                     name: 'hitman',
-                    srcs: '/assets/images/character/hitman.png'
+                    srcs: '../../assets/images/character/hitman.png'
                 },
                 {
                     name: 'sniper',
-                    srcs: '/assets/images/character/sniper.png'
+                    srcs: '../../assets/images/character/sniper.png'
                 },
                 {
                     name: 'sprinter',
-                    srcs: '/assets/images/character/sprinter.png'
+                    srcs: '../../assets/images/character/sprinter.png'
                 }
             ]
         },
@@ -89,31 +89,31 @@ export const manifest = {
             assets :[
                 {
                     name: 'bgMusic',
-                    srcs: '/assets/sounds/bg.mp3'
+                    srcs: '../..../../assets/sounds/bg.mp3'
                 },
                 {
                     name: 'shotgunSound',
-                    srcs: '/assets/sounds/shotgun.mp3'
+                    srcs: '../..../../assets/sounds/shotgun.mp3'
                 },
                 {
                     name: 'revolerSound',
-                    srcs: '/assets/sounds/revoler.mp3'
+                    srcs: '../..../../assets/sounds/revoler.mp3'
                 },
                 {
                     name: 'sniperSound',
-                    srcs: '/assets/sounds/sniper.mp3'
+                    srcs: '../..../../assets/sounds/sniper.mp3'
                 },
                 {
                     name: 'pistolSound',
-                    srcs: '/assets/sounds/pistol.mp3'
+                    srcs: '../..../../assets/sounds/pistol.mp3'
                 },
                 {
                     name: 'reloadSound',
-                    srcs: '/assets/sounds/reload.mp3'
+                    srcs: '../..../../assets/sounds/reload.mp3'
                 },
                 {
                     name: 'jumpSound',
-                    srcs: '/assets/sounds/jump.mp3'
+                    srcs: '../..../../assets/sounds/jump.mp3'
                 },
             ]
         },
@@ -122,23 +122,23 @@ export const manifest = {
             assets :[
                 {
                     name: 'blacklist',
-                    srcs: '/assets/images/button/blacklist.png'
+                    srcs: '../../assets/images/button/blacklist.png'
                 },
                 {
                     name: 'gunstore',
-                    srcs: '/assets/images/button/gunstore.png'
+                    srcs: '../../assets/images/button/gunstore.png'
                 },
                 {
                     name: 'outfits',
-                    srcs: '/assets/images/button/outfits.png'
+                    srcs: '../../assets/images/button/outfits.png'
                 },
                 {
                     name: 'taptostart',
-                    srcs: '/assets/images/button/taptostart.png'
+                    srcs: '../../assets/images/button/taptostart.png'
                 },
                 {
                     name: 'mrgunbg',
-                    srcs: '/assets/images/button/mrgunbg.png'
+                    srcs: '../../assets/images/button/mrgunbg.png'
                 },
             ]
         }
