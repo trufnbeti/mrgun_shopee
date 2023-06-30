@@ -1250,7 +1250,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _scenes_playScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scenes/playScene */ "./src/scenes/playScene.js");
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
-/* harmony import */ var _scenes_loadingScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scenes/loadingScene */ "./src/scenes/loadingScene.js");
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -1276,7 +1275,6 @@ var __async = (__this, __arguments, generator) => {
 
 
 
-
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
@@ -1291,7 +1289,6 @@ class Game {
     viewStyle.padding = "0px 300px";
     this._loadGameAssets().then((asset) => {
       this._initScene();
-      this.loadingScene.destroy();
       this.startBackgroundMusic();
       this.app.ticker.maxFPS = 60;
       this.app.ticker.add(this.update, this);
@@ -2024,66 +2021,6 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.gun.destroy();
     this.removeChild(this.gun);
     this.gun = new _gun__WEBPACK_IMPORTED_MODULE_2__.Gun(this, name);
-  }
-}
-
-
-/***/ }),
-
-/***/ "./src/scenes/loadingScene.js":
-/*!************************************!*\
-  !*** ./src/scenes/loadingScene.js ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LoadingScene: () => (/* binding */ LoadingScene)
-/* harmony export */ });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
-/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
-
-
-class LoadingScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor() {
-    super();
-    this._init();
-  }
-  _init() {
-    const progressTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fill: 16777215,
-      fontSize: 24,
-      fontWeight: "bold"
-    });
-    this.progressBarWidth = 300;
-    this.progressBarHeight = 20;
-    const progressBarX = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.progressBarWidth) / 2;
-    const progressBarY = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - this.progressBarHeight) / 2;
-    this.progressBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.progressBar.lineStyle(1, 16766720);
-    this.progressBar.drawRect(0, 0, this.progressBarWidth, this.progressBarHeight);
-    this.progressBar.x = progressBarX;
-    this.progressBar.y = progressBarY;
-    this.addChild(this.progressBar);
-    const progressText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("Loading...", progressTextStyle);
-    progressText.anchor.set(0.5);
-    progressText.x = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2;
-    progressText.y = progressBarY + this.progressBarHeight + 20;
-    this.addChild(progressText);
-  }
-  setProgress(progress) {
-    this.progressBar.clear();
-    this.progressBar.lineStyle(1, 16766720);
-    this.progressBar.drawRect(0, 0, this.progressBarWidth, this.progressBarHeight);
-    this.progressBar.beginFill(16766720);
-    this.progressBar.drawRect(
-      0,
-      0,
-      progress * this.progressBarWidth,
-      this.progressBar.height
-    );
-    this.progressBar.endFill();
   }
 }
 
