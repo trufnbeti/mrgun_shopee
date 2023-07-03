@@ -43,8 +43,10 @@ export class PlayScene extends Container{
         this.map = new Map(this, this.app);
         this.player = new Player(this.map);
         this.enemy = new Enemy(50, 330, 2);
+        this.enemy = this.createEnemy(0, 400, 1, 50, this.randomColor())
         this.map.addChild(this.enemy)
 
+        this.isHitEnemy = false;
         this.graphics = new Graphics();
         this.addChild(this.graphics);
         
@@ -85,6 +87,9 @@ export class PlayScene extends Container{
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
+        if (!this.player.gun.isShot)
+            this.isHitEnemy = false;
+        
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
@@ -92,6 +97,7 @@ export class PlayScene extends Container{
             if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
+                this.isHitEnemy = true;
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
@@ -109,7 +115,14 @@ export class PlayScene extends Container{
                 bullets.splice(index, 1);
             }
             bullet.destroy();
-        });   
+        });
+
+        // console.log(this.player.gun.isShooting);
+        if (!this.isHitEnemy && bullets.length == 0 && this.player.gun.isShot){
+            this.enemy.attack(this.player)
+            this.player.gun.isShot = false;
+        }
+            // console.log("Chết");
     }
     createEnemy(x, y, direction, maxX, color){
         const run = Math.floor(Math.random() * 3) + 1;

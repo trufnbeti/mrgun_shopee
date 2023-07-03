@@ -6,7 +6,8 @@ export class Weapon extends Container{
         super();
         this.weapon = new Sprite(texture);
         this.bullet = new Bullet(5, "white");
-        // this.weapon.scale.set(0.5);
+        this.weapon.anchor.set(0, 0.5);
+        this.weapon.scale.set(1.2);
         // this.bullet.position.set(this.weapon.width, this.weapon.height / 4);
         this.addChild(this.weapon);
     }

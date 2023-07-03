@@ -9,6 +9,20 @@ export class Enemy extends Container{
         this.ticker = Ticker.shared;
         this.ticker.add(this.update, this);
     }
+    equipWeapon(){
+        if (this.direction == -1) //weapon ben trai
+            this.weapon.weapon.scale.x *= -1;
+            
+    
+        this.weapon.x = this.width / 2;
+        this.weapon.y = this.height / 2;
+        
+        this.addChild(this.weapon);
+    }
     update(dt){
+    }
+    attack(player){
+        console.log("Bắn chetme thằng player");
+        
     }
 }

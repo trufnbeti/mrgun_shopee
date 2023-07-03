@@ -36,17 +36,6 @@ export class ShortSkinnyEnemy extends Enemy{
         this.body.drawRect(5, 30, 30, 30);
         this.body.endFill();
     }
-    equipWeapon(){
-        if (this.direction == -1){ //weapon ben trai
-            this.weapon.weapon.scale.x *= -1;
-            this.weapon.x = this.width / 2;
-            this.weapon.y = this.height / 2;
-        }else{ //weapon ben phai
-            this.weapon.x = this.width / 2;
-            this.weapon.y = this.height / 2;
-        }
-        this.addChild(this.weapon);
-    }
     update(){
         super.update();
         this.move();
