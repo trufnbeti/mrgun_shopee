@@ -41,9 +41,9 @@ export class PlayScene extends Container{
 
     _init(){
         this.map = new Map(this, this.app);
+        const firstStair = this.map.stairs[0];
         this.player = new Player(this.map);
-        this.enemy = new Enemy(50, 330, 2);
-        this.enemy = this.createEnemy(0, 400, 1, 50, this.randomColor())
+        this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor())
         this.map.addChild(this.enemy)
 
         this.isHitEnemy = false;
@@ -120,7 +120,7 @@ export class PlayScene extends Container{
         // console.log(this.player.gun.isShooting);
         if (!this.isHitEnemy && bullets.length == 0 && this.player.gun.isShot){
             this.enemy.attack(this.player)
-            this.player.gun.isShot = false;
+            // this.player.gun.isShot = false;
         }
             // console.log("Chết");
     }

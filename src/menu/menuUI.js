@@ -12,10 +12,10 @@ export class MenuUI extends Container {
 
         this.gameOverBar = new PIXI.Container();
 
-        this._initLevel();
-        this._initMoney();
-        this._initLOGO();
-        this._initBestScore();
+        // this._initLevel();
+        // this._initMoney();
+        // this._initLOGO();
+        // this._initBestScore();
 
         this._initTextSmall();
         this._initTapToStart();

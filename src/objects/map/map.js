@@ -24,9 +24,9 @@ export class Map extends Container{
         }
     }
     genStairs(){
-        this.stairs.push(new Stair(this.x, this.y+ 400, 0, this, -1, 2))
+        this.stairs.push(new Stair(this.x, this.y+ GameConstant.GAME_HEIGHT*0.6, 0, this, -1, 2))
         this.currentIndex = -1;
-        for(let i = 1; i < 8; i++){
+        for(let i = 1; i < 15; i++){
             this.genNewStair();
         }
     }

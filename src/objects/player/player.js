@@ -24,7 +24,7 @@ export class Player extends Container {
     }
     _initAbility(){
         this.x = GameConstant.GAME_WIDTH/2;
-        this.y = 450 - 55;
+        this.y = this.parent.stairs[0].y + 50 - 55;
         this.zIndex = 1;
         this.direction = -1;
         this.speed = 4;

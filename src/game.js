@@ -16,10 +16,10 @@ export class Game {
         const viewStyle = this.app.view.style;
         viewStyle.position = "absolute";
         viewStyle.display = "block";
-        viewStyle.padding = "0px 300px"; 
+        viewStyle.padding = "0px 0px 0px 0px"; 
 
         this.loadingScene = new LoadingScene();
-        // this.app.stage.addChild(this.loadingScene);
+        this.app.stage.addChild(this.loadingScene);
 
         this._loadGameAssets().then((asset)=> {
             this._initScene();
