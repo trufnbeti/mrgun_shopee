@@ -137,8 +137,20 @@ export const manifest = {
                     srcs: 'assets/images/button/taptostart.png'
                 },
                 {
-                    name: 'mrgunbg',
-                    srcs: 'assets/images/button/mrgunbg.png'
+                    name: 'music',
+                    srcs: 'assets/images/button/music.png'
+                },
+                {
+                    name: 'offMusic',
+                    srcs: 'assets/images/button/offMusic.png'
+                },
+                {
+                    name: 'sound',
+                    srcs: 'assets/images/button/sound.png'
+                },
+                {
+                    name: 'offSound',
+                    srcs: 'assets/images/button/offSound.png'
                 },
             ]
         }
