@@ -970,7 +970,17 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.ticker = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared;
     this.ticker.add(this.update, this);
   }
+  equipWeapon() {
+    if (this.direction == -1)
+      this.weapon.weapon.scale.x *= -1;
+    this.weapon.x = this.width / 2;
+    this.weapon.y = this.height / 2;
+    this.addChild(this.weapon);
+  }
   update(dt) {
+  }
+  attack(player) {
+    console.log("B\u1EAFn chetme th\u1EB1ng player");
   }
 }
 
@@ -1032,17 +1042,6 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.body.beginFill(this.color);
     this.body.drawRect(-5, 25, 50, 30);
     this.body.endFill();
-  }
-  equipWeapon() {
-    if (this.direction == -1) {
-      this.weapon.weapon.scale.x *= -1;
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    } else {
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    }
-    this.addChild(this.weapon);
   }
   lean() {
     if (this.isLeanRight) {
@@ -1118,17 +1117,6 @@ class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.body.beginFill(this.color);
     this.body.drawRect(5, 30, 30, 30);
     this.body.endFill();
-  }
-  equipWeapon() {
-    if (this.direction == -1) {
-      this.weapon.weapon.scale.x *= -1;
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    } else {
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    }
-    this.addChild(this.weapon);
   }
   update() {
     super.update();
@@ -1209,17 +1197,6 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.body.beginFill(this.color);
     this.body.drawRect(0, 20, 20, 40);
     this.body.endFill();
-  }
-  equipWeapon() {
-    if (this.direction == -1) {
-      this.weapon.weapon.scale.x *= -1;
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    } else {
-      this.weapon.x = this.width / 2;
-      this.weapon.y = this.height / 2;
-    }
-    this.addChild(this.weapon);
   }
   update() {
     super.update();
@@ -2150,7 +2127,9 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.map = new _objects_map_map__WEBPACK_IMPORTED_MODULE_3__.Map(this, this.app);
     this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_1__.Player(this.map);
     this.enemy = new _objects_enemy_enemy__WEBPACK_IMPORTED_MODULE_2__.Enemy(50, 330, 2);
+    this.enemy = this.createEnemy(0, 400, 1, 50, this.randomColor());
     this.map.addChild(this.enemy);
+    this.isHitEnemy = false;
     this.graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.addChild(this.graphics);
   }
@@ -2185,12 +2164,15 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     let bullets = this.player.gun.bullets;
     let bulletsToRemove = [];
     const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites;
+    if (!this.player.gun.isShot)
+      this.isHitEnemy = false;
     bullets.forEach((bullet) => {
       bullet.update(dt);
       const bound = bullet.getBounds();
       if (this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)) {
         bulletsToRemove.push(bullet);
         this.hitEnemy();
+        this.isHitEnemy = true;
       } else {
         steps.forEach((step) => {
           if (this.checkCollision(step, bullet)) {
@@ -2208,6 +2190,10 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
       bullet.destroy();
     });
+    if (!this.isHitEnemy && bullets.length == 0 && this.player.gun.isShot) {
+      this.enemy.attack(this.player);
+      this.player.gun.isShot = false;
+    }
   }
   createEnemy(x, y, direction, maxX, color) {
     const run = Math.floor(Math.random() * 3) + 1;
@@ -2316,6 +2302,8 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     super();
     this.weapon = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(texture);
     this.bullet = new _bullet__WEBPACK_IMPORTED_MODULE_1__.Bullet(5, "white");
+    this.weapon.anchor.set(0, 0.5);
+    this.weapon.scale.set(1.2);
     this.addChild(this.weapon);
   }
 }
