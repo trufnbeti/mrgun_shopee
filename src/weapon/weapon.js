@@ -25,7 +25,6 @@ export class Weapon extends Container{
                     this.currentAnlge *= -1;
                 this.shoot();
                 this.isShot  = true;
-                this.bullet.update(dt);
             } 
     }
     attack(player){

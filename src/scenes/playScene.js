@@ -84,8 +84,6 @@ export class PlayScene extends Container{
             this.checkBullets(dt);
         }   
         else this.menu.update(dt);
-        
-        console.log(this.enemy.cooldown);
 
     }
     checkBullets(dt){
@@ -121,7 +119,17 @@ export class PlayScene extends Container{
             }
             bullet.destroy();
         });
-
+        
+        // enemy bullet
+        if(this.enemy.weapon.isShot){
+            let eBullet = this.enemy.weapon.bullet;
+            eBullet.update(dt)
+            if(this.checkCollision(eBullet, this.player)){
+                console.log("DIE");
+                this.map.removeChild(this.player);
+                eBullet.visible = false;
+            }
+        }
     }
     createEnemy(x, y, direction, maxX, color){
         const run = Math.floor(Math.random() * 3) + 1;
