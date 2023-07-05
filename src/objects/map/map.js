@@ -15,7 +15,7 @@ export class Map extends Container{
         this.color = this.randomColor();
         this.stairs = [];
         this.genStairs();
-        this.speed = 1;
+        this.speed = 2;
     }
     update(delta){
         if(this.moveDistance > 0){
@@ -60,8 +60,8 @@ export class Map extends Container{
         return hex.length === 1 ? "0" + hex : hex;
     }
     randomColor() {
-        const red = Math.floor(Math.random() * 200) + 50 ;
-        const green = Math.floor(Math.random() * 200) ;
+        const red = Math.floor(Math.random() * 200 + 50)  ;
+        const green = Math.floor(Math.random() * 200 + 50) ;
         const blue = Math.floor(Math.random() * 150 + 100);
 
         const color = "#" + this.convertToHex(red) + this.convertToHex(green) + this.convertToHex(blue);

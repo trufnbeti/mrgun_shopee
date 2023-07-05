@@ -25,7 +25,7 @@ export class Stair extends Container{
 
     _initSprite(){
         this.stairSprites = [];
-        this.graphics.lineStyle(1, this.color);
+        // this.graphics.lineStyle(1, this.color);
         this.graphics.beginFill(this.color);
         this.sprite = this.createStair();
         // this.addChild(this.sprite);
@@ -66,7 +66,7 @@ export class Stair extends Container{
         for (let i = 0; i < this.stepNumber; i++) {
             const graphic = new Graphics(); 
             this.addChild(graphic);
-            graphic.lineStyle(1, this.color);
+            // graphic.lineStyle(1, this.color);
             graphic.beginFill(this.color);
             const x = this.direction == -1 ? 0 : GameConstant.GAME_WIDTH - (size * (i + 1) + this.stepNumber*size*2);
             graphic.drawRect(x,i*size, size * (i + 1) + this.stepNumber*size*2, size);
@@ -75,7 +75,7 @@ export class Stair extends Container{
         }
         const graphic = new Graphics(); 
         this.addChild(graphic);
-        graphic.lineStyle(1, this.color);
+        // graphic.lineStyle(1, this.color);
         graphic.beginFill(this.color);
         graphic.drawRect(0, this.stepNumber * size, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT - this.y + this.stepNumber * size);
         this.stairSprites.push(graphic);
