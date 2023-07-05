@@ -63,8 +63,8 @@ export class TallEnemy extends Enemy{
         this.body.endFill();
     }
     
-    update(){
-        super.update();
+    update(dt){
+        super.update(dt);
         this.move();
     }
 }

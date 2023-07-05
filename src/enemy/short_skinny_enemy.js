@@ -36,8 +36,8 @@ export class ShortSkinnyEnemy extends Enemy{
         this.body.drawRect(5, 30, 30, 30);
         this.body.endFill();
     }
-    update(){
-        super.update();
+    update(dt){
+        super.update(dt);
         this.move();
     }
 }
