@@ -27,7 +27,7 @@ export class Player extends Container {
         this.y = this.parent.stairs[0].y + 50 - 55;
         this.zIndex = 1;
         this.direction = -1;
-        this.speed = 4;
+        this.speed = 5;
         this.isMoving = false;
         this.needFlip = false;
         this.canJump = true;
@@ -81,7 +81,7 @@ export class Player extends Container {
     
     jump(dt) {
         if (this.isJumping) {
-            this.x += this.direction * this.speed * dt * 0.5;
+            this.x += this.direction * this.speed * dt * 0.4;
             this.y += this.gravity*dt;
             this.gravity += 0.1*dt;
             if (this.jumpForce > 0) {
