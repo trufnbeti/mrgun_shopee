@@ -1,6 +1,5 @@
 import { Container, Graphics } from "pixi.js";
 import { Player } from "../objects/player/player";
-import { Enemy } from "../objects/enemy/enemy";
 import { Map } from "../objects/map/map";
 import { GameConstant } from "../gameConstant";
 import { ShortFatEnemy } from "../enemy/short_fat_enemy";
@@ -8,6 +7,7 @@ import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
+import { Enemy } from "../enemy/enemy";
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -43,13 +43,12 @@ export class PlayScene extends Container{
         this.map = new Map(this, this.app);
         const firstStair = this.map.stairs[0];
         this.player = new Player(this.map);
+        // this.enemy = new Enemy(50, 330, 2);
         this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor())
         this.map.addChild(this.enemy)
 
         this.isHitEnemy = false;
-        this.graphics = new Graphics();
-        this.addChild(this.graphics);
-        
+
     }
 
     _initPlay(){
@@ -75,15 +74,20 @@ export class PlayScene extends Container{
 
     update(dt) {
         this.dt = dt;
-        this.graphics.clear();
-        this.graphics.lineStyle(2, 0xFF0000);
-        this.player.update(dt);
-        this.map.update(dt);
-        this.checkBullets(dt);
-        this.menu.update(dt);
+        
+        if(this.gameState == 1){
+            this.player.update(dt);
+            this.map.update(dt);
+            this.enemy.update(dt);
+            if(this.enemy.cooldown <= 0) this.enemy.attack(this.player)
+            this.checkBullets(dt);
+        }   
+        else this.menu.update(dt);
+        
 
     }
     checkBullets(dt){
+        
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
@@ -93,7 +97,6 @@ export class PlayScene extends Container{
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
-            // this.graphics.drawRect(bound.x, bound.y, bound.width, bound.height)
             if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
@@ -117,12 +120,6 @@ export class PlayScene extends Container{
             bullet.destroy();
         });
 
-        // console.log(this.player.gun.isShooting);
-        if (!this.isHitEnemy && bullets.length == 0 && this.player.gun.isShot){
-            this.enemy.attack(this.player)
-            // this.player.gun.isShot = false;
-        }
-            // console.log("Chết");
     }
     createEnemy(x, y, direction, maxX, color){
         const run = Math.floor(Math.random() * 3) + 1;
@@ -147,14 +144,16 @@ export class PlayScene extends Container{
         // this.enemy.destroy();
         const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
-        const run = Math.floor(Math.random() * 3) + 1;
         const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
         const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH : 0;
         const y = currenStair.y;
         const colorNextEnemy = this.randomColor();
+
+        this.map.removeChild(this.enemy);
         this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
-        
         this.map.addChild(this.enemy);
+
+
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
     }
     hitStair(){

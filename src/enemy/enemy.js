@@ -6,8 +6,12 @@ export class Enemy extends Container{
         super();
         // this.position.set(x, y);
         this.weapon = new Weapon(Assets.get('usp_s'));
-        this.ticker = Ticker.shared;
-        this.ticker.add(this.update, this);
+        this._init();
+
+    }
+    _init(){
+        this.cooldown = 200;
+        this.isShot = false;
     }
     equipWeapon(){
         if (this.direction == -1) //weapon ben trai
@@ -20,9 +24,13 @@ export class Enemy extends Container{
         this.addChild(this.weapon);
     }
     update(dt){
+        if(this.cooldown > 0)this.cooldown -= dt;
     }
     attack(player){
-        console.log("Bắn chetme thằng player");
+        if(!this.isShot){
+            console.log("hit");
+            this.isShot  = true;
+        }
         
     }
 }
