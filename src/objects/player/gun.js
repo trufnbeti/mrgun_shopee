@@ -22,16 +22,17 @@ export class Gun extends Container{
         this.sprite.anchor.set(0.5);
         this.sprite.zIndex = 2;
 
-        const gunData = GunData
+        const gunData = GunData[this.name]
 
-        this.type = gunData[this.name].type;
-        this.radius = gunData[this.name].radius;
-        this.speed = gunData[this.name].speed;
-        this.damage = gunData[this.name].damage;
-        this.bulletRadius = gunData[this.name].bulletRadius;
-        this.bulletNumber = gunData[this.name].bulletNumber;
-        this.bulletSpeed = gunData[this.name].bulletSpeed
-        this.deviation = gunData[this.name].deviation;
+        this.type = gunData.type;
+        this.radius = gunData.radius;
+        this.speed = gunData.speed;
+        this.damage = gunData.damage;
+        this.bulletRadius = gunData.bulletRadius;
+        this.bulletNumber = gunData.bulletNumber;
+        this.bulletSpeed = gunData.bulletSpeed
+        this.deviation = gunData.deviation;
+
 
         this.currentAnlge = 0;
         this.maxAngle = 45;
@@ -47,6 +48,7 @@ export class Gun extends Container{
         this.drawAimBar(dt);
         this.dt += Ticker.shared.deltaMS;
         this.sprite.angle = this.parent.direction == -1 ? this.currentAnlge : -this.currentAnlge
+        this.direction = this.parent.direction
         TWEEN.update(this.dt * 1000);
     }
     runAngle(dt){

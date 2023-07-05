@@ -64,6 +64,7 @@ export class PlayScene extends Container{
         this.on("pointerdown", () => {
             if(!this.player.gun.isShot) 
                 this.player.gun.shoot(this.dt)
+                this.enemy.isReady = true;
         })
     }
 
@@ -78,12 +79,13 @@ export class PlayScene extends Container{
         if(this.gameState == 1){
             this.player.update(dt);
             this.map.update(dt);
-            this.enemy.update(dt);
-            if(this.enemy.cooldown <= 0) this.enemy.attack(this.player)
+            if(!this.player.isMoving) this.enemy.update(dt);
+            if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
             this.checkBullets(dt);
         }   
         else this.menu.update(dt);
         
+        console.log(this.enemy.cooldown);
 
     }
     checkBullets(dt){
@@ -145,7 +147,7 @@ export class PlayScene extends Container{
         const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
         const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
-        const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH : 0;
+        const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
         const y = currenStair.y;
         const colorNextEnemy = this.randomColor();
 
