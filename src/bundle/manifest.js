@@ -175,7 +175,7 @@ export const manifest = {
             assets :[
                 {
                     name: 'logoMRGUN',
-                    srcs: 'assets/images/button/logoMRGUN.png'
+                    srcs: 'assets/images/logo/logoMRGUN.png'
                 },
                 
             ]
