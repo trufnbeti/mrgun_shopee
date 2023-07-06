@@ -44,15 +44,15 @@ export class Boss extends Enemy{
         if (this.hp <= 0 )
             this.destroy();
     }
-    move(){
+    move(dt){
         if (this.direction == -1)
             if (this.x > this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
             else
                 this.angle = 0;
         if (this.direction == 1)
             if (this.x < this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
             else
                 this.angle = 0;
 
@@ -65,9 +65,9 @@ export class Boss extends Enemy{
             const jumpHeight = (-this.gravity / 2) * Math.pow(time, 2) + this.power * time;
 
             if (jumpHeight < 0) {
-            Ticker.shared.remove(tick);
-            this.y = jumpAt;
-            return;
+                Ticker.shared.remove(tick);
+                this.y = jumpAt;
+                return;
             }
 
             this.y = jumpAt - jumpHeight;
@@ -93,6 +93,6 @@ export class Boss extends Enemy{
             this.rotate();
             this.timer = 0;
         }
-        this.move();
+        this.move(dt);
     }
 }
