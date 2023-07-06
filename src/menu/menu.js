@@ -18,4 +18,8 @@ export class Menu extends Container{
         this.menuUI.update(delta);
     }
         
+    showMenu() {
+        this.visible = true;
+        // Reset game state or perform any necessary cleanup
+      }
 }

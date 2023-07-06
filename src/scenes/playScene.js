@@ -108,7 +108,7 @@ export class PlayScene extends Container{
     }
 
     _initgameOverUI(){
-        this.gameOverUI = new GameOverUI();
+        this.gameOverUI = new GameOverUI(this.menu);
         this.addChild(this.gameOverUI);
     }
 

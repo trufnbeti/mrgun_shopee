@@ -157,6 +157,16 @@ export const manifest = {
                     srcs: 'assets/images/button/reload.png'
                 },
             ]
+        },
+        {
+            name: 'logo',
+            assets :[
+                {
+                    name: 'logoMRGUN',
+                    srcs: 'assets/images/button/logoMRGUN.png'
+                },
+                
+            ]
         }
     ],
 };

@@ -3,10 +3,12 @@ import {Application,Assets,Container,Graphics,RenderTexture,Sprite,} from "pixi.
 import { PlayScene } from "../scenes/playScene";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
+import { Menu } from "./menu";
 
 export class GameOverUI extends Container {
-  constructor() {
+  constructor(menu) {
     super();
+    this.menu = Menu;
     this._showGameOverUI();
 
     this._initTextSmall();
@@ -29,6 +31,13 @@ export class GameOverUI extends Container {
   _initBestScore() {}
 
   _init() {
+    // Create a semi-transparent background
+    const background = new Graphics();
+    background.beginFill(0x000000, 0.55); 
+    background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+
     // Tạo container để chứa các button
     this.buttonContainer = new Container();
     this.addChild(this.buttonContainer);
@@ -45,7 +54,19 @@ export class GameOverUI extends Container {
     this.buttonRestart = Sprite.from(Assets.get("restart"));
     this.buttonRestart.x = 0;
     this.buttonContainer.addChild(this.buttonRestart);
+
+    // Add event listener to the restart button
+    this.buttonRestart.interactive = true;
+    this.buttonRestart.cursor = "pointer";
+
+    this.buttonRestart.on("pointerdown", () => {
+      this.parent.removeChild(this);
+       // Show the menu
+    });
+
   }
+
+
 
   _initTextSmall() {
     this.smallTextStyle = new PIXI.TextStyle({
