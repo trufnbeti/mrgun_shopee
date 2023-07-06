@@ -8,7 +8,6 @@ export class ShortFatEnemy extends Enemy{
         this.speed = this.direction * 2.5;
         this.maxX = maxX;
         this.color = color;
-        // this.weapon.scale.x = direction;
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);

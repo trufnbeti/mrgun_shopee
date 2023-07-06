@@ -7,7 +7,8 @@ import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
-import { Enemy } from "../enemy/enemy";
+import { Boss } from "../enemy/boss";
+import Data from "../../assets/json/data.json"
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -48,7 +49,9 @@ export class PlayScene extends Container{
         this.map.addChild(this.enemy)
 
         this.isHitEnemy = false;
-
+        this.boss = new Boss(GameConstant.GAME_WIDTH, firstStair.y, -1, 500);
+        this.map.addChild(this.boss);
+        console.log(this.boss.getBounds());
     }
 
     _initPlay(){
@@ -74,11 +77,11 @@ export class PlayScene extends Container{
 
     update(dt) {
         this.dt = dt;
-        
         if(this.gameState == 1){
             this.player.update(dt);
             this.map.update(dt);
             this.enemy.update(dt);
+            this.boss.update(dt);
             if(this.enemy.cooldown <= 0) this.enemy.attack(this.player)
             this.checkBullets(dt);
         }   
