@@ -10,6 +10,9 @@ import {
 import { PlayScene } from "../scenes/playScene";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
+import { BlackListScene } from "../scenes/blackListScene";
+import { OutfitsScene } from "../scenes/outFitsScene";
+import { GunStoreScene } from "../scenes/gunStoreScene";
 
 export class MenuUI extends Container {
   constructor() {
@@ -18,6 +21,7 @@ export class MenuUI extends Container {
 
     this.gameOverBar = new PIXI.Container();
 
+    this.game = new Game();
     this._initLayout();
 
     this._initTextSmall();
@@ -54,20 +58,6 @@ export class MenuUI extends Container {
 
   _initBestScore() {}
 
-  _init() {
-    // Tạo container để chứa các button
-    this.buttonContainer = new Container();
-    this.addChild(this.buttonContainer);
-
-    this._initButtonOutfits();
-    this._initButtonBlacklist();
-    this._initButtonGuns();
-
-    // Thiết lập vị trí và căn giữa container chứa các button
-    this.buttonContainer.x = GameConstant.GAME_WIDTH / 2 - 70;
-    this.buttonContainer.y = GameConstant.GAME_HEIGHT - 300;
-  }
-
   _initTextSmall() {
     this.smallTextStyle = new PIXI.TextStyle({
       fontFamily: "Century Gothic",
@@ -96,25 +86,69 @@ export class MenuUI extends Container {
     });
   }
 
+  _init() {
+    // Tạo container để chứa các button
+    this.buttonContainer = new Container();
+
+    this._initButtonOutfits();
+    this._initButtonBlacklist();
+    this._initButtonGuns();
+
+    this.addChild(this.buttonContainer);
+  }
+
   _initButtonBlacklist() {
     // Button 'blacklist'
     this.buttonBlacklist = Sprite.from(Assets.get("blacklist"));
-    this.buttonBlacklist.x = this.buttonOutfits.x - 160;
+    this.buttonBlacklist.position.set(this.buttonOutfits.x - this.buttonBlacklist.width - 40, 1000);
     this.buttonContainer.addChild(this.buttonBlacklist);
+    this.buttonBlacklist.interactive = true;
+    this.buttonBlacklist.cursor = "pointer";
+
+    this.buttonBlacklist.on("pointerdown", () => {
+      console.log("Button blacklist clicked");
+
+      Game.app.stage.removeChild(this.playScene);
+
+      this.blackListScene = new BlackListScene(this.app);
+      Game.app.stage.addChild(this.blackListScene);
+    });
   }
 
   _initButtonOutfits() {
     // Button 'outfits'
     this.buttonOutfits = Sprite.from(Assets.get("outfits"));
-    this.buttonOutfits.x = 0; // Khoảng cách giữa các button
+    this.buttonOutfits.position.set((GameConstant.GAME_WIDTH - this.buttonOutfits.width)/2 , 1000)
     this.buttonContainer.addChild(this.buttonOutfits);
+    this.buttonOutfits.interactive = true;
+    this.buttonOutfits.cursor = "pointer";
+
+    this.buttonOutfits.on("pointerdown", () => {
+      console.log("Button outfits clicked");
+      
+      Game.app.stage.removeChild(this.playScene);
+      
+      this.outfitsScene = new OutfitsScene(this.app);
+      Game.app.stage.addChild(this.outfitsScene);
+    });
   }
 
   _initButtonGuns() {
     // Button 'guns'
     this.buttonGuns = Sprite.from(Assets.get("gunstore"));
-    this.buttonGuns.x =this.buttonOutfits.x + 160; // Khoảng cách giữa các button
+    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 1000);
     this.buttonContainer.addChild(this.buttonGuns);
+    this.buttonGuns.interactive = true;
+    this.buttonGuns.cursor = "pointer";
+
+    this.buttonGuns.on("pointerdown", () => {
+      console.log("Button guns clicked");
+      
+      Game.app.stage.removeChild(this.playScene);
+      
+      this.gunStoreScene = new GunStoreScene(this.app);
+      Game.app.stage.addChild(this.gunStoreScene);
+    });
   }
 
   update(delta) {
