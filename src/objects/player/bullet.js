@@ -26,14 +26,25 @@ export class Bullet extends Container{
 
         switch (this.type) {
             case "rapid":
+                const pistolSound = sound.find("pistolSound");
+                pistolSound.volume = 0.1;
+                pistolSound.play();
+                this.x -= randomValue * Math.cos(this.beta * Math.PI / 180);
+                this.y -= randomValue * Math.sin(this.beta * Math.PI / 180);
+                this.beta += randomValue / 5;
+                break;
             case "singer":
-                sound.play("pistolSound");
+                const revolerSound = sound.find("revolerSound");
+                // revolerSound.volume = 0.1;
+                revolerSound.play();
                 this.x -= randomValue * Math.cos(this.beta * Math.PI / 180);
                 this.y -= randomValue * Math.sin(this.beta * Math.PI / 180);
                 this.beta += randomValue / 5;
                 break;
             case "shotgun":
-                sound.play("shotgunSound");
+                const shotgunSound = sound.find("shotgunSound");
+                shotgunSound.volume = 0.1;
+                shotgunSound.play();
                 this.beta += randomValue;
                 break;
             case "sniper":

@@ -9,6 +9,7 @@ import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
 import { Enemy } from "../enemy/enemy";
 import { GameOverUI } from "../menu/gameOverUI";
+import { Game } from "../game";
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -122,8 +123,14 @@ export class PlayScene extends Container{
             bullet.update(dt);
             const bound = bullet.getBounds();
             if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
-                if(this.checkCollision(bullet, this.enemy.head)) this.score += 50;
-                else this.score += 25;
+                if(this.checkCollision(bullet, this.enemy.head)){
+                    this.score += 50;
+                    sound.play("headshotSound");
+                } 
+                else{
+                    this.score += 25;
+                    sound.play("hitSound");
+                } 
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
 
@@ -132,7 +139,7 @@ export class PlayScene extends Container{
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
                 if(this.checkCollision(step, bullet)){
                     bulletsToRemove.push(bullet)
-
+                    sound.play("hitWallSound");
                 }
                 })
             }
@@ -152,6 +159,8 @@ export class PlayScene extends Container{
             eBullet.update(dt)
             if(this.checkCollision(eBullet, this.player.sprite)){
                 console.log("DIE");
+                sound.play("hitSound");
+                Game._initScene();
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
                 this._initgameOverUI(); 

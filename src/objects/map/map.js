@@ -32,7 +32,7 @@ export class Map extends Container{
     }
     genNewStair(){
         const previousStair = this.stairs[this.stairs.length - 1];
-        const stepNumber = Math.floor(Math.random()*2 + 3);
+        const stepNumber = Math.floor(Math.random()*4 + 3);
         const dir = previousStair.direction == 1 ? -1 : 1;
         const y = previousStair.y - stepNumber* GameConstant.Step_Size;
         const z = previousStair.zIndex - 1;

@@ -115,6 +115,18 @@ export const manifest = {
                     name: 'jumpSound',
                     srcs: 'assets/sounds/jump.mp3'
                 },
+                {
+                    name: 'hitSound',
+                    srcs: 'assets/sounds/hit.mp3'
+                },
+                {
+                    name: 'hitWallSound',
+                    srcs: 'assets/sounds/hitWall.mp3'
+                },
+                {
+                    name: 'headshotSound',
+                    srcs: 'assets/sounds/headshot.mp3'
+                },
             ]
         },
         {
