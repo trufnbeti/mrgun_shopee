@@ -19,13 +19,13 @@ export class TallEnemy extends Enemy{
         this.gravity = 0.98;
         this.power = 8;
     }
-    move(){
+    move(dt){
         if (this.direction == -1)
             if (this.x > this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
         if (this.direction == 1)
             if (this.x < this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
         if (this.isJumping) return;
         const jumpAt = this.y;
         this.isJumping = true;
@@ -35,9 +35,9 @@ export class TallEnemy extends Enemy{
             const jumpHeight = (-this.gravity / 2) * Math.pow(time, 2) + this.power * time;
 
             if (jumpHeight < 0) {
-            Ticker.shared.remove(tick);
-            this.y = jumpAt;
-            return;
+                Ticker.shared.remove(tick);
+                this.y = jumpAt;
+                return;
             }
 
             this.y = jumpAt - jumpHeight;
@@ -61,6 +61,6 @@ export class TallEnemy extends Enemy{
     
     update(dt){
         super.update(dt);
-        this.move();
+        this.move(dt);
     }
 }

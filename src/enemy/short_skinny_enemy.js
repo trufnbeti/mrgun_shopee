@@ -16,13 +16,13 @@ export class ShortSkinnyEnemy extends Enemy{
         this.position.set(x, y - this.height);
         this.equipWeapon();
     }
-    move(){
+    move(dt){
         if (this.direction == -1)
             if (this.x > this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
         if (this.direction == 1)
             if (this.x < this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
     }
     drawHead(){
         this.head = new Graphics();
@@ -38,6 +38,6 @@ export class ShortSkinnyEnemy extends Enemy{
     }
     update(dt){
         super.update(dt);
-        this.move();
+        this.move(dt);
     }
 }
