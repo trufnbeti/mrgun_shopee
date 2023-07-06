@@ -139,7 +139,7 @@ export class PlayScene extends Container{
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
                 if(this.checkCollision(step, bullet)){
                     bulletsToRemove.push(bullet)
-
+                    sound.play("hitWallSound");
                 }
                 })
             }

@@ -120,6 +120,10 @@ export const manifest = {
                     srcs: 'assets/sounds/hit.mp3'
                 },
                 {
+                    name: 'hitWallSound',
+                    srcs: 'assets/sounds/hitWall.mp3'
+                },
+                {
                     name: 'headshotSound',
                     srcs: 'assets/sounds/headshot.mp3'
                 },
