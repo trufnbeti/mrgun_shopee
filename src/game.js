@@ -59,6 +59,7 @@ export class Game {
     }
 
     static _initScene() {
+        this.app.stage.removeChild(this.playScene)
         this.playScene = new PlayScene(this.app);
         this.app.stage.addChild(this.playScene);
     }
