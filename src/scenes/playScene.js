@@ -8,6 +8,7 @@ import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
 import { Enemy } from "../enemy/enemy";
+import { GameOverUI } from "../menu/gameOverUI";
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -97,9 +98,20 @@ export class PlayScene extends Container{
             this.checkBullets(dt);
             this.scoreText.text = this.score;
         }   
-        else this.menu.update(dt);
+        else if (this.gameState == 0){
+            this.menu.update(dt);
+        }else if(this.gameState == 2){
+            //update game over UI
+            this.gameOverUI.update(dt);
+        }
 
     }
+
+    _initgameOverUI(){
+        this.gameOverUI = new GameOverUI();
+        this.addChild(this.gameOverUI);
+    }
+
     checkBullets(dt){
         
         let bullets = this.player.gun.bullets;
@@ -142,6 +154,8 @@ export class PlayScene extends Container{
                 console.log("DIE");
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
+                this._initgameOverUI(); 
+                this.gameState = 2; // Add this line to show the game over UI
             }
         }
     }

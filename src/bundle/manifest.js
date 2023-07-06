@@ -152,6 +152,10 @@ export const manifest = {
                     name: 'offSound',
                     srcs: 'assets/images/button/offSound.png'
                 },
+                {
+                    name: 'restart',
+                    srcs: 'assets/images/button/reload.png'
+                },
             ]
         }
     ],
