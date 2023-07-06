@@ -18,10 +18,7 @@ export class MenuUI extends Container {
 
     this.gameOverBar = new PIXI.Container();
 
-    // this._initLevel();
-    // this._initMoney();
-    // this._initLOGO();
-    // this._initBestScore();
+    this._initLayout();
 
     this._initTextSmall();
     this._initTapToStart();
@@ -34,7 +31,22 @@ export class MenuUI extends Container {
     this.sortChildren();
   }
 
-  _initLOGO() {}
+  _initLayout(){
+    this.layoutUIContainer = new PIXI.Container();
+    this.addChild(this.layoutUIContainer);
+
+    // this._initLevel();
+    // this._initMoney();
+    this._initLOGO();
+    // this._initBestScore();
+  }
+
+  _initLOGO() {
+    this.logoSpriter = Sprite.from(Assets.get("logoMRGUN"));
+    this.logoSpriter.position.set(GameConstant.GAME_WIDTH / 2 - this.logoSpriter.width*0.4, GameConstant.GAME_HEIGHT / 8);
+    this.logoSpriter.scale.set(0.75);;
+    this.layoutUIContainer.addChild(this.logoSpriter);
+  }
 
   _initLevel() {}
 
@@ -108,6 +120,7 @@ export class MenuUI extends Container {
   update(delta) {
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
+    console.log("blink 1");
   }
 
   _showMenuUI() {
