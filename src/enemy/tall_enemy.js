@@ -23,13 +23,9 @@ export class TallEnemy extends Enemy{
         if (this.direction == -1)
             if (this.x > this.maxX)
                 this.x += this.speed;
-            else
-                this.angle = 0;
         if (this.direction == 1)
             if (this.x < this.maxX)
                 this.x += this.speed;
-            else
-                this.angle = 0;
         if (this.isJumping) return;
         const jumpAt = this.y;
         this.isJumping = true;
