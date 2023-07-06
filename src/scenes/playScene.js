@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { Player } from "../objects/player/player";
 import { Map } from "../objects/map/map";
 import { GameConstant } from "../gameConstant";
@@ -23,6 +23,7 @@ export class PlayScene extends Container{
         this._init();
         this._initHandleTap();
         this._initMenu();
+        this._initScore();
         this.gameState = GameState.menu;
     }
 
@@ -48,7 +49,7 @@ export class PlayScene extends Container{
         this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor())
         this.map.addChild(this.enemy)
 
-        this.isHitEnemy = false;
+
 
     }
 
@@ -73,6 +74,18 @@ export class PlayScene extends Container{
         this.menu = new Menu();
         this.addChild(this.menu);
     }
+    _initScore(){
+        this.score = 0;
+        this.scoreText = new Text(this.score);
+        this.addChild(this.scoreText);
+        this.scoreText.position.set(50, 50);
+        const textStyle = new TextStyle({
+            fontFamily: "Arial",
+            fontSize: 50,
+            fill: 0xffffff,
+        })
+        this.scoreText.style = textStyle;
+    }
 
     update(dt) {
         this.dt = dt;
@@ -80,9 +93,10 @@ export class PlayScene extends Container{
         if(this.gameState == 1){
             this.player.update(dt);
             this.map.update(dt);
-            if(!this.player.isMoving) this.enemy.update(dt);
+             this.enemy.update(dt);
             if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
             this.checkBullets(dt);
+            this.scoreText.text = this.score;
         }   
         else if (this.gameState == 0){
             this.menu.update(dt);
@@ -103,16 +117,16 @@ export class PlayScene extends Container{
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
-        if (!this.player.gun.isShot)
-            this.isHitEnemy = false;
         
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
             if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
+                if(this.checkCollision(bullet, this.enemy.head)) this.score += 50;
+                else this.score += 25;
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
-                this.isHitEnemy = true;
+
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
@@ -136,7 +150,7 @@ export class PlayScene extends Container{
         if(this.enemy.weapon.isShot){
             let eBullet = this.enemy.weapon.bullet;
             eBullet.update(dt)
-            if(this.checkCollision(eBullet, this.player)){
+            if(this.checkCollision(eBullet, this.player.sprite)){
                 console.log("DIE");
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
