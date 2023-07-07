@@ -975,11 +975,15 @@ const manifest = {
       ]
     },
     {
-      name: "logo",
+      name: "layoutImg",
       assets: [
         {
           name: "logoMRGUN",
-          srcs: "assets/images/logo/logoMRGUN.png"
+          srcs: "assets/images/layoutImg/logoMRGUN.png"
+        },
+        {
+          name: "money",
+          srcs: "assets/images/layoutImg/money.png"
         }
       ]
     },
@@ -2684,7 +2688,14 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initTextSmall();
     this._initTextTitle();
     this._initButtonBack();
+    this._initMoney();
     console.log("gun store scene");
+  }
+  _initMoney() {
+    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
+    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 130, 60);
+    this.money.scale.set(0.4);
+    this.addChild(this.money);
   }
   _initButtonBack() {
     this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
@@ -2836,7 +2847,22 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initTextSmall();
     this._initTextTitle();
     this._initButtonBack();
+    this._initMoney();
+    this._initBGOutfits();
     console.log("outfits scene");
+  }
+  _initBGOutfits() {
+    const bGOutfits = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    bGOutfits.beginFill(1323795);
+    bGOutfits.drawRect(0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
+    bGOutfits.endFill();
+    this.addChild(bGOutfits);
+  }
+  _initMoney() {
+    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
+    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 130, 60);
+    this.money.scale.set(0.4);
+    this.addChild(this.money);
   }
   _initButtonBack() {
     this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
@@ -2938,7 +2964,9 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initHandleTap() {
     document.addEventListener("pointerdown", () => {
-      this.navigateToGunScene();
+      setTimeout(() => {
+        this.navigateToGunScene();
+      }, 100);
     });
   }
   navigateToGunScene() {
