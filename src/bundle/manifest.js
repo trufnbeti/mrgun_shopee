@@ -168,6 +168,10 @@ export const manifest = {
                     name: 'restart',
                     srcs: 'assets/images/button/reload.png'
                 },
+                {
+                    name: 'back',
+                    srcs: 'assets/images/button/back.png'
+                },
             ]
         },
         {
