@@ -28,7 +28,7 @@ export class LoadingScene extends Container {
 
     // Add black background
     const background = new Graphics();
-    background.beginFill(0x000000);
+    background.beginFill(0x0A0A0A);
     background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
     background.endFill();
     this.addChild(background);
