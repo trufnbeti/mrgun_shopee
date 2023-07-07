@@ -9,6 +9,7 @@ export class Boss extends Enemy{
         this.direction = direction;
         this.maxX = maxX + this.width/2;
         this.hp = 50;
+        this.maxHp = 50;
         // this._init();
         this.weapon =new Weapon(Assets.get('usp_s'))
         this.position.set(x, y - this.height / 2);

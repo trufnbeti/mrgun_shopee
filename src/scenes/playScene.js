@@ -54,6 +54,9 @@ export class PlayScene extends Container{
 
         this.killCount= 0;
         this.killNeed = 1;
+
+        this.graphics = new Graphics();
+        this.addChild(this.graphics);
     }
 
     _initPlay(){
@@ -99,6 +102,14 @@ export class PlayScene extends Container{
             this.enemy.update(dt);
             this.checkBullets(dt);
             if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
+            if(this.gameState == GameState.boss) {
+                this.graphics.clear();
+                this.graphics.lineStyle(1, 0xffffff);
+                this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);
+                this.graphics.beginFill(0xFF0000);
+                this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
+                this.graphics.endFill();
+            }
         }   
         else if (this.gameState == 0){
             this.menu.update(dt);
@@ -165,8 +176,9 @@ export class PlayScene extends Container{
                 // Game._initScene();
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
-                this._initgameOverUI(); 
                 this.gameState = 2; // Add this line to show the game over UI
+                this._initgameOverUI(); 
+                
             }
         }
     }
@@ -217,7 +229,7 @@ export class PlayScene extends Container{
                     this.enemy.isReady = false;
                     this.enemy.cooldown = 50;
                 }
-                if(this.enemy.destroyed) Game._initScene();
+                if(this.enemy.hp <= 0) Game._initScene();
             }
         }
         
