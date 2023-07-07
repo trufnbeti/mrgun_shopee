@@ -62,6 +62,7 @@ export class GameOverUI extends Container {
     this.buttonRestart.on("pointerdown", () => {
       this.parent.removeChild(this);
        // Show the menu
+      Game._initScene();
     });
 
   }
