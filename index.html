@@ -1694,6 +1694,7 @@ class Game {
       this.app.ticker.maxFPS = 60;
       this.app.ticker.add(this.update, this);
     });
+    this.resize();
   }
   static _loadGameAssets() {
     return __async(this, null, function* () {
@@ -1724,6 +1725,19 @@ class Game {
     this.app.stage.removeChild(this.playScene);
     this.playScene = new _scenes_playScene__WEBPACK_IMPORTED_MODULE_3__.PlayScene(this.app);
     this.app.stage.addChild(this.playScene);
+  }
+  static resize() {
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const scale = Math.min(screenWidth / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, screenHeight / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const enlargedWidth = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH);
+    const enlargedHeight = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+    const verticalMargin = (screenHeight - enlargedHeight) / 2;
+    this.app.view.style.width = `${enlargedWidth}px`;
+    this.app.view.style.height = `${enlargedHeight}px`;
+    this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
+    this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
   }
 }
 window.onload = function() {
