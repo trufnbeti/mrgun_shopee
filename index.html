@@ -1797,35 +1797,38 @@ __webpack_require__.r(__webpack_exports__);
 class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(menu) {
     super();
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(0, 0.9);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
     this.menu = _menu__WEBPACK_IMPORTED_MODULE_4__.Menu;
     this._showGameOverUI();
-    this._initTextSmall();
-    this._init();
-    this.interactive = true;
+    this._initTextBig();
+    this._initButtonRestart();
+    this._initMoney();
+    this._initBestScore();
     this.sortChildren();
   }
   _initLevel() {
   }
   _initMoney() {
+    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
+    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - 130, 60);
+    this.money.scale.set(0.4);
+    this.addChild(this.money);
   }
   _initBestScore() {
-  }
-  _init() {
-    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    background.beginFill(0, 0.55);
-    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
-    background.endFill();
-    this.addChild(background);
-    this.buttonContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.addChild(this.buttonContainer);
-    this._initButtonRestart();
-    this.buttonContainer.x = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 70;
-    this.buttonContainer.y = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT - 300;
+    this.textTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BEST SCORE", this.bigTextStyle);
+    this.textTitle.anchor.set(0.5);
+    this.textTitle.zIndex = 2;
+    this.textTitle.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2, 250);
+    this.addChild(this.textTitle);
   }
   _initButtonRestart() {
     this.buttonRestart = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("restart"));
-    this.buttonRestart.x = 0;
-    this.buttonContainer.addChild(this.buttonRestart);
+    this.buttonRestart.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - this.buttonRestart.width) / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / 4 * 3);
+    this.addChild(this.buttonRestart);
     this.buttonRestart.interactive = true;
     this.buttonRestart.cursor = "pointer";
     this.buttonRestart.on("pointerdown", () => {
@@ -1833,13 +1836,11 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       _game__WEBPACK_IMPORTED_MODULE_3__.Game._initScene();
     });
   }
-  _initTextSmall() {
-    this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Century Gothic",
+  _initTextBig() {
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Arial",
       fontSize: 35,
-      // fontStyle: 'italic',
-      fontWeight: "bold",
-      fill: ["#ffffff"]
+      fill: ["#FFFF00"]
     });
   }
   _showGameOverUI() {
