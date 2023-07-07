@@ -19,11 +19,21 @@ export class BlackListScene extends Container{
         this._initTextTitle();
         this._initBGListBoss();
         this._iniTextList();
+        this._initButtonBack();
 
         console.log("black list scene");
         
     }
 
+    _initButtonBack() {
+        this.buttonBack = Sprite.from(Assets.get("back"));
+        this.buttonBack.position.set(30, 60);
+        this.buttonBack.scale.set(0.4);
+        this.addChild(this.buttonBack);
+        this.buttonBack.interactive = true;
+        this.buttonBack.cursor = "pointer";
+    }
+    
     _iniTextList(){
         let levelBlackList = 1;
         this.textList = new PIXI.Text("LIST NO. 1", this.smallTextStyle);
