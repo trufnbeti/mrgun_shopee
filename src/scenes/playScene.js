@@ -93,7 +93,7 @@ export class PlayScene extends Container{
     update(dt) {
         this.dt = dt;            
         this.scoreText.text = this.score;
-        if(this.gameState == GameState.playing){
+        if(this.gameState == GameState.playing || this.gameState == GameState.boss){
             this.player.update(dt);
             this.map.update(dt);
             this.enemy.update(dt);
@@ -105,13 +105,6 @@ export class PlayScene extends Container{
         }else if(this.gameState == 2){
             //update game over UI
             this.gameOverUI.update(dt);
-        }
-        else if(this.gameState == GameState.boss){
-            this.player.update(dt);
-            this.map.update(dt);
-            this.enemy.update(dt);
-            this.checkBullets(dt);
-            //if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
         }
 
     }
@@ -169,7 +162,7 @@ export class PlayScene extends Container{
             eBullet.update(dt)
             if(this.checkCollision(eBullet, this.player.sprite)){
                 sound.play("hitSound");
-                Game._initScene();
+                // Game._initScene();
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
                 this._initgameOverUI(); 
@@ -213,7 +206,6 @@ export class PlayScene extends Container{
             if(this.gameState == GameState.playing) {
                 this.map.removeChild(this.enemy);
                 this.enemy = new Boss(x, y,  this.player.direction, xMax);  
-                console.log(this.enemy);
                 this.map.addChild(this.enemy);
                 this.gameState = GameState.boss;
             }
@@ -222,7 +214,10 @@ export class PlayScene extends Container{
                 this.enemy.takeDmg(this.player.gun.damage);
                 if(!this.enemy.isMoving){
                     this.enemy.calPath(nextStair);
+                    this.enemy.isReady = false;
+                    this.enemy.cooldown = 50;
                 }
+                if(this.enemy.destroyed) Game._initScene();
             }
         }
         

@@ -7,8 +7,8 @@ export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
         super();
         this.direction = direction;
-        this.maxX = maxX;
-        this.hp = 500;
+        this.maxX = maxX + this.width/2;
+        this.hp = 50;
         // this._init();
         this.weapon =new Weapon(Assets.get('usp_s'))
         this.position.set(x, y - this.height / 2);
@@ -31,12 +31,13 @@ export class Boss extends Enemy{
         let indexR = Math.floor(Math.random() * 22) + 1;
         this.head = new Sprite(Assets.get('boss_head_' + indexR));
         this.body = new Sprite(Assets.get('boss_body_' + indexR));
+        this.head.anchor.set(0.5, 0);
+        this.body.anchor.set(0.5, 0);
         this.head.scale.set(0.25);
         this.body.scale.set(0.25);
         this.body.y = this.head.height;
-        this.head.x = this.body.width / 2 - this.head.width / 2;
+        this.head.x = 0;
         this.addChild(this.head, this.body);
-
     }
     _initAbility(){
         this.appeared = false;
@@ -51,6 +52,8 @@ export class Boss extends Enemy{
 
     }
     update(dt){
+        super.update(dt);
+        this.weapon.x = 10 * this.direction;
         if(this.destroyed) return;
         this.timer += dt;
         if(!this.appeared)this.move(dt);
@@ -178,15 +181,16 @@ export class Boss extends Enemy{
         if(this.destroyed) return;
         const width = GameConstant.GAME_WIDTH;
         const size = GameConstant.Step_Size;
-        const wallDistance = this.direction === 1 ? this.x : width-this.x;
-        this.path2 = 20;
+        const wallDistance = this.direction === 1 ? this.x : width-this.x + this.width/2;
+        this.path2 = size + this.width/2;
         this.jumpStep = nextStair.stepNumber;
         this.path1 = width - wallDistance - nextStair.stepNumber * size*3;
         this.needFlip = true;
-        console.log(this.path1, this.jumpStep, this.path2);
     }
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;
-        this.scale.x *= -1;
+        this.head.scale.x *= -1;
+        this.body.scale.x *= -1;
+        this.weapon.sprite.scale.x *= -1;
     }
 }
