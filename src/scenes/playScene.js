@@ -213,6 +213,7 @@ export class PlayScene extends Container{
             if(this.gameState == GameState.playing) {
                 this.map.removeChild(this.enemy);
                 this.enemy = new Boss(x, y,  this.player.direction, xMax);  
+                console.log(this.enemy);
                 this.map.addChild(this.enemy);
                 this.gameState = GameState.boss;
             }
