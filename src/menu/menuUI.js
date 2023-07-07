@@ -163,7 +163,6 @@ export class MenuUI extends Container {
   update(delta) {
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
-    console.log("blink 1");
   }
 
   _showMenuUI() {

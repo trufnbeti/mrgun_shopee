@@ -8,6 +8,7 @@ import {
   Sprite,
 } from "pixi.js";
 import { GameConstant } from "../gameConstant";
+import { Game } from "../game";
 
 export class OutfitsScene extends Container{
 
@@ -30,6 +31,11 @@ export class OutfitsScene extends Container{
         this.addChild(this.buttonBack);
         this.buttonBack.interactive = true;
         this.buttonBack.cursor = "pointer";
+
+        this.buttonBack.on("pointerdown", () => {
+            this.parent.removeChild(this);
+            Game._initScene();
+        });
     }
 
     _initTextTitle() {
