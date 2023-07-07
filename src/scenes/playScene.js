@@ -31,7 +31,9 @@ export class PlayScene extends Container{
 
     _initHandleTap(){
         document.addEventListener("pointerdown", () => {
-            this.navigateToGunScene();
+            setTimeout(() => {
+                this.navigateToGunScene();
+              }, 100);
         })
     }
 
