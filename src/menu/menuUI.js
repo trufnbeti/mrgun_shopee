@@ -36,6 +36,13 @@ export class MenuUI extends Container {
   }
 
   _initLayout(){
+    // Create a semi-transparent background
+    const background = new Graphics();
+    background.beginFill(0x000000, 0.25); 
+    background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+
     this.layoutUIContainer = new PIXI.Container();
     this.addChild(this.layoutUIContainer);
 
@@ -83,10 +90,12 @@ export class MenuUI extends Container {
 
     this.gameReloadText.on("pointerdown", () => {
       this.parent.removeChild(this);
+      console.log("tap");
     });
   }
 
   _init() {
+
     // Tạo container để chứa các button
     this.buttonContainer = new Container();
 
