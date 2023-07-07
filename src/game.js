@@ -28,6 +28,8 @@ export class Game {
             this.app.ticker.maxFPS = 60;
             this.app.ticker.add(this.update, this);
         });
+
+        this.resize();
     }
 
     static async _loadGameAssets() {
@@ -63,11 +65,30 @@ export class Game {
         this.playScene = new PlayScene(this.app);
         this.app.stage.addChild(this.playScene);
     }
+
+    static resize(){
+        // current screen size
+        const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        // uniform scale for our game
+        const scale = Math.min(screenWidth / GameConstant.GAME_WIDTH, screenHeight / GameConstant.GAME_HEIGHT);
+
+        // the "uniformly englarged" size for our game
+        const enlargedWidth = Math.floor(scale * GameConstant.GAME_WIDTH);
+        const enlargedHeight = Math.floor(scale * GameConstant.GAME_HEIGHT);
+
+        // margins for centering our game
+        const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+        const verticalMargin = (screenHeight - enlargedHeight) / 2;
+
+        // now we use css trickery to set the sizes and margins
+        this.app.view.style.width = `${enlargedWidth}px`;
+        this.app.view.style.height = `${enlargedHeight}px`;
+        this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
+        this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
+    }
 }
 window.onload = function () {
     Game.init();
 }
-
-// window.addEventListener("resize", (event) => {
-//     Game.resize(window.innerWidth, window.innerHeight)
-// });
