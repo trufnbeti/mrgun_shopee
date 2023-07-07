@@ -17,7 +17,6 @@ export class Game {
         viewStyle.position = "absolute";
         viewStyle.display = "block";
         viewStyle.padding = "0px 0px 0px 0px"; 
-        this.resize(window.innerWidth, window.innerHeight);
 
         this.loadingScene = new LoadingScene();
         this.app.stage.addChild(this.loadingScene);
@@ -29,22 +28,6 @@ export class Game {
             this.app.ticker.maxFPS = 60;
             this.app.ticker.add(this.update, this);
         });
-    }
-
-    static resize(width, height) {
-        this.style = this.app.view.style;
-        this.ratio = Math.max(GameConstant.GAME_WIDTH / width, GameConstant.GAME_HEIGHT / height);
-
-        this.app.view.width = GameConstant.GAME_WIDTH / this.ratio;
-        this.app.view.height = GameConstant.GAME_HEIGHT / this.ratio;
-
-        let vMargin = Math.floor((width - this.app.view.width) / 2);
-        let hMargin = Math.floor((height - this.app.view.height) / 2); 
-        this.style.margin = `${hMargin}px ${vMargin}px ${hMargin}px ${vMargin}px`;
-
-        this.app.resizeTo = this.app.view;
-        this.app.resize();
-        this.sceneManager && this.sceneManager.onResize();
     }
 
     static async _loadGameAssets() {
@@ -68,7 +51,7 @@ export class Game {
         const bgMusic = sound.find("bgMusic");
         bgMusic.volume = 0.3;
         bgMusic.autoPlay = true;
-        // bgMusic.play();
+        bgMusic.play();
     }
 
     static update(dt){
@@ -83,7 +66,8 @@ export class Game {
 }
 window.onload = function () {
     Game.init();
-    window.onresize = () => {
-        Game.resize(window.innerWidth, window.innerHeight);
-    }
 }
+
+// window.addEventListener("resize", (event) => {
+//     Game.resize(window.innerWidth, window.innerHeight)
+// });

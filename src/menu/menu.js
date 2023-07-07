@@ -22,8 +22,4 @@ export class Menu extends Container{
         this.visible = true;
         // Reset game state or perform any necessary cleanup
       }
-      hideMenu() {
-        this.visible = false;
-        // Reset game state or perform any necessary cleanup
-      }
 }
