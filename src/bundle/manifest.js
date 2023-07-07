@@ -175,13 +175,16 @@ export const manifest = {
             ]
         },
         {
-            name: 'logo',
+            name: 'layoutImg',
             assets :[
                 {
                     name: 'logoMRGUN',
-                    srcs: 'assets/images/logo/logoMRGUN.png'
+                    srcs: 'assets/images/layoutImg/logoMRGUN.png'
                 },
-                
+                {
+                    name: 'money',
+                    srcs: 'assets/images/layoutImg/money.png'
+                },
             ]
         },
         {

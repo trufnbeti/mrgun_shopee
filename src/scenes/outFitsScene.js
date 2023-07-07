@@ -19,9 +19,27 @@ export class OutfitsScene extends Container{
         this._initTextSmall();
         this._initTextTitle();
         this._initButtonBack();
+        this._initMoney();
+        this._initBGOutfits();
 
         console.log("outfits scene");
         
+    }
+
+    _initBGOutfits(){
+        //add background with color follow stair random
+        const bGOutfits = new Graphics();
+        bGOutfits.beginFill(0x143313);
+        bGOutfits.drawRect(0, GameConstant.GAME_HEIGHT / 3, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
+        bGOutfits.endFill();
+        this.addChild(bGOutfits);
+    }
+
+    _initMoney(){
+        this.money = Sprite.from(Assets.get("money"));
+        this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
+        this.money.scale.set(0.4);
+        this.addChild(this.money);
     }
 
     _initButtonBack() {

@@ -19,9 +19,17 @@ export class GunStoreScene extends Container{
         this._initTextSmall();
         this._initTextTitle();
         this._initButtonBack();
+        this._initMoney();
 
         console.log("gun store scene");
         
+    }
+
+    _initMoney(){
+        this.money = Sprite.from(Assets.get("money"));
+        this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
+        this.money.scale.set(0.4);
+        this.addChild(this.money);
     }
 
     _initButtonBack() {
