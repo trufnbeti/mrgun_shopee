@@ -7,15 +7,14 @@ import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
+import { Enemy } from "../enemy/enemy";
 import { GameOverUI } from "../menu/gameOverUI";
 import { Game } from "../game";
-import { Boss } from "../enemy/boss";
 
 export const GameState = Object.freeze({
     menu: 0,
     playing: 1,
     gameover: 2,
-    boss: 3,
 })
 
 export class PlayScene extends Container{
@@ -26,7 +25,6 @@ export class PlayScene extends Container{
         this._initHandleTap();
         this._initMenu();
         this._initScore();
-
     }
 
     _initHandleTap(){
@@ -44,7 +42,6 @@ export class PlayScene extends Container{
     }
 
     _init(){
-        this.gameState = GameState.menu;
         this.map = new Map(this, this.app);
         const firstStair = this.map.stairs[0];
         this.player = new Player(this.map);
@@ -52,8 +49,6 @@ export class PlayScene extends Container{
         this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor())
         this.map.addChild(this.enemy)
 
-        this.killCount= 0;
-        this.killNeed = 1;
     }
 
     _initPlay(){
@@ -91,13 +86,12 @@ export class PlayScene extends Container{
     }
 
     update(dt) {
-        this.dt = dt;            
-        this.scoreText.text = this.score;
-        if(this.gameState == GameState.playing){
+        this.dt = dt;
+        
+        if(this.gameState == 1){
             this.player.update(dt);
             this.map.update(dt);
-            this.enemy.update(dt);
-            this.checkBullets(dt);
+             this.enemy.update(dt);
             if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
         }   
         else if (this.gameState == 0){
@@ -105,13 +99,6 @@ export class PlayScene extends Container{
         }else if(this.gameState == 2){
             //update game over UI
             this.gameOverUI.update(dt);
-        }
-        else if(this.gameState == GameState.boss){
-            this.player.update(dt);
-            this.map.update(dt);
-            this.enemy.update(dt);
-            this.checkBullets(dt);
-            //if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
         }
 
     }
@@ -126,8 +113,7 @@ export class PlayScene extends Container{
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
-        this.enemy.isShooted = false;
-
+        
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
@@ -141,9 +127,8 @@ export class PlayScene extends Container{
                     sound.play("hitSound");
                 } 
                 bulletsToRemove.push(bullet)
-                if(!this.enemy.isShooted)
-                    this.hitEnemy();
-                else this.enemy.takeDmg(this.player.gun.damage)
+                this.hitEnemy();
+
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
@@ -196,39 +181,21 @@ export class PlayScene extends Container{
         return enemy;
     }
     hitEnemy(){
-        const nextStair = this.map.stairs[this.map.currentIndex+2];
+        this.map.removeChild(this.enemy);
+        // this.enemy.destroy();
+        const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
-        const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2  : nextStair.stepNumber*size*2 - 40;
+        const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
         const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
-        const y = nextStair.y;
-        if(this.killCount < this.killNeed){
-            this.killCount++;
-            const colorNextEnemy = this.randomColor();
-            this.map.removeChild(this.enemy);
-            this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
-            this.map.addChild(this.enemy);
-        }
-        else {
-            // enemy bình thường
-            if(this.gameState == GameState.playing) {
-                this.map.removeChild(this.enemy);
-                this.enemy = new Boss(x, y,  this.player.direction, xMax);  
-                this.map.addChild(this.enemy);
-                this.gameState = GameState.boss;
-            }
-            // boss
-            else{
-                this.enemy.takeDmg(this.player.gun.damage);
-                if(!this.enemy.isMoving){
-                    this.enemy.calPath(nextStair);
-                }
-            }
-        }
-        
-        if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
-        this.enemy.isShooted = true;
-    }
+        const y = currenStair.y;
+        const colorNextEnemy = this.randomColor();
+        this.map.removeChild(this.enemy);
+        this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
+        this.map.addChild(this.enemy);
 
+
+        if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
+    }
     hitStair(){
         console.log("hit the wall");
     }
