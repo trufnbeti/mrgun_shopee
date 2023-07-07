@@ -8,7 +8,6 @@ export class ShortFatEnemy extends Enemy{
         this.speed = this.direction * 2.5;
         this.maxX = maxX;
         this.color = color;
-        // this.weapon.scale.x = direction;
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
@@ -19,15 +18,15 @@ export class ShortFatEnemy extends Enemy{
         this.angleLean = 1;
         this.timer = 0;
     }
-    move(){
+    move(dt){
         if (this.direction == -1)
             if (this.x > this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
             else
                 this.angle = 0;
         if (this.direction == 1)
             if (this.x < this.maxX)
-                this.x += this.speed;
+                this.x += this.speed * dt;
             else
                 this.angle = 0;
         
@@ -62,6 +61,6 @@ export class ShortFatEnemy extends Enemy{
             this.lean();
             this.timer = 0;
         }
-        this.move();
+        this.move(dt);
     }
 }

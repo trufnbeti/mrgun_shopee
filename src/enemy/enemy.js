@@ -14,6 +14,7 @@ export class Enemy extends Container{
         this.cooldown = 50;
         this.isShot = false;
         this.isReady = false;
+        this.isShooted = false;
     }
     equipWeapon(){
         if (this.direction == -1) //weapon ben trai
