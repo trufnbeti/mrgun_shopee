@@ -7,7 +7,6 @@ export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
         super();
         this.direction = direction;
-        this.speed = this.direction * 4.5;
         this.maxX = maxX;
         this.hp = 500;
         // this._init();
@@ -30,15 +29,11 @@ export class Boss extends Enemy{
     _init(){
         super._init();
         let indexR = Math.floor(Math.random() * 22) + 1;
-        this.head = new Container();
-        this.body = new Container();
-        let head = new Sprite(Assets.get('boss_head_' + indexR));
-        let body = new Sprite(Assets.get('boss_body_' + indexR));
-        head.scale.set(0.25);
-        body.scale.set(0.25);
-        this.head.addChild(head);
+        this.head = new Sprite(Assets.get('boss_head_' + indexR));
+        this.body = new Sprite(Assets.get('boss_body_' + indexR));
+        this.head.scale.set(0.25);
+        this.body.scale.set(0.25);
         this.body.y = this.head.height;
-        this.body.addChild(body);
         this.head.x = this.body.width / 2 - this.head.width / 2;
         this.addChild(this.head, this.body);
 
@@ -74,24 +69,20 @@ export class Boss extends Enemy{
         }
         if (this.direction == -1)
             if (this.x > this.maxX){
-                this.x += this.speed * dt;
-                
+                this.x -= this.speed * dt;
             }
             else{
                 this.angle = 0;
                 this.appeared = true;
-                this.gravity = 0.3;
             }
                 
         if (this.direction == 1)
             if (this.x < this.maxX){
                 this.x += this.speed * dt;
-                
             }
             else{
                 this.angle = 0;
                 this.appeared = true;
-                this.gravity = 0.3;
             }
                 
 
@@ -104,8 +95,9 @@ export class Boss extends Enemy{
             const jumpHeight = (-this.gravity / 2) * Math.pow(time, 2) + this.power * time;
 
             if (jumpHeight < 0) {
-                Ticker.shared.remove(tick);
                 this.y = jumpAt;
+                this.gravity = 0.3;
+                Ticker.shared.remove(tick);
                 return;
             }
 
@@ -195,5 +187,6 @@ export class Boss extends Enemy{
     }
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;
+        this.scale.x *= -1;
     }
 }
