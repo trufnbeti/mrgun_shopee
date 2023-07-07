@@ -1,10 +1,22 @@
-import { Container, Graphics, Text, TextStyle } from "pixi.js";
+import * as PIXI from "pixi.js";
+import { Container, Graphics, Text, TextStyle, Sprite , Assets} from "pixi.js";
 import { GameConstant } from "../gameConstant";
 
 export class LoadingScene extends Container {
   constructor() {
     super();
     this._init();
+    this._initLogoLoading();
+  }
+
+  _initLogoLoading(){
+    this.layoutUIContainer = new PIXI.Container();
+    this.addChild(this.layoutUIContainer);
+    const logoTexture = PIXI.Texture.from('assets/images/logo/logoMRGUN.png');
+    this.logoSpriter = new PIXI.Sprite(logoTexture);
+    this.logoSpriter.position.set(80/2, GameConstant.GAME_HEIGHT / 2.8);
+    this.logoSpriter.scale.set(0.75);;
+    this.layoutUIContainer.addChild(this.logoSpriter);
   }
 
   _init() {
@@ -13,6 +25,13 @@ export class LoadingScene extends Container {
       fontSize: 24,
       fontWeight: "bold",
     });
+
+    // Add black background
+    const background = new Graphics();
+    background.beginFill(0x000000);
+    background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
 
     this.progressBarWidth = 300;
     this.progressBarHeight = 20;
