@@ -35,19 +35,24 @@ export class Game {
     static async _loadGameAssets() {
         await Assets.init({ manifest: manifest });
         const bundleIds = manifest.bundles.map((bundle) => bundle.name);
-    
+      
         const bundleProgress = new Array(bundleIds.length).fill(0);
         let totalProgress = 0;
-    
+      
         for (let i = 0; i < bundleIds.length; i++) {
-          await Assets.loadBundle(bundleIds[i], (loadProgress) => {
-            bundleProgress[i] = loadProgress;
-            totalProgress = bundleProgress.reduce((sum, value) => sum + value, 0) / bundleIds.length;
-            this.loadingScene.setProgress(totalProgress);
+          await new Promise((resolve) => {
+            setTimeout(async () => {
+              await Assets.loadBundle(bundleIds[i], (loadProgress) => {
+                bundleProgress[i] = loadProgress;
+                totalProgress = bundleProgress.reduce((sum, value) => sum + value, 0) / bundleIds.length;
+                this.loadingScene.setProgress(totalProgress);
+              });
+              resolve();
+            }, 300); // Delay of 1 second (1000 milliseconds)
           });
         }
       }
-
+      
     static startBackgroundMusic() {
         sound.volumeAll = 1;
         const bgMusic = sound.find("bgMusic");
