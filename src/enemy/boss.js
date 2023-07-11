@@ -6,6 +6,7 @@ import { GameConstant } from "../gameConstant";
 export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
         super();
+        this.name = "Boss";
         this.direction = direction;
         this.maxX = maxX + this.width/2;
         this.hp = 50;

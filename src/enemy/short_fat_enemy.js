@@ -11,7 +11,10 @@ export class ShortFatEnemy extends Enemy{
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
-        this.position.set(x, y - this.height);
+        this.position.set(x, y - this.height / 2);
+        const centerX = this.width / 2;
+        const centerY = this.height / 2;
+        this.pivot.set(centerX, centerY);
         this.equipWeapon();
         this.isLeanRight = true;
         this.isLeanLeft = false;
@@ -19,16 +22,18 @@ export class ShortFatEnemy extends Enemy{
         this.timer = 0;
     }
     move(dt){
-        if (this.direction == -1)
-            if (this.x > this.maxX)
-                this.x += this.speed * dt;
-            else
-                this.angle = 0;
-        if (this.direction == 1)
-            if (this.x < this.maxX)
-                this.x += this.speed * dt;
-            else
-                this.angle = 0;
+        if (!this.deaded){
+            if (this.direction == -1)
+                if (this.x > this.maxX)
+                    this.x += this.speed * dt;
+                else
+                    this.angle = 0;
+            if (this.direction == 1)
+                if (this.x < this.maxX)
+                    this.x += this.speed * dt;
+                else
+                    this.angle = 0;
+        }
         
     }
     drawHead(){
@@ -44,14 +49,16 @@ export class ShortFatEnemy extends Enemy{
         this.body.endFill();
     }
     lean(){
-        if (this.isLeanRight){
-            this.isLeanLeft = true;
-            this.isLeanRight = false;
-            this.angle = this.angleLean;
-        }else{
-            this.isLeanLeft = false;
-            this.isLeanRight = true;
-            this.angle = -this.angleLean;
+        if (!this.deaded){
+            if (this.isLeanRight){
+                this.isLeanLeft = true;
+                this.isLeanRight = false;
+                this.angle = this.angleLean;
+            }else{
+                this.isLeanLeft = false;
+                this.isLeanRight = true;
+                this.angle = -this.angleLean;
+            }
         }
     }
     update(dt){

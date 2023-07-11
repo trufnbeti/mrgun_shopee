@@ -55,7 +55,7 @@ export class PlayScene extends Container{
         this.map.addChild(this.enemy)
 
         this.killCount= 0;
-        this.killNeed = 1;
+        this.killNeed = 2;
 
         this.graphics = new Graphics();
         this.addChild(this.graphics);
@@ -112,13 +112,20 @@ export class PlayScene extends Container{
                 this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
                 this.graphics.endFill();
             }
-        }   
+        }
+        //==========
+        //enemy ngã xuống thì spawn thằng mới
+        if (this.enemy.name === "Normal")
+            if (this.enemy.y > GameConstant.GAME_HEIGHT)
+                this.hitEnemy();
+        //===========
         else if (this.gameState == 0){
             this.menu.update(dt);
         }else if(this.gameState == 2){
             //update game over UI
             this.gameOverUI.update(dt);
         }
+        
 
     }
 
@@ -147,8 +154,15 @@ export class PlayScene extends Container{
                     sound.play("hitSound");
                 } 
                 bulletsToRemove.push(bullet)
-                if(!this.enemy.isShooted)
-                    this.hitEnemy();
+                if(!this.enemy.isShooted){
+                    if (this.enemy.name === "Normal")
+                        this.enemy.deaded = true;
+                    else{
+                        this.hitEnemy();
+                    }
+                    // console.log(this.enemy.name == "Normal");
+
+                }
                 else this.enemy.takeDmg(this.player.gun.damage)
             }
             else {
@@ -209,6 +223,7 @@ export class PlayScene extends Container{
         const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
         const y = nextStair.y;
         if(this.killCount < this.killNeed){
+            
             this.killCount++;
             const colorNextEnemy = this.randomColor();
             this.map.removeChild(this.enemy);

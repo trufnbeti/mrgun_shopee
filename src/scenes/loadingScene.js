@@ -12,7 +12,7 @@ export class LoadingScene extends Container {
   _initLogoLoading(){
     this.layoutUIContainer = new PIXI.Container();
     this.addChild(this.layoutUIContainer);
-    const logoTexture = PIXI.Texture.from('assets/images/logo/logoMRGUN.png');
+    const logoTexture = PIXI.Texture.from('assets/images/layoutImg/logoMRGUN.png');
     this.logoSpriter = new PIXI.Sprite(logoTexture);
     this.logoSpriter.position.set(80/2, GameConstant.GAME_HEIGHT / 2.8);
     this.logoSpriter.scale.set(0.75);;
