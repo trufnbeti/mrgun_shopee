@@ -12,7 +12,6 @@ export class Player extends Container {
         this._initGun();
     }
     _initCharacter(){
-        this.parent.addChild(this);
         this.sortableChildren = true;
         this.sprite = Sprite.from(Assets.get('camouflage'))
         this.sprite.anchor.set(0.5, 0);

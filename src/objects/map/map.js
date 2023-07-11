@@ -3,14 +3,12 @@ import { Stair } from "./stair";
 import { GameConstant } from "../../gameConstant";
 
 export class Map extends Container{
-    constructor(parent, app){
+    constructor(app){
         super();
-        this.parent = parent;
         this.app = app;
         this._init();
     }
     _init(){
-        this.parent.addChild(this);
         this.sortableChildren = true;
         this.color = this.randomColor();
         this.stairs = [];
@@ -50,7 +48,7 @@ export class Map extends Container{
             const alpha = 0.3 + (i - this.currentIndex)/13;
             this.stairs[i].updateShade(alpha);
             }
-            this.parent.removeChild(this.stairs[this.currentIndex-4])
+            this.removeChild(this.stairs[this.currentIndex-4])
             this.stairs[this.currentIndex-4].destroy();
         }
         return(this.stairs[this.currentIndex]);
