@@ -12,9 +12,9 @@ export class LoadingScene extends Container {
   _initLogoLoading(){
     this.layoutUIContainer = new PIXI.Container();
     this.addChild(this.layoutUIContainer);
-    const logoTexture = PIXI.Texture.from('assets/images/logo/logoMRGUN.png');
+    const logoTexture = PIXI.Texture.from('assets/images/layoutImg/logoMRGUN.png');
     this.logoSpriter = new PIXI.Sprite(logoTexture);
-    this.logoSpriter.position.set(80/2, GameConstant.GAME_HEIGHT / 2.8);
+    this.logoSpriter.position.set(88/2, GameConstant.GAME_HEIGHT/ 2 - 70);
     this.logoSpriter.scale.set(0.75);;
     this.layoutUIContainer.addChild(this.logoSpriter);
   }
@@ -23,7 +23,7 @@ export class LoadingScene extends Container {
     const progressTextStyle = new TextStyle({
       fill: 0xffffff,
       fontSize: 24,
-      fontWeight: "bold",
+      fontFamily: "Century Gothic", 
     });
 
     // Add black background
@@ -34,14 +34,13 @@ export class LoadingScene extends Container {
     this.addChild(background);
 
     this.progressBarWidth = 300;
-    this.progressBarHeight = 20;
+    this.progressBarHeight = 10;
     const progressBarX = (GameConstant.GAME_WIDTH - this.progressBarWidth) / 2;
-    const progressBarY = (GameConstant.GAME_HEIGHT - this.progressBarHeight) / 2;
+    const progressBarY = (GameConstant.GAME_HEIGHT - this.progressBarHeight) / 2 + 90;
 
     this.progressBar = new Graphics();
-    // this.progressBar.beginFill(0x00ff00); // Màu xanh
     this.progressBar.lineStyle(1, 0xffd700);
-    this.progressBar.drawRect(0, 0, this.progressBarWidth, this.progressBarHeight);
+    this.progressBar.drawRoundedRect(0, 0, this.progressBarWidth, this.progressBarHeight, 10);
     this.progressBar.x = progressBarX;
     this.progressBar.y = progressBarY;
     this.addChild(this.progressBar);
@@ -57,13 +56,14 @@ export class LoadingScene extends Container {
 
     this.progressBar.clear();
     this.progressBar.lineStyle(1, 0xffd700);
-    this.progressBar.drawRect(0, 0, this.progressBarWidth, this.progressBarHeight);
+    this.progressBar.drawRoundedRect(0, 0, this.progressBarWidth, this.progressBarHeight, 10);
     this.progressBar.beginFill(0xffd700);
-    this.progressBar.drawRect(
+    this.progressBar.drawRoundedRect(
       0,
       0,
       progress * this.progressBarWidth,
-      this.progressBar.height
+      this.progressBar.height,
+      10
     );
     this.progressBar.endFill();
   }
