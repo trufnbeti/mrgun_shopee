@@ -807,7 +807,7 @@ const manifest = {
         //gun
         {
           name: "ak",
-          srcs: "assets/images/guns/aug.png"
+          srcs: "assets/images/guns/ak.png"
         },
         {
           name: "aug",
@@ -914,6 +914,18 @@ const manifest = {
         {
           name: "jumpSound",
           srcs: "assets/sounds/jump.mp3"
+        },
+        {
+          name: "hitSound",
+          srcs: "assets/sounds/hit.mp3"
+        },
+        {
+          name: "hitWallSound",
+          srcs: "assets/sounds/hitWall.mp3"
+        },
+        {
+          name: "headshotSound",
+          srcs: "assets/sounds/headshot.mp3"
         }
       ]
     },
@@ -955,11 +967,401 @@ const manifest = {
         {
           name: "restart",
           srcs: "assets/images/button/reload.png"
+        },
+        {
+          name: "back",
+          srcs: "assets/images/button/back.png"
+        }
+      ]
+    },
+    {
+      name: "logo",
+      assets: [
+        {
+          name: "logoMRGUN",
+          srcs: "assets/images/logo/logoMRGUN.png"
+        }
+      ]
+    },
+    {
+      name: "enemy",
+      assets: [
+        {
+          name: "boss_head_1",
+          srcs: "assets/images/enemy/head/1.png"
+        },
+        {
+          name: "boss_body_1",
+          srcs: "assets/images/enemy/body/1.png"
+        },
+        {
+          name: "boss_head_2",
+          srcs: "assets/images/enemy/head/2.png"
+        },
+        {
+          name: "boss_body_2",
+          srcs: "assets/images/enemy/body/2.png"
+        },
+        {
+          name: "boss_head_3",
+          srcs: "assets/images/enemy/head/3.png"
+        },
+        {
+          name: "boss_body_3",
+          srcs: "assets/images/enemy/body/3.png"
+        },
+        {
+          name: "boss_head_4",
+          srcs: "assets/images/enemy/head/4.png"
+        },
+        {
+          name: "boss_body_4",
+          srcs: "assets/images/enemy/body/4.png"
+        },
+        {
+          name: "boss_head_5",
+          srcs: "assets/images/enemy/head/5.png"
+        },
+        {
+          name: "boss_body_5",
+          srcs: "assets/images/enemy/body/5.png"
+        },
+        {
+          name: "boss_head_6",
+          srcs: "assets/images/enemy/head/6.png"
+        },
+        {
+          name: "boss_body_6",
+          srcs: "assets/images/enemy/body/6.png"
+        },
+        {
+          name: "boss_head_7",
+          srcs: "assets/images/enemy/head/7.png"
+        },
+        {
+          name: "boss_body_7",
+          srcs: "assets/images/enemy/body/7.png"
+        },
+        {
+          name: "boss_head_8",
+          srcs: "assets/images/enemy/head/8.png"
+        },
+        {
+          name: "boss_body_8",
+          srcs: "assets/images/enemy/body/8.png"
+        },
+        {
+          name: "boss_head_9",
+          srcs: "assets/images/enemy/head/9.png"
+        },
+        {
+          name: "boss_body_9",
+          srcs: "assets/images/enemy/body/9.png"
+        },
+        {
+          name: "boss_head_10",
+          srcs: "assets/images/enemy/head/10.png"
+        },
+        {
+          name: "boss_body_10",
+          srcs: "assets/images/enemy/body/10.png"
+        },
+        {
+          name: "boss_head_11",
+          srcs: "assets/images/enemy/head/11.png"
+        },
+        {
+          name: "boss_body_11",
+          srcs: "assets/images/enemy/body/11.png"
+        },
+        {
+          name: "boss_head_12",
+          srcs: "assets/images/enemy/head/12.png"
+        },
+        {
+          name: "boss_body_12",
+          srcs: "assets/images/enemy/body/12.png"
+        },
+        {
+          name: "boss_head_13",
+          srcs: "assets/images/enemy/head/13.png"
+        },
+        {
+          name: "boss_body_13",
+          srcs: "assets/images/enemy/body/13.png"
+        },
+        {
+          name: "boss_head_14",
+          srcs: "assets/images/enemy/head/14.png"
+        },
+        {
+          name: "boss_body_14",
+          srcs: "assets/images/enemy/body/14.png"
+        },
+        {
+          name: "boss_head_15",
+          srcs: "assets/images/enemy/head/15.png"
+        },
+        {
+          name: "boss_body_15",
+          srcs: "assets/images/enemy/body/15.png"
+        },
+        {
+          name: "boss_head_16",
+          srcs: "assets/images/enemy/head/16.png"
+        },
+        {
+          name: "boss_body_16",
+          srcs: "assets/images/enemy/body/16.png"
+        },
+        {
+          name: "boss_head_17",
+          srcs: "assets/images/enemy/head/17.png"
+        },
+        {
+          name: "boss_body_17",
+          srcs: "assets/images/enemy/body/17.png"
+        },
+        {
+          name: "boss_head_18",
+          srcs: "assets/images/enemy/head/18.png"
+        },
+        {
+          name: "boss_body_18",
+          srcs: "assets/images/enemy/body/18.png"
+        },
+        {
+          name: "boss_head_19",
+          srcs: "assets/images/enemy/head/19.png"
+        },
+        {
+          name: "boss_body_19",
+          srcs: "assets/images/enemy/body/19.png"
+        },
+        {
+          name: "boss_head_20",
+          srcs: "assets/images/enemy/head/20.png"
+        },
+        {
+          name: "boss_body_20",
+          srcs: "assets/images/enemy/body/20.png"
+        },
+        {
+          name: "boss_head_21",
+          srcs: "assets/images/enemy/head/21.png"
+        },
+        {
+          name: "boss_body_21",
+          srcs: "assets/images/enemy/body/21.png"
+        },
+        {
+          name: "boss_head_22",
+          srcs: "assets/images/enemy/head/22.png"
+        },
+        {
+          name: "boss_body_22",
+          srcs: "assets/images/enemy/body/22.png"
         }
       ]
     }
   ]
 };
+
+
+/***/ }),
+
+/***/ "./src/enemy/boss.js":
+/*!***************************!*\
+  !*** ./src/enemy/boss.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Boss: () => (/* binding */ Boss)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _enemy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./enemy */ "./src/enemy/enemy.js");
+/* harmony import */ var _weapon_weapon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../weapon/weapon */ "./src/weapon/weapon.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+
+
+
+
+class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
+  constructor(x, y, direction, maxX) {
+    super();
+    this.direction = direction;
+    this.maxX = maxX + this.width / 2;
+    this.hp = 50;
+    this.maxHp = 50;
+    this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_2__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("usp_s"));
+    this.position.set(x, y - this.height / 2);
+    const centerX = this.width / 2;
+    const centerY = this.height / 2;
+    this.pivot.set(centerX, centerY);
+    this.equipWeapon();
+    this.scale.x *= this.direction;
+    this.isJumping = false;
+    this.gravity = 0.98;
+    this.power = 20;
+    this.timer = 0;
+    this.angleRotation = 20;
+    this._initAbility();
+  }
+  _init() {
+    super._init();
+    let indexR = Math.floor(Math.random() * 22) + 1;
+    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_head_" + indexR));
+    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_body_" + indexR));
+    this.head.anchor.set(0.5, 0);
+    this.body.anchor.set(0.5, 0);
+    this.head.scale.set(0.25);
+    this.body.scale.set(0.25);
+    this.body.y = this.head.height;
+    this.head.x = 0;
+    this.addChild(this.head, this.body);
+  }
+  _initAbility() {
+    this.appeared = false;
+    this.speed = 5;
+    this.isMoving = false;
+    this.needFlip = false;
+    this.canJump = true;
+    this.Jumping = false;
+    this.maxJumpForce = 8;
+    this.jumpForce = this.maxJumpForce;
+    this.minY = this.y;
+  }
+  update(dt) {
+    super.update(dt);
+    this.weapon.x = 10 * this.direction;
+    if (this.destroyed)
+      return;
+    this.timer += dt;
+    if (!this.appeared)
+      this.move(dt);
+    else
+      this.move2(dt);
+  }
+  takeDmg(amout) {
+    this.hp -= amout;
+    if (this.hp <= 0)
+      this.destroy();
+  }
+  move(dt) {
+    if (this.timer > 1) {
+      this.rotate();
+      this.timer = 0;
+    }
+    if (this.direction == -1)
+      if (this.x > this.maxX) {
+        this.x -= this.speed * dt;
+      } else {
+        this.angle = 0;
+        this.appeared = true;
+      }
+    if (this.direction == 1)
+      if (this.x < this.maxX) {
+        this.x += this.speed * dt;
+      } else {
+        this.angle = 0;
+        this.appeared = true;
+      }
+    if (this.isJumping)
+      return;
+    const jumpAt = this.y;
+    this.isJumping = true;
+    let time = 0;
+    const tick = (deltaMs) => {
+      const jumpHeight = -this.gravity / 2 * Math.pow(time, 2) + this.power * time;
+      if (jumpHeight < 0) {
+        this.y = jumpAt;
+        this.gravity = 0.3;
+        pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.remove(tick);
+        return;
+      }
+      this.y = jumpAt - jumpHeight;
+      time += deltaMs;
+    };
+    pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.add(tick);
+  }
+  rotate() {
+    this.angle += this.angleRotation;
+  }
+  equipWeapon() {
+    this.weapon.x = this.width / 2;
+    this.weapon.y = this.height / 2;
+    this.addChild(this.weapon);
+  }
+  ///// di chuyển và nhảy trên map - copy từ player 
+  move2(dt) {
+    if (this.path2 > 0) {
+      this.isMoving = true;
+      if (this.path1 > 0) {
+        this.path1 -= this.speed * dt;
+        this.x += this.direction * this.speed * dt;
+      } else {
+        if (this.jumpStep > 0) {
+          if (this.canJump && !this.Jumping) {
+            this.Jumping = true;
+            this.canJump = false;
+            this.minY = this.y - _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.Step_Size;
+            this.jumpForce = this.maxJumpForce;
+          }
+          this.jump(dt);
+        } else {
+          this.path2 -= this.speed * dt;
+          this.x += this.direction * this.speed * dt;
+        }
+      }
+    } else {
+      if (this.needFlip) {
+        this.flip();
+        this.needFlip = false;
+        this.isMoving = false;
+      }
+    }
+  }
+  jump(dt) {
+    if (this.Jumping) {
+      this.x += this.direction * this.speed * dt * 0.4;
+      this.y += this.gravity * dt;
+      this.gravity += 0.1 * dt;
+      if (this.jumpForce > 0) {
+        this.jumpForce -= this.gravity * dt;
+        this.y -= this.jumpForce * dt;
+        if (this.y > this.minY)
+          this.y = this.minY;
+      } else {
+        this.Jumping = false;
+      }
+    } else {
+      this.jumpStep -= 1;
+      this.canJump = true;
+      this.gravity = 0.3;
+      this.y = this.minY;
+    }
+  }
+  calPath(nextStair) {
+    if (this.destroyed)
+      return;
+    const width = _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH;
+    const size = _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.Step_Size;
+    const wallDistance = this.direction === 1 ? this.x : width - this.x + this.width / 2;
+    this.path2 = size + this.width / 2;
+    this.jumpStep = nextStair.stepNumber;
+    this.path1 = width - wallDistance - nextStair.stepNumber * size * 3;
+    this.needFlip = true;
+  }
+  flip() {
+    this.direction = this.direction == 1 ? -1 : 1;
+    this.head.scale.x *= -1;
+    this.body.scale.x *= -1;
+    this.weapon.sprite.scale.x *= -1;
+  }
+}
 
 
 /***/ }),
@@ -989,6 +1391,7 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.cooldown = 50;
     this.isShot = false;
     this.isReady = false;
+    this.isShooted = false;
   }
   equipWeapon() {
     if (this.direction == -1)
@@ -1042,15 +1445,15 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.angleLean = 1;
     this.timer = 0;
   }
-  move() {
+  move(dt) {
     if (this.direction == -1)
       if (this.x > this.maxX)
-        this.x += this.speed;
+        this.x += this.speed * dt;
       else
         this.angle = 0;
     if (this.direction == 1)
       if (this.x < this.maxX)
-        this.x += this.speed;
+        this.x += this.speed * dt;
       else
         this.angle = 0;
   }
@@ -1084,7 +1487,7 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
       this.lean();
       this.timer = 0;
     }
-    this.move();
+    this.move(dt);
   }
 }
 
@@ -1119,14 +1522,14 @@ class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.position.set(x, y - this.height);
     this.equipWeapon();
   }
-  move() {
+  move(dt) {
     if (this.direction == -1) {
       if (this.x > this.maxX)
-        this.x += this.speed;
+        this.x += this.speed * dt;
     }
     if (this.direction == 1) {
       if (this.x < this.maxX)
-        this.x += this.speed;
+        this.x += this.speed * dt;
     }
   }
   drawHead() {
@@ -1143,7 +1546,7 @@ class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   }
   update(dt) {
     super.update(dt);
-    this.move();
+    this.move(dt);
   }
 }
 
@@ -1181,17 +1584,15 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.gravity = 0.98;
     this.power = 8;
   }
-  move() {
-    if (this.direction == -1)
+  move(dt) {
+    if (this.direction == -1) {
       if (this.x > this.maxX)
-        this.x += this.speed;
-      else
-        this.angle = 0;
-    if (this.direction == 1)
+        this.x += this.speed * dt;
+    }
+    if (this.direction == 1) {
       if (this.x < this.maxX)
-        this.x += this.speed;
-      else
-        this.angle = 0;
+        this.x += this.speed * dt;
+    }
     if (this.isJumping)
       return;
     const jumpAt = this.y;
@@ -1223,7 +1624,7 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   }
   update(dt) {
     super.update(dt);
-    this.move();
+    this.move(dt);
   }
 }
 
@@ -1294,6 +1695,7 @@ class Game {
       this.app.ticker.maxFPS = 60;
       this.app.ticker.add(this.update, this);
     });
+    this.resize();
   }
   static _loadGameAssets() {
     return __async(this, null, function* () {
@@ -1324,6 +1726,19 @@ class Game {
     this.app.stage.removeChild(this.playScene);
     this.playScene = new _scenes_playScene__WEBPACK_IMPORTED_MODULE_3__.PlayScene(this.app);
     this.app.stage.addChild(this.playScene);
+  }
+  static resize() {
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const scale = Math.min(screenWidth / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, screenHeight / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const enlargedWidth = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH);
+    const enlargedHeight = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+    const verticalMargin = (screenHeight - enlargedHeight) / 2;
+    this.app.view.style.width = `${enlargedWidth}px`;
+    this.app.view.style.height = `${enlargedHeight}px`;
+    this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
+    this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
   }
 }
 window.onload = function() {
@@ -1368,14 +1783,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scenes_playScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../scenes/playScene */ "./src/scenes/playScene.js");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu */ "./src/menu/menu.js");
+
 
 
 
 
 
 class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor() {
+  constructor(menu) {
     super();
+    this.menu = _menu__WEBPACK_IMPORTED_MODULE_4__.Menu;
     this._showGameOverUI();
     this._initTextSmall();
     this._init();
@@ -1389,6 +1807,11 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initBestScore() {
   }
   _init() {
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(0, 0.55);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
     this.buttonContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.addChild(this.buttonContainer);
     this._initButtonRestart();
@@ -1399,6 +1822,12 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonRestart = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("restart"));
     this.buttonRestart.x = 0;
     this.buttonContainer.addChild(this.buttonRestart);
+    this.buttonRestart.interactive = true;
+    this.buttonRestart.cursor = "pointer";
+    this.buttonRestart.on("pointerdown", () => {
+      this.parent.removeChild(this);
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game._initScene();
+    });
   }
   _initTextSmall() {
     this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
@@ -1449,6 +1878,9 @@ class Menu extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   update(delta) {
     this.menuUI.update(delta);
   }
+  showMenu() {
+    this.visible = true;
+  }
 }
 
 
@@ -1469,6 +1901,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scenes_playScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../scenes/playScene */ "./src/scenes/playScene.js");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _scenes_blackListScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../scenes/blackListScene */ "./src/scenes/blackListScene.js");
+/* harmony import */ var _scenes_outFitsScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../scenes/outFitsScene */ "./src/scenes/outFitsScene.js");
+/* harmony import */ var _scenes_gunStoreScene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../scenes/gunStoreScene */ "./src/scenes/gunStoreScene.js");
+
+
+
 
 
 
@@ -1479,6 +1917,8 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     super();
     this._showMenuUI();
     this.gameOverBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.game = new _game__WEBPACK_IMPORTED_MODULE_3__.Game();
+    this._initLayout();
     this._initTextSmall();
     this._initTapToStart();
     this.addChild(this.gameOverBar);
@@ -1488,22 +1928,28 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.interactive = true;
     this.sortChildren();
   }
+  _initLayout() {
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(0, 0.25);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+    this.layoutUIContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.addChild(this.layoutUIContainer);
+    this._initLOGO();
+  }
   _initLOGO() {
+    this.logoSpriter = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("logoMRGUN"));
+    this.logoSpriter.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - this.logoSpriter.width * 0.4, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / 8);
+    this.logoSpriter.scale.set(0.75);
+    ;
+    this.layoutUIContainer.addChild(this.logoSpriter);
   }
   _initLevel() {
   }
   _initMoney() {
   }
   _initBestScore() {
-  }
-  _init() {
-    this.buttonContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.addChild(this.buttonContainer);
-    this._initButtonOutfits();
-    this._initButtonBlacklist();
-    this._initButtonGuns();
-    this.buttonContainer.x = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 70;
-    this.buttonContainer.y = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT - 300;
   }
   _initTextSmall() {
     this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
@@ -1527,22 +1973,54 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.gameReloadText.hitArea = hitArea;
     this.gameReloadText.on("pointerdown", () => {
       this.parent.removeChild(this);
+      console.log("tap");
     });
+  }
+  _init() {
+    this.buttonContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this._initButtonOutfits();
+    this._initButtonBlacklist();
+    this._initButtonGuns();
+    this.addChild(this.buttonContainer);
   }
   _initButtonBlacklist() {
     this.buttonBlacklist = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("blacklist"));
-    this.buttonBlacklist.x = this.buttonOutfits.x - 160;
+    this.buttonBlacklist.position.set(this.buttonOutfits.x - this.buttonBlacklist.width - 40, 1e3);
     this.buttonContainer.addChild(this.buttonBlacklist);
+    this.buttonBlacklist.interactive = true;
+    this.buttonBlacklist.cursor = "pointer";
+    this.buttonBlacklist.on("pointerdown", () => {
+      console.log("Button blacklist clicked");
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.removeChild(this.playScene);
+      this.blackListScene = new _scenes_blackListScene__WEBPACK_IMPORTED_MODULE_4__.BlackListScene(this.app);
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.addChild(this.blackListScene);
+    });
   }
   _initButtonOutfits() {
     this.buttonOutfits = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("outfits"));
-    this.buttonOutfits.x = 0;
+    this.buttonOutfits.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - this.buttonOutfits.width) / 2, 1e3);
     this.buttonContainer.addChild(this.buttonOutfits);
+    this.buttonOutfits.interactive = true;
+    this.buttonOutfits.cursor = "pointer";
+    this.buttonOutfits.on("pointerdown", () => {
+      console.log("Button outfits clicked");
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.removeChild(this.playScene);
+      this.outfitsScene = new _scenes_outFitsScene__WEBPACK_IMPORTED_MODULE_5__.OutfitsScene(this.app);
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.addChild(this.outfitsScene);
+    });
   }
   _initButtonGuns() {
     this.buttonGuns = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("gunstore"));
-    this.buttonGuns.x = this.buttonOutfits.x + 160;
+    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 1e3);
     this.buttonContainer.addChild(this.buttonGuns);
+    this.buttonGuns.interactive = true;
+    this.buttonGuns.cursor = "pointer";
+    this.buttonGuns.on("pointerdown", () => {
+      console.log("Button guns clicked");
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.removeChild(this.playScene);
+      this.gunStoreScene = new _scenes_gunStoreScene__WEBPACK_IMPORTED_MODULE_6__.GunStoreScene(this.app);
+      _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.addChild(this.gunStoreScene);
+    });
   }
   update(delta) {
     this.blinkCounter += delta * 0.1;
@@ -1770,14 +2248,24 @@ class Bullet extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.y += this.direction * this.parent.sprite.width / 4 * Math.sin(this.beta * Math.PI / 180);
     switch (this.type) {
       case "rapid":
+        const pistolSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.find("pistolSound");
+        pistolSound.volume = 0.1;
+        pistolSound.play();
+        this.x -= randomValue * Math.cos(this.beta * Math.PI / 180);
+        this.y -= randomValue * Math.sin(this.beta * Math.PI / 180);
+        this.beta += randomValue / 5;
+        break;
       case "singer":
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.play("pistolSound");
+        const revolerSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.find("revolerSound");
+        revolerSound.play();
         this.x -= randomValue * Math.cos(this.beta * Math.PI / 180);
         this.y -= randomValue * Math.sin(this.beta * Math.PI / 180);
         this.beta += randomValue / 5;
         break;
       case "shotgun":
-        _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.play("shotgunSound");
+        const shotgunSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.find("shotgunSound");
+        shotgunSound.volume = 0.1;
+        shotgunSound.play();
         this.beta += randomValue;
         break;
       case "sniper":
@@ -2073,6 +2561,178 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/scenes/blackListScene.js":
+/*!**************************************!*\
+  !*** ./src/scenes/blackListScene.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BlackListScene: () => (/* binding */ BlackListScene)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+
+
+
+
+class BlackListScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initBackGround();
+    this._initTextBig();
+    this._initTextSmall();
+    this._initTextTitle();
+    this._initBGListBoss();
+    this._iniTextList();
+    this._initButtonBack();
+    console.log("black list scene");
+  }
+  _initButtonBack() {
+    this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
+    this.buttonBack.position.set(30, 60);
+    this.buttonBack.scale.set(0.4);
+    this.addChild(this.buttonBack);
+    this.buttonBack.interactive = true;
+    this.buttonBack.cursor = "pointer";
+    this.buttonBack.on("pointerdown", () => {
+      this.parent.removeChild(this);
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game._initScene();
+    });
+  }
+  _iniTextList() {
+    let levelBlackList = 1;
+    this.textList = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LIST NO. 1", this.smallTextStyle);
+    this.textList.anchor.set(0.5);
+    this.textList.zIndex = 2;
+    this.textList.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 900) / 2 + 50);
+    this.addChild(this.textList);
+  }
+  _initBGListBoss() {
+    this.bgListBoss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.bgListBoss.beginFill(2702155);
+    const width = 600;
+    const height = 900;
+    const x = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - width) / 2;
+    const y = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - height) / 2;
+    const cornerRadius = 30;
+    this.bgListBoss.drawRoundedRect(x, y, width, height, cornerRadius);
+    this.bgListBoss.endFill();
+    this.addChild(this.bgListBoss);
+  }
+  _initTextTitle() {
+    this.textTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BLACK LIST", this.bigTextStyle);
+    this.textTitle.anchor.set(0.5);
+    this.textTitle.zIndex = 2;
+    this.textTitle.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, 80);
+    this.addChild(this.textTitle);
+  }
+  _initTextBig() {
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Century Gothic",
+      fontSize: 35,
+      // fontStyle: 'italic',
+      fontWeight: "bold",
+      fill: ["#ffffff"]
+    });
+  }
+  _initTextSmall() {
+    this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Helvetica",
+      fontSize: 25,
+      fill: ["#ffffff"]
+    });
+  }
+  _initBackGround() {
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(1250067);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/scenes/gunStoreScene.js":
+/*!*************************************!*\
+  !*** ./src/scenes/gunStoreScene.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   GunStoreScene: () => (/* binding */ GunStoreScene)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+
+
+
+
+class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initBackGround();
+    this._initTextBig();
+    this._initTextSmall();
+    this._initTextTitle();
+    this._initButtonBack();
+    console.log("gun store scene");
+  }
+  _initButtonBack() {
+    this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
+    this.buttonBack.position.set(30, 60);
+    this.buttonBack.scale.set(0.4);
+    this.addChild(this.buttonBack);
+    this.buttonBack.interactive = true;
+    this.buttonBack.cursor = "pointer";
+    this.buttonBack.on("pointerdown", () => {
+      this.parent.removeChild(this);
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game._initScene();
+    });
+  }
+  _initTextTitle() {
+    this.textTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("GUN STORE", this.bigTextStyle);
+    this.textTitle.anchor.set(0.5);
+    this.textTitle.zIndex = 2;
+    this.textTitle.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, 80);
+    this.addChild(this.textTitle);
+  }
+  _initTextBig() {
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Century Gothic",
+      fontSize: 35,
+      // fontStyle: 'italic',
+      fontWeight: "bold",
+      fill: ["#ffffff"]
+    });
+  }
+  _initTextSmall() {
+    this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Helvetica",
+      fontSize: 25,
+      fill: ["#ffffff"]
+    });
+  }
+  _initBackGround() {
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(1250067);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/scenes/loadingScene.js":
 /*!************************************!*\
   !*** ./src/scenes/loadingScene.js ***!
@@ -2088,10 +2748,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 
 
+
 class LoadingScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this._init();
+    this._initLogoLoading();
+  }
+  _initLogoLoading() {
+    this.layoutUIContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.addChild(this.layoutUIContainer);
+    const logoTexture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("assets/images/logo/logoMRGUN.png");
+    this.logoSpriter = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(logoTexture);
+    this.logoSpriter.position.set(80 / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 2.8);
+    this.logoSpriter.scale.set(0.75);
+    ;
+    this.layoutUIContainer.addChild(this.logoSpriter);
   }
   _init() {
     const progressTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
@@ -2099,6 +2771,11 @@ class LoadingScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       fontSize: 24,
       fontWeight: "bold"
     });
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(657930);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
     this.progressBarWidth = 300;
     this.progressBarHeight = 20;
     const progressBarX = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.progressBarWidth) / 2;
@@ -2133,6 +2810,81 @@ class LoadingScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/scenes/outFitsScene.js":
+/*!************************************!*\
+  !*** ./src/scenes/outFitsScene.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OutfitsScene: () => (/* binding */ OutfitsScene)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+
+
+
+
+class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initBackGround();
+    this._initTextBig();
+    this._initTextSmall();
+    this._initTextTitle();
+    this._initButtonBack();
+    console.log("outfits scene");
+  }
+  _initButtonBack() {
+    this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
+    this.buttonBack.position.set(30, 60);
+    this.buttonBack.scale.set(0.4);
+    this.addChild(this.buttonBack);
+    this.buttonBack.interactive = true;
+    this.buttonBack.cursor = "pointer";
+    this.buttonBack.on("pointerdown", () => {
+      this.parent.removeChild(this);
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game._initScene();
+    });
+  }
+  _initTextTitle() {
+    this.textTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("OUTFITS", this.bigTextStyle);
+    this.textTitle.anchor.set(0.5);
+    this.textTitle.zIndex = 2;
+    this.textTitle.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, 80);
+    this.addChild(this.textTitle);
+  }
+  _initTextBig() {
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Century Gothic",
+      fontSize: 35,
+      // fontStyle: 'italic',
+      fontWeight: "bold",
+      fill: ["#ffffff"]
+    });
+  }
+  _initTextSmall() {
+    this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Helvetica",
+      fontSize: 25,
+      fill: ["#ffffff"]
+    });
+  }
+  _initBackGround() {
+    const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    background.beginFill(1250067);
+    background.drawRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
+    background.endFill();
+    this.addChild(background);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/scenes/playScene.js":
 /*!*********************************!*\
   !*** ./src/scenes/playScene.js ***!
@@ -2154,9 +2906,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _enemy_tall_enemy__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../enemy/tall_enemy */ "./src/enemy/tall_enemy.js");
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 /* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.js");
-/* harmony import */ var _enemy_enemy__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../enemy/enemy */ "./src/enemy/enemy.js");
-/* harmony import */ var _menu_gameOverUI__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../menu/gameOverUI */ "./src/menu/gameOverUI.js");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _menu_gameOverUI__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../menu/gameOverUI */ "./src/menu/gameOverUI.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _enemy_boss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../enemy/boss */ "./src/enemy/boss.js");
 
 
 
@@ -2172,7 +2924,8 @@ __webpack_require__.r(__webpack_exports__);
 const GameState = Object.freeze({
   menu: 0,
   playing: 1,
-  gameover: 2
+  gameover: 2,
+  boss: 3
 });
 class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(app) {
@@ -2182,7 +2935,6 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initHandleTap();
     this._initMenu();
     this._initScore();
-    this.gameState = GameState.menu;
   }
   _initHandleTap() {
     document.addEventListener("pointerdown", () => {
@@ -2196,11 +2948,16 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
   }
   _init() {
+    this.gameState = GameState.menu;
     this.map = new _objects_map_map__WEBPACK_IMPORTED_MODULE_2__.Map(this, this.app);
     const firstStair = this.map.stairs[0];
     this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_1__.Player(this.map);
     this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor());
     this.map.addChild(this.enemy);
+    this.killCount = 0;
+    this.killNeed = 1;
+    this.graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.addChild(this.graphics);
   }
   _initPlay() {
     this.interactive = true;
@@ -2235,14 +2992,22 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   update(dt) {
     this.dt = dt;
-    if (this.gameState == 1) {
+    this.scoreText.text = this.score;
+    if (this.gameState == GameState.playing || this.gameState == GameState.boss) {
       this.player.update(dt);
       this.map.update(dt);
       this.enemy.update(dt);
+      this.checkBullets(dt);
       if (this.enemy.cooldown <= 0)
         this.enemy.weapon.attack(this.player);
-      this.checkBullets(dt);
-      this.scoreText.text = this.score;
+      if (this.gameState == GameState.boss) {
+        this.graphics.clear();
+        this.graphics.lineStyle(1, 16777215);
+        this.graphics.drawRect(_gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH / 2 - 150, 100, 300, 25);
+        this.graphics.beginFill(16711680);
+        this.graphics.drawRect(_gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH / 2 - 150, 100, 300 * (this.enemy.hp / this.enemy.maxHp), 25);
+        this.graphics.endFill();
+      }
     } else if (this.gameState == 0) {
       this.menu.update(dt);
     } else if (this.gameState == 2) {
@@ -2250,27 +3015,35 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
   }
   _initgameOverUI() {
-    this.gameOverUI = new _menu_gameOverUI__WEBPACK_IMPORTED_MODULE_10__.GameOverUI();
+    this.gameOverUI = new _menu_gameOverUI__WEBPACK_IMPORTED_MODULE_9__.GameOverUI(this.menu);
     this.addChild(this.gameOverUI);
   }
   checkBullets(dt) {
     let bullets = this.player.gun.bullets;
     let bulletsToRemove = [];
     const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites;
+    this.enemy.isShooted = false;
     bullets.forEach((bullet) => {
       bullet.update(dt);
       const bound = bullet.getBounds();
       if (this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)) {
-        if (this.checkCollision(bullet, this.enemy.head))
+        if (this.checkCollision(bullet, this.enemy.head)) {
           this.score += 50;
-        else
+          _pixi_sound__WEBPACK_IMPORTED_MODULE_7__.sound.play("headshotSound");
+        } else {
           this.score += 25;
+          _pixi_sound__WEBPACK_IMPORTED_MODULE_7__.sound.play("hitSound");
+        }
         bulletsToRemove.push(bullet);
-        this.hitEnemy();
+        if (!this.enemy.isShooted)
+          this.hitEnemy();
+        else
+          this.enemy.takeDmg(this.player.gun.damage);
       } else {
         steps.forEach((step) => {
           if (this.checkCollision(step, bullet)) {
             bulletsToRemove.push(bullet);
+            _pixi_sound__WEBPACK_IMPORTED_MODULE_7__.sound.play("hitWallSound");
           }
         });
       }
@@ -2288,12 +3061,11 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       let eBullet = this.enemy.weapon.bullet;
       eBullet.update(dt);
       if (this.checkCollision(eBullet, this.player.sprite)) {
-        console.log("DIE");
-        _game__WEBPACK_IMPORTED_MODULE_11__.Game._initScene();
+        _pixi_sound__WEBPACK_IMPORTED_MODULE_7__.sound.play("hitSound");
         this.map.removeChild(this.player);
         eBullet.visible = false;
-        this._initgameOverUI();
         this.gameState = 2;
+        this._initgameOverUI();
       }
     }
   }
@@ -2316,18 +3088,37 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     return enemy;
   }
   hitEnemy() {
-    this.map.removeChild(this.enemy);
-    const currenStair = this.map.stairs[this.map.currentIndex + 2];
+    const nextStair = this.map.stairs[this.map.currentIndex + 2];
     const size = _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.Step_Size;
-    const xMax = this.player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH - currenStair.stepNumber * size * 2 : currenStair.stepNumber * size * 2 - 40;
+    const xMax = this.player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH - nextStair.stepNumber * size * 2 : nextStair.stepNumber * size * 2 - 40;
     const x = this.player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH + 50 : -60;
-    const y = currenStair.y;
-    const colorNextEnemy = this.randomColor();
-    this.map.removeChild(this.enemy);
-    this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
-    this.map.addChild(this.enemy);
+    const y = nextStair.y;
+    if (this.killCount < this.killNeed) {
+      this.killCount++;
+      const colorNextEnemy = this.randomColor();
+      this.map.removeChild(this.enemy);
+      this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
+      this.map.addChild(this.enemy);
+    } else {
+      if (this.gameState == GameState.playing) {
+        this.map.removeChild(this.enemy);
+        this.enemy = new _enemy_boss__WEBPACK_IMPORTED_MODULE_11__.Boss(x, y, this.player.direction, xMax);
+        this.map.addChild(this.enemy);
+        this.gameState = GameState.boss;
+      } else {
+        this.enemy.takeDmg(this.player.gun.damage);
+        if (!this.enemy.isMoving) {
+          this.enemy.calPath(nextStair);
+          this.enemy.isReady = false;
+          this.enemy.cooldown = 50;
+        }
+        if (this.enemy.hp <= 0)
+          _game__WEBPACK_IMPORTED_MODULE_10__.Game._initScene();
+      }
+    }
     if (!this.player.isMoving)
       this.player.calPath(this.map.nextStair());
+    this.enemy.isShooted = true;
   }
   hitStair() {
     console.log("hit the wall");

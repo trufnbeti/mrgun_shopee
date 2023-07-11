@@ -92,8 +92,12 @@ export class Game {
         this.app.view.style.height = `${enlargedHeight}px`;
         this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
         this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
+        console.log(this.app.view.width, this.app.view.height);
     }
 }
 window.onload = function () {
     Game.init();
 }
+window.addEventListener("resize", (event) => {
+        Game.resize()
+    });

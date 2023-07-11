@@ -72,7 +72,7 @@ export const EnemyManagerEvent = Object.freeze({
         const nextStair = this.map.stairs[this.map.currentIndex+2];
         this.enemy.takeDmg(this.player.gun.damage);
         if(!this.enemy.isMoving){
-            this.enemy.calPath(nextStair);
+            if(!this.enemy.isShooted) this.enemy.calPath(nextStair);
             this.enemy.reCooldown();
         }
         if(this.enemy.hp <= 0) Game._initScene();

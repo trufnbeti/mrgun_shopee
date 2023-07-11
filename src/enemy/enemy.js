@@ -8,9 +8,20 @@ export const EnemyEvent = Object.freeze({
 export class Enemy extends Container{
     constructor(){
         super();
+        this.name = "Normal";
         // this.position.set(x, y);
         this.weapon = new Weapon(Assets.get('usp_s'));
         this._init();
+        this.velocity = {
+            x: 0,
+            y: 0
+        };
+        this.deaded = false;
+        this.isDead = false;
+        this.jumpHeight = 15;
+        this.gravity = 0.98;
+        this.deadAngle = 20;
+        this.timeRotateDead = 0;
 
     }
     _init(){
@@ -35,6 +46,23 @@ export class Enemy extends Container{
         }
         else{
             this.weapon.update(dt);
-        } 
+        }
+        if (this.deaded){
+            this.dead(dt);
+        }
     }
+    dead(dt){
+        this.timeRotateDead += dt;
+        if (this.timeRotateDead > 1.5){
+            this.angle += this.deadAngle;
+            this.timeRotateDead = 0;
+        }
+        this.y += this.velocity.y;
+        this.velocity.y += this.gravity;
+        
+        if (this.isDead)    return;
+        this.isDead = true;
+        this.velocity.y = -this.jumpHeight;
+    }
+
 }
