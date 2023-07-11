@@ -13,6 +13,7 @@ import { Boss } from "../enemy/boss";
 import { Util } from "../helper/utils";
 import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
 import { PlayUI } from "../menu/playUI";
+import { BulletManager } from "../manager/bulletManager";
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -57,6 +58,8 @@ export class PlayScene extends Container{
 
         this._initEnemies();
         this._initUI();
+        this.bulletManager = new BulletManager(this.player, this.map, this.enemyManager, this);
+        this.addChild(this.bulletManager);
 
         this.killCount= 0;
         this.killNeed = 1;
@@ -119,12 +122,12 @@ export class PlayScene extends Container{
     }
 
     update(dt) {
-        this.dt = dt;            
+        this.dt = dt;         
         if(this.state == GameState.playing || this.state == GameState.boss){
             this.player.update(dt);
             this.map.update(dt);
             this.enemyManager.update(dt);
-            this.checkBullets(dt);
+            this.bulletManager.update(dt);
             if(this.enemyManager.enemy.cooldown <= 0) this.enemyManager.enemy.weapon.attack(this.player)
         }   
         else if (this.state == 0){
@@ -135,63 +138,7 @@ export class PlayScene extends Container{
         }
 
     }
-
-    checkBullets(dt){
-        
-        let bullets = this.player.gun.bullets;
-        let bulletsToRemove = [];
-        const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
-        this.enemyManager.enemy.isShooted = false;
-
-        bullets.forEach(bullet => {
-            bullet.update(dt);
-            const bound = bullet.getBounds();
-            if(Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
-                if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-                    this.score += 50;
-                    sound.play("headshotSound");
-                } 
-                else{
-                    this.score += 25;
-                    sound.play("hitSound");
-                } 
-                bulletsToRemove.push(bullet)
-                this.enemyManager._onHit();
-            }
-            else {
-                steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
-                if(Util.checkCollision(step, bullet)){
-                    bulletsToRemove.push(bullet)
-                    sound.play("hitWallSound");
-                }
-                })
-            }
-            if(bound.x < 0 || bound.x > GameConstant.GAME_WIDTH) bulletsToRemove.push(bullet)
-        });
-        bulletsToRemove.forEach(bullet => { // loại bỏ các viên đạn va chạm đã được đánh dấu
-            const index = bullets.indexOf(bullet);
-            if (index > -1) {
-                bullets.splice(index, 1);
-            }
-            bullet.destroy();
-        });
-        
-        // enemy bullet
-        if(this.enemyManager.enemy.weapon.isShot){
-            let eBullet = this.enemyManager.enemy.weapon.bullet;
-            eBullet.update(dt)
-            if(Util.checkCollision(eBullet, this.player.sprite)){
-                sound.play("hitSound");
-                // Game._initScene();
-                this.map.removeChild(this.player);
-                eBullet.visible = false;
-                this.state = 2; // Add this line to show the game over UI
-                this._initgameOverUI(); 
-                
-            }
-        }
-    }
-   
+    
     hitStair(){
         console.log("hit the wall");
     }

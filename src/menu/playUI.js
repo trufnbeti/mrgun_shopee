@@ -7,7 +7,6 @@ export class PlayUI extends Container{
       super();
       this._initScore();
       this.resize();
-      console.log(this.scoreText.position);
     }
   
     _initScore() {
