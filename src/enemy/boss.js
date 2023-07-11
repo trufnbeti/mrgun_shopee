@@ -194,4 +194,8 @@ export class Boss extends Enemy{
         this.body.scale.x *= -1;
         this.weapon.sprite.scale.x *= -1;
     }
+    reCooldown(){
+        this.isReady = false;
+        this.cooldown = 50;
+    }
 }
