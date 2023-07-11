@@ -24,7 +24,6 @@ export class PlayUI extends Container{
         this.updateBossHp();
     }
     updateBossHp(){
-        console.log(this.enemy.hp);
         this.graphics.clear();
         this.graphics.lineStyle(1, 0xffffff);
         this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);

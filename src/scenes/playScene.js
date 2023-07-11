@@ -10,6 +10,9 @@ import { Menu } from "../menu/menu";
 import { GameOverUI } from "../menu/gameOverUI";
 import { Game } from "../game";
 import { Boss } from "../enemy/boss";
+import { Util } from "../helper/utils";
+import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
+import { PlayUI } from "../menu/playUI";
 
 export const GameState = Object.freeze({
     menu: 0,
@@ -25,7 +28,6 @@ export class PlayScene extends Container{
         this._init();
         this._initHandleTap();
         this._initMenu();
-        this._initScore();
 
     }
 
@@ -39,42 +41,42 @@ export class PlayScene extends Container{
 
 
     navigateToGunScene() {
-        if (this.gameState === GameState.menu) {
+        if (this.state === GameState.menu) {
             this._initPlay();
-            this.gameState = GameState.playing;
+            this.state = GameState.playing;
         }
     }
 
     _init(){
-        this.gameState = GameState.menu;
+        this.state = GameState.menu;
         this.map = new Map(this, this.app);
-        const firstStair = this.map.stairs[0];
+        this.addChild(this.map);
         this.player = new Player(this.map);
-        // this.enemy = new Enemy(50, 330, 2);
-        this.enemy = this.createEnemy(0, firstStair.y, 1, 50, this.randomColor())
-        this.map.addChild(this.enemy)
+        this.map.addChild(this.player)
+
+
+        this._initEnemies();
+        this._initUI();
 
         this.killCount= 0;
         this.killNeed = 1;
 
-        this.graphics = new Graphics();
-        this.addChild(this.graphics);
+        this.score = 0;
+
+    }
+    
+    _initUI(){
+        this.playUI = new PlayUI();
+        this.addChild(this.playUI);
     }
 
     _initPlay(){
         this.interactive = true;
         this.buttonMode = true;
-        document.body.addEventListener("keydown", (event) => {
-            if (event.code === "Space") {
-                // this.player.calPath(this.map.nextStair());
-                this.player.changeClothes("cowboy");
-                this.player.changeGun("sawed_off");
-            }
-        });
         this.on("pointerdown", () => {
             if(!this.player.gun.isShot) 
                 this.player.gun.shoot(this.dt)
-                this.enemy.isReady = true;
+                this.enemyManager.enemy.isReady = true;
         })
     }
 
@@ -82,44 +84,11 @@ export class PlayScene extends Container{
         this.menu = new Menu();
         this.addChild(this.menu);
     }
-    _initScore(){
-        this.score = 0;
-        this.scoreText = new Text(this.score);
-        this.addChild(this.scoreText);
-        this.scoreText.position.set(50, 50);
-        const textStyle = new TextStyle({
-            fontFamily: "Arial",
-            fontSize: 50,
-            fill: 0xffffff,
-        })
-        this.scoreText.style = textStyle;
-    }
 
-    update(dt) {
-        this.dt = dt;            
-        this.scoreText.text = this.score;
-        if(this.gameState == GameState.playing || this.gameState == GameState.boss){
-            this.player.update(dt);
-            this.map.update(dt);
-            this.enemy.update(dt);
-            this.checkBullets(dt);
-            if(this.enemy.cooldown <= 0) this.enemy.weapon.attack(this.player)
-            if(this.gameState == GameState.boss) {
-                this.graphics.clear();
-                this.graphics.lineStyle(1, 0xffffff);
-                this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);
-                this.graphics.beginFill(0xFF0000);
-                this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
-                this.graphics.endFill();
-            }
-        }   
-        else if (this.gameState == 0){
-            this.menu.update(dt);
-        }else if(this.gameState == 2){
-            //update game over UI
-            this.gameOverUI.update(dt);
-        }
-
+    _initEnemies(){
+        this.enemyManager = new EnemyManager(this.map);
+        this.addChild(this.enemyManager);
+        this.enemyManager.on(EnemyManagerEvent.Hit, this._onEnemyHit, this);
     }
 
     _initgameOverUI(){
@@ -127,18 +96,58 @@ export class PlayScene extends Container{
         this.addChild(this.gameOverUI);
     }
 
+    _onEnemyHit(){
+        if(this.killCount < this.killNeed) {
+            this.killCount++;
+            this.enemyManager._spawnEnemy(this.player);
+        }
+        else{
+            if(this.state == GameState.playing) {
+                this.enemyManager._spawnBoss(this.player);
+                this.playUI._initBossHp(this.enemyManager.enemy);
+                this.state = GameState.boss;
+            }
+            // boss
+            else{
+                this.enemyManager._onBossHit();
+                this.playUI.updateBossHp();
+            }
+        }
+        this.playUI.updateScore(this.score);
+        if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
+        this.enemyManager.enemy.isShooted = true;
+    }
+
+    update(dt) {
+        this.dt = dt;            
+        if(this.state == GameState.playing || this.state == GameState.boss){
+            this.player.update(dt);
+            this.map.update(dt);
+            this.enemyManager.update(dt);
+            this.checkBullets(dt);
+            if(this.enemyManager.enemy.cooldown <= 0) this.enemyManager.enemy.weapon.attack(this.player)
+        }   
+        else if (this.state == 0){
+            this.menu.update(dt);
+        }else if(this.state == 2){
+            //update game over UI
+            this.gameOverUI.update(dt);
+        }
+
+    }
+
     checkBullets(dt){
         
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
-        this.enemy.isShooted = false;
+        this.enemyManager.enemy.isShooted = false;
 
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
-            if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
-                if(this.checkCollision(bullet, this.enemy.head)){
+            if(Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
+                if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
                     this.score += 50;
                     sound.play("headshotSound");
                 } 
@@ -147,13 +156,11 @@ export class PlayScene extends Container{
                     sound.play("hitSound");
                 } 
                 bulletsToRemove.push(bullet)
-                if(!this.enemy.isShooted)
-                    this.hitEnemy();
-                else this.enemy.takeDmg(this.player.gun.damage)
+                this.enemyManager._onHit();
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
-                if(this.checkCollision(step, bullet)){
+                if(Util.checkCollision(step, bullet)){
                     bulletsToRemove.push(bullet)
                     sound.play("hitWallSound");
                 }
@@ -170,98 +177,22 @@ export class PlayScene extends Container{
         });
         
         // enemy bullet
-        if(this.enemy.weapon.isShot){
-            let eBullet = this.enemy.weapon.bullet;
+        if(this.enemyManager.enemy.weapon.isShot){
+            let eBullet = this.enemyManager.enemy.weapon.bullet;
             eBullet.update(dt)
-            if(this.checkCollision(eBullet, this.player.sprite)){
+            if(Util.checkCollision(eBullet, this.player.sprite)){
                 sound.play("hitSound");
                 // Game._initScene();
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
-                this.gameState = 2; // Add this line to show the game over UI
+                this.state = 2; // Add this line to show the game over UI
                 this._initgameOverUI(); 
                 
             }
         }
     }
-    createEnemy(x, y, direction, maxX, color){
-        const run = Math.floor(Math.random() * 3) + 1;
-        let enemy = null;
-        switch (run) {
-            case 1:
-                enemy = new ShortFatEnemy(x, y, direction, maxX, color);
-                break;
-            case 2:
-                enemy = new ShortSkinnyEnemy(x, y, direction, maxX, color);
-                break;
-            case 3:
-                enemy = new TallEnemy(x, y, direction, maxX, color);
-                break;
-            default:
-                break;
-        }
-        return enemy;
-    }
-    hitEnemy(){
-        const nextStair = this.map.stairs[this.map.currentIndex+2];
-        const size = GameConstant.Step_Size;
-        const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2  : nextStair.stepNumber*size*2 - 40;
-        const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
-        const y = nextStair.y;
-        if(this.killCount < this.killNeed){
-            this.killCount++;
-            const colorNextEnemy = this.randomColor();
-            this.map.removeChild(this.enemy);
-            this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
-            this.map.addChild(this.enemy);
-        }
-        else {
-            // enemy bình thường
-            if(this.gameState == GameState.playing) {
-                this.map.removeChild(this.enemy);
-                this.enemy = new Boss(x, y,  this.player.direction, xMax);  
-                this.map.addChild(this.enemy);
-                this.gameState = GameState.boss;
-            }
-            // boss
-            else{
-                this.enemy.takeDmg(this.player.gun.damage);
-                if(!this.enemy.isMoving){
-                    this.enemy.calPath(nextStair);
-                    this.enemy.isReady = false;
-                    this.enemy.cooldown = 50;
-                }
-                if(this.enemy.hp <= 0) Game._initScene();
-            }
-        }
-        
-        if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
-        this.enemy.isShooted = true;
-    }
-
+   
     hitStair(){
         console.log("hit the wall");
-    }
-    randomColor(){
-        let red = Math.floor(Math.random() * 256);
-        let green = Math.floor(Math.random() * 256);
-        let blue = Math.floor(Math.random() * 256);
-        return `rgb(${red}, ${green}, ${blue})`;
-    }
-    checkCollision(objA, objB) {
-        var a = objA.getBounds();
-        var b = objB.getBounds();
-    
-        var rightmostLeft = a.left < b.left ? b.left : a.left;
-        var leftmostRight = a.right > b.right ? b.right : a.right;
-    
-        if (leftmostRight <= rightmostLeft) {
-            return false;
-        }
-    
-        var bottommostTop = a.top < b.top ? b.top : a.top;
-        var topmostBottom = a.bottom > b.bottom ? b.bottom : a.bottom;
-    
-        return topmostBottom > bottommostTop;
     }
 }
