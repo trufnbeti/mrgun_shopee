@@ -18,7 +18,9 @@ export class Boss extends Enemy{
         const centerY = this.height / 2;
         this.pivot.set(centerX, centerY);
         this.equipWeapon();
-        this.scale.x *= this.direction;
+        this.head.scale.x *= direction;
+        this.body.scale.x *= direction;
+        this.weapon.sprite.scale.x *= direction;
         this.isJumping = false;
         this.gravity = 0.98;
         this.power = 20;
