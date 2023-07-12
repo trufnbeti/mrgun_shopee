@@ -3,6 +3,7 @@ import { Container } from "pixi.js";
 import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
 import { GameState } from "../scenes/playScene";
+import { Blood } from "../objects/blood/blood";
 
 export class BulletManager extends Container {
     constructor(player, map , enemyManager, playScene){
@@ -11,6 +12,7 @@ export class BulletManager extends Container {
         this.map = map;
         this.enemyManager = enemyManager;
         this.playScene = playScene;
+        this.bloods = [];
     }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
@@ -30,6 +32,16 @@ export class BulletManager extends Container {
                     sound.play("hitSound");
                 } 
                 bulletsToRemove.push(bullet);
+                
+                for(let i = 0; i < 5; i++){
+                    const blood = new Blood(this.enemyManager.enemy);
+                    this.map.addChild(blood);
+                    blood._initForce(this.player.gun.damage* 5);
+                    blood._initPlatform(steps);
+                    this.bloods.push(blood)
+                }
+
+
                 if(!this.enemyManager.enemy.isShooted){
                     if (this.enemyManager.enemy.name === "Normal"){
                         this.enemyManager.enemy.deaded = true;
@@ -72,9 +84,13 @@ export class BulletManager extends Container {
                     sound.play("hitSound");
                     this.player.hp -= 1;
                     eBullet.destroy();
+                    
                     this.enemyManager.enemy.isReady = false;
                     this.enemyManager.enemy.cooldown = 50;
                     this.enemyManager.enemy.weapon.isShot = false;
+                    this.enemyManager.enemy.weapon.sprite.angle = 0;
+                    this.enemyManager.enemy.weapon.runAngle = 0;
+
                     this.player.gun.isShot = false;
                     this.playScene.playUI.updatePlayerHp();
                     if(this.player.hp == 0){
@@ -102,5 +118,9 @@ export class BulletManager extends Container {
             if (this.enemyManager.enemy.y > GameConstant.GAME_HEIGHT)
                 this.enemyManager._onHit();
         //===========
+
+        this.bloods.forEach(blood => {
+            blood.update(dt);
+        });
     }
 }

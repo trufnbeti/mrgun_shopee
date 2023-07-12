@@ -105,7 +105,6 @@ export class PlayScene extends Container{
 
     update(dt) {
         this.dt = dt;  
-        console.log(this.state);    
         if(this.state == GameState.Playing || this.state == GameState.BossFight){
             this.player.update(dt);
             this.map.update(dt);
