@@ -10,10 +10,20 @@ export class PlayUI extends Container{
     }
   
     _initScore() {
-      let textStyle = new TextStyle({ fontSize: 30, align: "center", fill: 0xffffff });
+      let textStyle = new TextStyle({ 
+        fontFamily: "Triomphe Bold Autoinstr",
+        fontSize: 30,
+        fill: ["#ffffff"],
+      });
       this.scoreText = new Text(`Score: 0`, textStyle);
       this.addChild(this.scoreText);
-      let textStyle2 = new TextStyle({ fontSize: 20, align: "center", fill: 0xffffff });
+
+      let textStyle2 = new TextStyle({ 
+        fontFamily: "Triomphe Bold Autoinstr",
+        fontSize: 20,
+        fill: ["#ffffff"], 
+      });
+
       this.bestScore = localStorage.getItem('bestScore');
       this.bestScoreText = new Text(this.bestScore, textStyle2);
       this.addChild(this.bestScoreText);

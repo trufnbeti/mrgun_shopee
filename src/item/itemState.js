@@ -8,19 +8,20 @@ import {
   Sprite,
 } from "pixi.js";
 
-export class Choose extends Container{
+export class ItemState extends Container{
     constructor() {
         super();
-        
-        
+        this.show();
+
+        this._initLineOpen();
     }
 
     // Add color for item choose
     _initBGChoose(w, h, colorFill){
         const bGChoose = new Graphics();
-        colorFill = 0x51afe2;
+        colorFill = 0xf4b544;
         bGChoose.beginFill(colorFill);
-        bGChoose.drawRect(w, h, 154, 167);
+        bGChoose.drawRect(w, h, 150, 167);
         bGChoose.endFill();
         this.addChild(bGChoose);
     }
@@ -32,8 +33,8 @@ export class Choose extends Container{
     ///Add color for item close
     _initLineClose(w, h){
         const lineClose = new Graphics();
-        lineClose.lineStyle(10, 646464); // Đặt độ rộng và màu sắc của viền
-        lineClose.drawRect(w, h, 154, 167);
+        lineClose.lineStyle(10, 0x646464); // Đặt độ rộng và màu sắc của viền
+        lineClose.drawRect(w, h, 150, 167);
         this.addChild(lineClose);
     }
 
@@ -44,13 +45,13 @@ export class Choose extends Container{
     //Add color for item open
     _initLineOpen(w, h, colorLine){
         const lineOpen = new Graphics();
-        colorLine = 0x51afe2;
+        colorLine = 0xf4b544;
         lineOpen.lineStyle(10, colorLine); // Đặt độ rộng và màu sắc của viền
-        lineOpen.drawRect(w, h, 154, 167);
+        lineOpen.drawRoundedRect(w, h, 150, 167, 17);
         this.addChild(lineOpen);
     }
 
-    _showLineColorOpen(){
+    show(){
         this.visible = true;
     }
 
