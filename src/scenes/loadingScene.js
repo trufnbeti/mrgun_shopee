@@ -28,7 +28,7 @@ export class LoadingScene extends Container {
 
     // Add black background
     const background = new Graphics();
-    background.beginFill(0x0A0A0A);
+    background.beginFill(0x282828);
     background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
     background.endFill();
     this.addChild(background);
@@ -39,7 +39,6 @@ export class LoadingScene extends Container {
     const progressBarY = (GameConstant.GAME_HEIGHT - this.progressBarHeight) / 2 + 90;
 
     this.progressBar = new Graphics();
-    this.progressBar.lineStyle(1, 0xffd700);
     this.progressBar.drawRoundedRect(0, 0, this.progressBarWidth, this.progressBarHeight, 10);
     this.progressBar.x = progressBarX;
     this.progressBar.y = progressBarY;
@@ -55,9 +54,9 @@ export class LoadingScene extends Container {
   setProgress(progress) {
 
     this.progressBar.clear();
-    this.progressBar.lineStyle(1, 0xffd700);
+    this.progressBar.lineStyle(1, 0x000000);
     this.progressBar.drawRoundedRect(0, 0, this.progressBarWidth, this.progressBarHeight, 10);
-    this.progressBar.beginFill(0xffd700);
+    this.progressBar.beginFill(0xf8a617);
     this.progressBar.drawRoundedRect(
       0,
       0,

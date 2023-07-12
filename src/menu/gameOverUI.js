@@ -21,6 +21,8 @@ export class GameOverUI extends Container {
     this._initTextBig();
 
     this._initButtonRestart();
+    this._initButtonCap();
+    this._initButtonRank();
 
     // this._initLevel();
     this._initMoney();
@@ -63,6 +65,36 @@ export class GameOverUI extends Container {
       Game._initScene();
     });
 
+  }
+
+  _initButtonCap() {
+    // Button cap screen
+    this.buttonCap = Sprite.from(Assets.get("cap"));
+    this.buttonCap.position.set(this.buttonRestart.x - this.buttonCap.width - 30, this.buttonRestart.y + 25);
+    this.addChild(this.buttonCap);
+
+    this.buttonCap.interactive = true;
+    this.buttonCap.cursor = "pointer";
+
+    // this.buttonRestart.on("pointerdown", () => {
+    //   this.parent.removeChild(this);
+
+    // });
+  }
+
+  _initButtonRank() {
+    // Button Rank
+    this.buttonRank = Sprite.from(Assets.get("rank"));
+    this.buttonRank.position.set(this.buttonRestart.x + this.buttonRestart.width + 30, this.buttonRestart.y + 25);
+    this.addChild(this.buttonRank);
+
+    this.buttonRank.interactive = true;
+    this.buttonRank.cursor = "pointer";
+
+    // this.buttonRestart.on("pointerdown", () => {
+    //   this.parent.removeChild(this);
+
+    // });
   }
 
   _initTextBig() {
