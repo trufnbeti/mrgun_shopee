@@ -184,6 +184,14 @@ export const manifest = {
                     name: 'cancel',
                     srcs: 'assets/images/button/cancel.png'
                 },
+                {
+                    name: 'unlockRandom',
+                    srcs: 'assets/images/button/unlockRandom.png'
+                },
+                {
+                    name: 'watchPR',
+                    srcs: 'assets/images/button/watchPR.png'
+                },
             ]
         },
         {
