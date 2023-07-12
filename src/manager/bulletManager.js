@@ -2,6 +2,7 @@ import { sound } from "@pixi/sound";
 import { Container } from "pixi.js";
 import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
+import { GameState } from "../scenes/playScene";
 
 export class BulletManager extends Container {
     constructor(player, map , enemyManager, playScene){
@@ -58,8 +59,8 @@ export class BulletManager extends Container {
                 // Game._initScene();
                 this.map.removeChild(this.player);
                 eBullet.visible = false;
-                this.state = 2; // Add this line to show the game over UI
-                this.playScene._initgameOverUI(); 
+                this.playScene.state = GameState.GameOver;
+                this.playScene.gameOverUI.show(); 
                 
             }
         }

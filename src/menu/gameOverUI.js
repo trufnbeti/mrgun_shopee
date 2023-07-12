@@ -15,8 +15,7 @@ export class GameOverUI extends Container {
     background.endFill();
     this.addChild(background);
 
-    this.menu = Menu;
-    this._showGameOverUI();
+    this.menu = menu;
 
     this._initTextBig();
 
@@ -60,9 +59,8 @@ export class GameOverUI extends Container {
     this.buttonRestart.cursor = "pointer";
 
     this.buttonRestart.on("pointerdown", () => {
-      this.parent.removeChild(this);
-       // Show the menu
-      Game._initScene();
+      this.hide();
+      setTimeout(() => Game._initScene(), 50);
     });
 
   }
@@ -105,8 +103,11 @@ export class GameOverUI extends Container {
     });
   }
 
-  _showGameOverUI() {
+  show() {
     this.visible = true;
+  }
+  hide(){
+    this.visible = false;
   }
 
   update(delta) {

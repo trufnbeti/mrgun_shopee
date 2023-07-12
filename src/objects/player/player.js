@@ -37,6 +37,12 @@ export class Player extends Container {
         this.gravity = 0.3;
 
     }
+
+    onPointerDown(dt){
+        if(!this.gun.isShot)
+            this.gun.shoot(dt);
+    }
+
     update(delta){
         this.move(delta);
         this.gun.update(delta);

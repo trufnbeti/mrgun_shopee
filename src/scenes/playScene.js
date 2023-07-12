@@ -1,25 +1,18 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { Player } from "../objects/player/player";
 import { Map } from "../objects/map/map";
-import { GameConstant } from "../gameConstant";
-import { ShortFatEnemy } from "../enemy/short_fat_enemy";
-import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
-import { TallEnemy } from "../enemy/tall_enemy";
-import { sound } from "@pixi/sound";
 import { Menu } from "../menu/menu";
 import { GameOverUI } from "../menu/gameOverUI";
-import { Game } from "../game";
-import { Boss } from "../enemy/boss";
-import { Util } from "../helper/utils";
 import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
 import { PlayUI } from "../menu/playUI";
 import { BulletManager } from "../manager/bulletManager";
+import { InputEvent, InputManager } from "../input/inputManager";
 
 export const GameState = Object.freeze({
-    menu: 0,
-    playing: 1,
-    gameover: 2,
-    boss: 3,
+    Menu: "menu",
+    Playing: "playing",
+    GameOver: "gameover",
+    BossFight: "bossfight",
 })
 
 export class PlayScene extends Container{
@@ -27,29 +20,29 @@ export class PlayScene extends Container{
         super();
         this.app = app;
         this._init();
-        this._initHandleTap();
-        this._initMenu();
+        this._initInputHandler();
 
     }
 
-    _initHandleTap(){
-        document.addEventListener("pointerdown", () => {
-            setTimeout(() => {
-                this.navigateToGunScene();
-              }, 100);
-        })
+    _initInputHandler() {
+        InputManager.emitter.on(InputEvent.MouseDown, this._onPointerDown, this);
+        // InputManager.emitter.on(InputEvent.MouseMove, this._onPointerMove, this);
+        // InputManager.emitter.on(InputEvent.MouseUp, this._onPointerUp, this);
     }
 
-
-    navigateToGunScene() {
-        if (this.state === GameState.menu) {
-            this._initPlay();
-            this.state = GameState.playing;
+    _onPointerDown(pos) {
+        if (this.state == GameState.Menu) {
+            return;
         }
+        if(this.state == GameState.GameOver){
+            return;
+        }
+        this.enemyManager.enemy.isReady = true;
+        this.player.onPointerDown(this.dt);
     }
 
     _init(){
-        this.state = GameState.menu;
+        this.state = GameState.Menu;
         this.map = new Map(this, this.app);
         this.addChild(this.map);
         this.player = new Player(this.map);
@@ -58,6 +51,7 @@ export class PlayScene extends Container{
 
         this._initEnemies();
         this._initUI();
+        
         this.bulletManager = new BulletManager(this.player, this.map, this.enemyManager, this);
         this.addChild(this.bulletManager);
 
@@ -70,32 +64,19 @@ export class PlayScene extends Container{
     _initUI(){
         this.playUI = new PlayUI();
         this.addChild(this.playUI);
-    }
 
-    _initPlay(){
-        this.interactive = true;
-        this.buttonMode = true;
-        this.on("pointerdown", () => {
-            if(!this.player.gun.isShot) 
-                this.player.gun.shoot(this.dt)
-                this.enemyManager.enemy.isReady = true;
-        })
-    }
-
-    _initMenu(){
         this.menu = new Menu();
         this.addChild(this.menu);
+
+        this.gameOverUI = new GameOverUI(this.menu);
+        this.addChild(this.gameOverUI);
+        this.gameOverUI.hide();
     }
 
     _initEnemies(){
         this.enemyManager = new EnemyManager(this.map);
         this.addChild(this.enemyManager);
         this.enemyManager.on(EnemyManagerEvent.Hit, this._onEnemyHit, this);
-    }
-
-    _initgameOverUI(){
-        this.gameOverUI = new GameOverUI(this.menu);
-        this.addChild(this.gameOverUI);
     }
 
     _onEnemyHit(){
@@ -105,10 +86,10 @@ export class PlayScene extends Container{
             this.enemyManager._spawnEnemy(this.player);
         }
         else{
-            if(this.state == GameState.playing) {
+            if(this.state == GameState.Playing) {
                 this.enemyManager._spawnBoss(this.player);
                 this.playUI._initBossHp(this.enemyManager.enemy);
-                this.state = GameState.boss;
+                this.state = GameState.BossFight;
             }
             // boss
             else{
@@ -122,17 +103,18 @@ export class PlayScene extends Container{
     }
 
     update(dt) {
-        this.dt = dt;         
-        if(this.state == GameState.playing || this.state == GameState.boss){
+        this.dt = dt;  
+        console.log(this.state);    
+        if(this.state == GameState.Playing || this.state == GameState.BossFight){
             this.player.update(dt);
             this.map.update(dt);
             this.enemyManager.update(dt);
             this.bulletManager.update(dt);
             if(this.enemyManager.enemy.cooldown <= 0) this.enemyManager.enemy.weapon.attack(this.player)
         }   
-        else if (this.state == 0){
+        else if (this.state == GameState.Menu){
             this.menu.update(dt);
-        }else if(this.state == 2){
+        }else if(this.state == GameState.GameOver){
             //update game over UI
             this.gameOverUI.update(dt);
         }

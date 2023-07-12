@@ -4,6 +4,7 @@ import { GameConstant } from "./gameConstant";
 import { PlayScene } from "./scenes/playScene";
 import { sound } from "@pixi/sound";
 import { LoadingScene } from "./scenes/loadingScene";
+import { InputManager } from "./input/inputManager";
 
 export class Game {
     static init() {
@@ -22,6 +23,7 @@ export class Game {
         this.app.stage.addChild(this.loadingScene);
 
         this._loadGameAssets().then((asset)=> {
+            InputManager.init(this.app.view);
             this._initScene();
             this.loadingScene.destroy();
             this.startBackgroundMusic();

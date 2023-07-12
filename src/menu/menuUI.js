@@ -7,7 +7,7 @@ import {
   RenderTexture,
   Sprite,
 } from "pixi.js";
-import { PlayScene } from "../scenes/playScene";
+import { GameState, PlayScene } from "../scenes/playScene";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { BlackListScene } from "../scenes/blackListScene";
@@ -17,7 +17,6 @@ import { GunStoreScene } from "../scenes/gunStoreScene";
 export class MenuUI extends Container {
   constructor() {
     super();
-    this._showMenuUI();
 
     this.gameOverBar = new PIXI.Container();
 
@@ -89,8 +88,10 @@ export class MenuUI extends Container {
     this.gameReloadText.hitArea = hitArea;
 
     this.gameReloadText.on("pointerdown", () => {
-      this.parent.removeChild(this);
-      console.log("tap");
+      this.hide();
+      setTimeout(() => {
+        this.parent.parent.state = GameState.Playing;
+      }, 50);
     });
   }
 
@@ -115,9 +116,6 @@ export class MenuUI extends Container {
     this.buttonBlacklist.cursor = "pointer";
 
     this.buttonBlacklist.on("pointerdown", () => {
-      console.log("Button blacklist clicked");
-
-      Game.app.stage.removeChild(this.playScene);
 
       this.blackListScene = new BlackListScene(this.app);
       Game.app.stage.addChild(this.blackListScene);
@@ -133,9 +131,6 @@ export class MenuUI extends Container {
     this.buttonOutfits.cursor = "pointer";
 
     this.buttonOutfits.on("pointerdown", () => {
-      console.log("Button outfits clicked");
-      
-      Game.app.stage.removeChild(this.playScene);
       
       this.outfitsScene = new OutfitsScene(this.app);
       Game.app.stage.addChild(this.outfitsScene);
@@ -165,7 +160,10 @@ export class MenuUI extends Container {
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
   }
 
-  _showMenuUI() {
+  show() {
     this.visible = true;
+  }
+  hide(){
+    this.visible = false;
   }
 }
