@@ -169,8 +169,20 @@ export const manifest = {
                     srcs: 'assets/images/button/reload.png'
                 },
                 {
+                    name: 'cap',
+                    srcs: 'assets/images/button/cap.png'
+                },
+                {
+                    name: 'rank',
+                    srcs: 'assets/images/button/rank.png'
+                },
+                {
                     name: 'back',
                     srcs: 'assets/images/button/back.png'
+                },
+                {
+                    name: 'cancel',
+                    srcs: 'assets/images/button/cancel.png'
                 },
             ]
         },

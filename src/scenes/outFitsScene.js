@@ -29,7 +29,7 @@ export class OutfitsScene extends Container{
     _initBGOutfits(){
         //add background with color follow stair random
         const bGOutfits = new Graphics();
-        bGOutfits.beginFill(0x143313);
+        bGOutfits.beginFill(0x26370a);
         bGOutfits.drawRect(0, GameConstant.GAME_HEIGHT / 3, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         bGOutfits.endFill();
         this.addChild(bGOutfits);
@@ -85,7 +85,8 @@ export class OutfitsScene extends Container{
     _initBackGround(){
         // Add black background
         const background = new Graphics();
-        background.beginFill(0x131313);
+        let colorFill = 0x000000;
+        background.beginFill(colorFill, 0.9);
         background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         background.endFill();
         this.addChild(background);
