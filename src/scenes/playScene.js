@@ -62,7 +62,7 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = 1;
+        this.killNeed = Math.floor(Math.random() * (10 - 8 + 1) + 8);
 
         this.player.score = 0;
     }
