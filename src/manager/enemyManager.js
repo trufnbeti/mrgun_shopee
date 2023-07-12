@@ -15,7 +15,7 @@ export const EnemyManagerEvent = Object.freeze({
     constructor(map) {
       super();
       this.map = map;
-      this.enemy = this.createEnemy(0, this.map.stairs[0].y, 1, 50, Util.randomColor());
+      this.enemy = this.createEnemy(0, this.map.stairs[0].y, 1, 75, Util.randomColor());
       this.map.addChild(this.enemy)
     }
   
@@ -23,7 +23,7 @@ export const EnemyManagerEvent = Object.freeze({
       
       const nextStair = this.map.stairs[this.map.currentIndex+2];
       const size = GameConstant.Step_Size;
-      const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2  : nextStair.stepNumber*size*2 - 40;
+      const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2 + 25  : nextStair.stepNumber*size*2 - 25;
       const x = (player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
       const y = nextStair.y;
       const colorNextEnemy = Util.randomColor();
@@ -54,7 +54,7 @@ export const EnemyManagerEvent = Object.freeze({
     _spawnBoss(player){
         const nextStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
-        const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2  : nextStair.stepNumber*size*2 - 40;
+        const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2 + 25  : nextStair.stepNumber*size*2 - 25;
         const x = (player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
         const y = nextStair.y;
 

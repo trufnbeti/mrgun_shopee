@@ -14,6 +14,7 @@ export class Player extends Container {
     _initCharacter(){
         this.sortableChildren = true;
         this.sprite = Sprite.from(Assets.get('camouflage'))
+        this.sprite.scale.x *= this.direction
         this.sprite.anchor.set(0.5, 0);
         this.addChild(this.sprite);
     }
@@ -36,6 +37,7 @@ export class Player extends Container {
         this.minY = this.y;
         this.gravity = 0.3;
 
+        this.hp = 2;
     }
 
     onPointerDown(dt){

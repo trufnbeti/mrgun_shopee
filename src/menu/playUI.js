@@ -1,4 +1,4 @@
-import { Container, Graphics, Text, TextStyle } from "pixi.js";
+import { Container, Text, TextStyle, Graphics } from "pixi.js";
 import { Game } from "../game";
 import { GameConstant } from "../gameConstant";
 
@@ -21,17 +21,37 @@ export class PlayUI extends Container{
 
     _initBossHp(boss){
         this.enemy = boss;
-        this.graphics = new Graphics();
-        this.addChild(this.graphics);
+        this.bossHp = new Graphics();
+        this.addChild(this.bossHp);
         this.updateBossHp();
     }
+
+    _initPlayerHp(player){
+        this.player = player;
+        this.playerHp = new Graphics();
+        this.addChild(this.playerHp);
+        this.updatePlayerHp();
+    }
+
     updateBossHp(){
-        this.graphics.clear();
-        this.graphics.lineStyle(1, 0xffffff);
-        this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);
-        this.graphics.beginFill(0xFF0000);
-        this.graphics.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
-        this.graphics.endFill();
+        this.bossHp.clear();
+        this.bossHp.lineStyle(1, 0xffffff);
+        this.bossHp.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);
+        this.bossHp.beginFill(0xFF0000);
+        this.bossHp.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
+        this.bossHp.endFill();
+    }
+
+    updatePlayerHp(){
+        this.playerHp.clear();
+        for(let i = 0; i < this.player.hp; i++){
+          this.playerHp.lineStyle(1, 0xffffff);
+          this.playerHp.drawRect(50 + i* 40, 150, 30, 30);
+          this.playerHp.beginFill(0xFF0000);
+          this.playerHp.drawRect(50 + i* 40, 150, 30, 30);
+          this.playerHp.endFill();
+        }
+        
     }
   
     updateScore(score) {

@@ -63,16 +63,28 @@ export class BulletManager extends Container {
         // enemy bullet
         if(this.enemyManager.enemy.weapon.isShot){
             let eBullet = this.enemyManager.enemy.weapon.bullet;
-            eBullet.update(dt)
-            if(Util.checkCollision(eBullet, this.player.sprite)){
-                sound.play("hitSound");
-                // Game._initScene();
-                this.map.removeChild(this.player);
-                eBullet.visible = false;
-                this.playScene.state = GameState.GameOver;
-                this.playScene.gameOverUI.show(); 
-                
+            if(!eBullet.destroyed){
+                eBullet.update(dt)
+                if(Util.checkCollision(eBullet, this.player.sprite)){
+                    sound.play("hitSound");
+                    this.player.hp -= 1;
+                    eBullet.destroy();
+                    this.enemyManager.enemy.isReady = false;
+                    this.enemyManager.enemy.cooldown = 50;
+                    this.enemyManager.enemy.weapon.isShot = false;
+                    this.player.gun.isShot = false;
+                    this.playScene.playUI.updatePlayerHp();
+                    console.log(this.player.hp);
+                    if(this.player.hp == 0){
+                        this.map.removeChild(this.player);
+                        this.playScene.state = GameState.GameOver;
+                        this.playScene.gameOverUI.show(); 
+                    }
+                    
+                    
+                }
             }
+            
         }
     }
     _checkEnemy(){

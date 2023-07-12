@@ -18,6 +18,8 @@ export class Gun extends Container{
         this.addChild(this.graphics);
         this.parent.addChild(this);
         this.sprite = Sprite.from(Assets.get(this.name));
+        this.sprite.scale.x *= this.parent.direction;
+        this.x = 10*this.parent.direction;
         this.addChild(this.sprite);
         this.sprite.anchor.set(0.5);
         this.sprite.zIndex = 2;
