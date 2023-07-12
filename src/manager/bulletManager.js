@@ -31,8 +31,11 @@ export class BulletManager extends Container {
                 } 
                 bulletsToRemove.push(bullet);
                 if(!this.enemyManager.enemy.isShooted){
-                    if (this.enemyManager.enemy.name === "Normal")
-                    this.enemyManager.enemy.deaded = true;
+                    if (this.enemyManager.enemy.name === "Normal"){
+                        this.enemyManager.enemy.deaded = true;
+                        this.enemyManager.enemy.isReady = false;
+                    }
+                    
                     else{
                         this.enemyManager._onHit();
                     }
@@ -74,7 +77,6 @@ export class BulletManager extends Container {
                     this.enemyManager.enemy.weapon.isShot = false;
                     this.player.gun.isShot = false;
                     this.playScene.playUI.updatePlayerHp();
-                    console.log(this.player.hp);
                     if(this.player.hp == 0){
                         this.map.removeChild(this.player);
                         this.playScene.state = GameState.GameOver;

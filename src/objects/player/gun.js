@@ -1,7 +1,7 @@
 import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Bullet } from "./bullet";
 import GunData from "../../../assets/json/data.json"
-import TWEEN from "@tweenjs/tween.js"
+import TWEEN, { Tween } from "@tweenjs/tween.js"
 
 export class Gun extends Container{
     constructor(parent, name){
@@ -114,6 +114,14 @@ export class Gun extends Container{
         }
         else for(let i = 0; i < this.bulletNumber; i++) this.bullets.push(new Bullet(this)); 
         this.isShot = true;
-       
+
+        
+        const moveTween = new TWEEN.Tween(this.sprite).to({ x: this.sprite.x - this.direction * 20 }, 50* 1000);
+
+        const returnTween = new TWEEN.Tween(this.sprite).to({ x: 0}, 50* 1000);
+
+        moveTween.chain(returnTween);
+        moveTween.start(this.dt * 1000);
+        
     }
 }
