@@ -16,17 +16,16 @@ export class BulletManager extends Container {
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
         this.enemyManager.enemy.isShooted = false;
-
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
             if(Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-                    this.score += 50;
+                    this.player.score += 50;
                     sound.play("headshotSound");
                 } 
                 else{
-                    this.score += 25;
+                    this.player.score += 25;
                     sound.play("hitSound");
                 } 
                 bulletsToRemove.push(bullet)

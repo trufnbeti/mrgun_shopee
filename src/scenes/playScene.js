@@ -64,8 +64,7 @@ export class PlayScene extends Container{
         this.killCount= 0;
         this.killNeed = 1;
 
-        this.score = 0;
-
+        this.player.score = 0;
     }
     
     _initUI(){
@@ -100,6 +99,7 @@ export class PlayScene extends Container{
     }
 
     _onEnemyHit(){
+
         if(this.killCount < this.killNeed) {
             this.killCount++;
             this.enemyManager._spawnEnemy(this.player);
@@ -116,7 +116,7 @@ export class PlayScene extends Container{
                 this.playUI.updateBossHp();
             }
         }
-        this.playUI.updateScore(this.score);
+        this.playUI.updateScore(this.player.score);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
         this.enemyManager.enemy.isShooted = true;
     }

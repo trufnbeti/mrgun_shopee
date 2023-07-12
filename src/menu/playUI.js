@@ -12,8 +12,11 @@ export class PlayUI extends Container{
     _initScore() {
       let textStyle = new TextStyle({ fontSize: 30, align: "center", fill: 0xffffff });
       this.scoreText = new Text(`Score: 0`, textStyle);
-      this.scoreText.anchor.set(1, 0);
       this.addChild(this.scoreText);
+      let textStyle2 = new TextStyle({ fontSize: 20, align: "center", fill: 0xffffff });
+      this.bestScore = localStorage.getItem('bestScore');
+      this.bestScoreText = new Text(this.bestScore, textStyle2);
+      this.addChild(this.bestScoreText);
     }
 
     _initBossHp(boss){
@@ -33,6 +36,11 @@ export class PlayUI extends Container{
   
     updateScore(score) {
       this.scoreText.text = `Score: ${score}`;
+      if(score > this.bestScore){
+        this.bestScore = score;
+        this.bestScoreText.text = this.bestScore;
+        localStorage.setItem('bestScore', score);
+      }
     }
 
   
@@ -45,7 +53,9 @@ export class PlayUI extends Container{
     }
   
     resize() {
-      this.scoreText.x = this.width + 50;
+      this.scoreText.x =  50;
       this.scoreText.y = 50;
+      this.bestScoreText.x = 50;
+      this.bestScoreText.y = 100;
     }
   }
