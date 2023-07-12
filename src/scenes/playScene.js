@@ -51,12 +51,13 @@ export class PlayScene extends Container{
 
         this._initEnemies();
         this._initUI();
+        this.playUI._initPlayerHp(this.player);
         
         this.bulletManager = new BulletManager(this.player, this.map, this.enemyManager, this);
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Math.floor(Math.random() * (10 - 8 + 1) + 8);
+        this.killNeed = Math.floor(Math.random() * (10 - 8 + 1) + 2);
 
         this.player.score = 0;
     }
