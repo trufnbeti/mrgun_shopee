@@ -56,7 +56,7 @@ export class UnlockGun extends Container{
     _LockRandomGun() {
         const lockRandomGun = new Graphics();
         lockRandomGun.beginFill(0x000000, 0.7);
-        lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, 333, 97, 15);
+        lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, 333, 97, 16);
         lockRandomGun.endFill();
         this.addChild(lockRandomGun);
     }

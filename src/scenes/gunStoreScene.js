@@ -10,22 +10,40 @@ import {
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { UnlockGun } from "../item/unlockGun";
+import { Lamp } from "../led/lamp";
+import { Item } from "../item/items";
 
 export class GunStoreScene extends Container{
 
-    constructor() {
-      super();
-      this._initBackGround();
-      this._initTextBig();
-      this._initTextSmall();
-      this._initTextTitle();
-      this._initButtonBack();
-      this._initMoney();
+  constructor() {
+    super();
+    this._initBackGround();
+    this._initBG();
 
-      this._initUnlockGun();
-      console.log("gun store scene");
-        
-    }
+    this._initLamp();
+    
+    this._initTextBig();
+    this._initTextSmall();
+    this._initTextTitle();
+    this._initButtonBack();
+    this._initMoney();
+
+    this._initUnlockGun();
+    console.log("gun store scene");
+
+    this._initItem();
+      
+  }
+
+  _initItem(){
+    const item = new Item();
+    this.addChild(item);
+  }
+
+  _initLamp(){
+    const lamp = new Lamp();
+    this.addChild(lamp);
+  }
 
   _initUnlockGun() {
     const unlockGun = new UnlockGun(); 
@@ -63,29 +81,38 @@ export class GunStoreScene extends Container{
 
     _initTextBig() {
       this.bigTextStyle = new PIXI.TextStyle({
-        fontFamily: "Century Gothic",
+        fontFamily: "Triomphe Bold Autoinstr",
         fontSize: 35,
-        // fontStyle: 'italic',
-        fontWeight: "bold",
+        fontStyle: 'bold',
         fill: ["#ffffff"],
       });
     }
 
     _initTextSmall() {
       this.smallTextStyle = new PIXI.TextStyle({
-        fontFamily: "Helvetica",
+        fontFamily: "Triomphe Bold Autoinstr",
         fontSize: 25,
         fill: ["#ffffff"],
       });
     }
 
+  _initBG(){
+    //add background with color follow stair random
+    const bGOutfits = new Graphics();
+    bGOutfits.beginFill(0x26370a);
+    bGOutfits.drawRect(0, GameConstant.GAME_HEIGHT / 3, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
+    bGOutfits.endFill();
+    this.addChild(bGOutfits);
+  }
+
     _initBackGround(){
       // Add black background
       const background = new Graphics();
-      background.beginFill(0x131313);
+      let colorFill = 0x000000;
+      background.beginFill(colorFill, 0.9);
       background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
       background.endFill();
       this.addChild(background);
-    }
+  }
     
 }

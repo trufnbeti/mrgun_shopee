@@ -85,6 +85,19 @@ export const manifest = {
             ]
         },
         {
+            name: 'font',
+            assets :[
+                {
+                    name: 'triompheBold',
+                    srcs: 'assets/font/triomphe-bold-autoinstr.ttf'
+                },
+                {
+                    name: 'triompheRegular',
+                    srcs: 'assets/font/triomphe-regular-autoinstr.ttf'
+                },
+            ]
+        },
+        {
             name: 'sound',
             assets :[
                 {
@@ -204,6 +217,14 @@ export const manifest = {
                 {
                     name: 'money',
                     srcs: 'assets/images/layoutImg/money.png'
+                },
+                {
+                    name: 'lamp',
+                    srcs: 'assets/images/layoutImg/lamp.png'
+                },
+                {
+                    name: 'light',
+                    srcs: 'assets/images/layoutImg/light.png'
                 },
             ]
         },

@@ -76,9 +76,8 @@ export class BlackListScene extends Container{
 
     _initTextBig() {
         this.bigTextStyle = new PIXI.TextStyle({
-          fontFamily: "Century Gothic",
+          fontFamily: "Triomphe Bold Autoinstr",
           fontSize: 35,
-          // fontStyle: 'italic',
           fontWeight: "bold",
           fill: ["#ffffff"],
         });
@@ -86,7 +85,7 @@ export class BlackListScene extends Container{
 
       _initTextSmall() {
         this.smallTextStyle = new PIXI.TextStyle({
-          fontFamily: "Helvetica",
+          fontFamily: "Triomphe Bold Autoinstr",
           fontSize: 25,
           fill: ["#ffffff"],
         });

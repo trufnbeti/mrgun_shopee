@@ -23,7 +23,7 @@ export class LoadingScene extends Container {
     const progressTextStyle = new TextStyle({
       fill: 0xffffff,
       fontSize: 24,
-      fontFamily: "Century Gothic", 
+      fontFamily: "Triomphe Regular Autoinstr", 
     });
 
     // Add black background

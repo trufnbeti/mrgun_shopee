@@ -66,10 +66,8 @@ export class MenuUI extends Container {
 
   _initTextSmall() {
     this.smallTextStyle = new PIXI.TextStyle({
-      fontFamily: "Century Gothic",
+      fontFamily: "Triomphe Bold Autoinstr",
       fontSize: 35,
-      // fontStyle: 'italic',
-      fontWeight: "bold",
       fill: ["#ffffff"],
     });
   }
