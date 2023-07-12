@@ -29,8 +29,18 @@ export class BulletManager extends Container {
                     this.player.score += 25;
                     sound.play("hitSound");
                 } 
-                bulletsToRemove.push(bullet)
-                this.enemyManager._onHit();
+                bulletsToRemove.push(bullet);
+                if(!this.enemyManager.enemy.isShooted){
+                    if (this.enemyManager.enemy.name === "Normal")
+                    this.enemyManager.enemy.deaded = true;
+                    else{
+                        this.enemyManager._onHit();
+                    }
+                    // console.log(this.enemy.name == "Normal");
+
+                }
+                else this.enemyManager.enemy.takeDmg(this.player.gun.damage)
+                
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
@@ -73,5 +83,10 @@ export class BulletManager extends Container {
     }
     update(dt){
         this._checkBullets(dt);
+        //enemy ngã xuống thì spawn thằng mới
+        if (this.enemyManager.enemy.name === "Normal")
+            if (this.enemyManager.enemy.y > GameConstant.GAME_HEIGHT)
+                this.enemyManager._onHit();
+        //===========
     }
 }
