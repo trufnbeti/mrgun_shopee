@@ -116,7 +116,7 @@ export class MenuUI extends Container {
     this.buttonBlacklist.cursor = "pointer";
 
     this.buttonBlacklist.on("pointerdown", () => {
-
+      this._onAnotherScene();
       this.blackListScene = new BlackListScene(this.app);
       Game.app.stage.addChild(this.blackListScene);
     });
@@ -131,7 +131,7 @@ export class MenuUI extends Container {
     this.buttonOutfits.cursor = "pointer";
 
     this.buttonOutfits.on("pointerdown", () => {
-      
+      this._onAnotherScene();
       this.outfitsScene = new OutfitsScene(this.app);
       Game.app.stage.addChild(this.outfitsScene);
     });
@@ -146,9 +146,7 @@ export class MenuUI extends Container {
     this.buttonGuns.cursor = "pointer";
 
     this.buttonGuns.on("pointerdown", () => {
-      console.log("Button guns clicked");
-      
-      Game.app.stage.removeChild(this.playScene);
+      this._onAnotherScene();
       
       this.gunStoreScene = new GunStoreScene(this.app);
       Game.app.stage.addChild(this.gunStoreScene);
@@ -165,5 +163,11 @@ export class MenuUI extends Container {
   }
   hide(){
     this.visible = false;
+  }
+  _onAnotherScene(){
+    this.gameReloadText.interactive = false;
+  }
+  _onPlayScene(){
+    this.gameReloadText.interactive = true;
   }
 }
