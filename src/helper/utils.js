@@ -29,10 +29,30 @@ export class Util {
         return topmostBottom > bottommostTop;
     }
     
-    static randomColor(){
-        let red = Math.floor(Math.random() * 256);
-        let green = Math.floor(Math.random() * 256);
-        let blue = Math.floor(Math.random() * 256);
-        return `rgb(${red}, ${green}, ${blue})`;
+    static randomColor() {
+      let red, green, blue;
+    
+      const randomNumber = Math.floor(Math.random() * 3);
+    
+      switch (randomNumber) {
+        case 0:
+          red = 255;
+          green = 0;
+          blue = Math.floor(Math.random() * 200);
+          break;
+        case 1:
+          red = 0;
+          green = 255;
+          blue = Math.floor(Math.random() * 200);
+          break;
+        case 2:
+          red = Math.floor(Math.random() * 200);
+          green = 0;
+          blue = 255;
+          break;
+      }
+    
+      return `rgb(${red}, ${green}, ${blue})`;
     }
+    
   }

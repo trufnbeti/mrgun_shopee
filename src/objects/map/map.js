@@ -53,17 +53,32 @@ export class Map extends Container{
         }
         return(this.stairs[this.currentIndex]);
     }
-    convertToHex(colorValue) {
-        const hex = colorValue.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-    }
     randomColor() {
-        const red = Math.floor(Math.random() * 200 + 50)  ;
-        const green = Math.floor(Math.random() * 200 + 50) ;
-        const blue = Math.floor(Math.random() * 150 + 100);
-
-        const color = "#" + this.convertToHex(red) + this.convertToHex(green) + this.convertToHex(blue);
-        
-        return color;
-    }
+        let red, green, blue;
+      
+        const randomNumber = Math.floor(Math.random() * 3);
+        const max = 200;
+        const ranMax = 150;
+        const ranMin = 30;
+      
+        switch (randomNumber) {
+            case 0:
+                red = Math.floor(Math.random() * ranMin);
+                green = max;
+                blue = Math.floor(Math.random() * ranMax);
+                break;
+            case 1:
+                red = max;
+                green = Math.floor(Math.random() * ranMin);;
+                blue = Math.floor(Math.random() * ranMax);
+                break;
+            case 2:
+                red = Math.floor(Math.random() * ranMax);
+                green = Math.floor(Math.random() * ranMin);;
+                blue = max;
+                break;
+        }
+      
+        return `rgb(${red}, ${green}, ${blue})`;
+      }
 }
