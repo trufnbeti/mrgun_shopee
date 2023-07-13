@@ -12,17 +12,17 @@ export class Weapon extends Container{
         this.addChild(this.sprite);
         this.runAngle = 0;
         this.isShot = false;
-        this.speed = 0.5;
+        this.speed = 1.2;
     }
     update(dt){
-            if(this.runAngle < this.currentAnlge*1.5) {
+            if(this.runAngle < this.currentAnlge*1.4) {
                 this.runAngle += this.speed * dt;
                 this.sprite.angle += this.speed*this.direction*dt;
                 
             }
                 
             else { 
-                    this.currentAnlge *= -1;
+                this.currentAnlge *= -1;
                 this.shoot();
                 this.isShot  = true;
             } 
@@ -41,6 +41,14 @@ export class Weapon extends Container{
         const angleDegrees = angleRadians * (180 / Math.PI);
         return angleDegrees;
     }
+
+    restart(){
+        this.isShot = false;
+        this.sprite.angle = 0;
+        this.runAngle = 0;
+        this.speed = 1.2;
+    }
+
     shoot(){
         if(!this.isShot){
 

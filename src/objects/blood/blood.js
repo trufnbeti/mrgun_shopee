@@ -20,10 +20,10 @@ export class Blood extends Container{
     }
     _initForce(force){
         this.direction = this.enemy.direction;
-        this.vectorX = Util.random(1, force);
+        this.vectorX = Util.random(0.5, force);
         this.frictionForce = 0.1;  
         this.gravity = 0.5;
-        this.vectorYMin = 4;
+        this.vectorYMin = 5;
         this.vectorY = Util.random(-this.vectorYMin, 0) - 2*this.vectorYMin;
     }
     

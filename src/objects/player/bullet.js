@@ -17,6 +17,8 @@ export class Bullet extends Container{
         this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge // góc lệch của đạn
         this.speed = this.parent.bulletSpeed; // tốc độ bay
         this.deviation = this.parent.deviation; // độ lệch của đạn 
+        this.damage = this.parent.damage;
+
         const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
         this.type = this.parent.type; // kiểu bắn
 

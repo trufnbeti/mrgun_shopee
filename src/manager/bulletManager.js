@@ -36,7 +36,7 @@ export class BulletManager extends Container {
                 for(let i = 0; i < 5; i++){
                     const blood = new Blood(this.enemyManager.enemy);
                     this.map.addChild(blood);
-                    blood._initForce(this.player.gun.damage* 5);
+                    blood._initForce(bullet.damage* 4);
                     blood._initPlatform(steps);
                     this.bloods.push(blood)
                 }
@@ -85,11 +85,8 @@ export class BulletManager extends Container {
                     this.player.hp -= 1;
                     eBullet.destroy();
                     
-                    this.enemyManager.enemy.isReady = false;
-                    this.enemyManager.enemy.cooldown = 50;
-                    this.enemyManager.enemy.weapon.isShot = false;
-                    this.enemyManager.enemy.weapon.sprite.angle = 0;
-                    this.enemyManager.enemy.weapon.runAngle = 0;
+                    this.enemyManager.enemy.reCooldown();
+                    this.enemyManager.enemy.weapon.restart();
 
                     this.player.gun.isShot = false;
                     this.playScene.playUI.updatePlayerHp();

@@ -2,6 +2,7 @@ import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Enemy } from "./enemy";
 import { Weapon } from "../weapon/weapon";
 import { GameConstant } from "../gameConstant";
+import { Util } from "../helper/utils";
 
 export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
@@ -53,6 +54,8 @@ export class Boss extends Enemy{
         this.maxJumpForce = 8;
         this.jumpForce = this.maxJumpForce;
         this.minY = this.y;
+        
+        this.color = Util.randomColor();
 
     }
     update(dt){
@@ -196,9 +199,5 @@ export class Boss extends Enemy{
         this.head.scale.x *= -1;
         this.body.scale.x *= -1;
         this.weapon.sprite.scale.x *= -1;
-    }
-    reCooldown(){
-        this.isReady = false;
-        this.cooldown = 50;
     }
 }

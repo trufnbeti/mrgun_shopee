@@ -121,7 +121,8 @@ export class Gun extends Container{
         const returnTween = new TWEEN.Tween(this.sprite).to({ x: 0}, 50* 1000);
 
         moveTween.chain(returnTween);
-        moveTween.start(this.dt * 1000);
-        
+        moveTween.onStart(() => this.isShooting = true)
+        .start(this.dt * 1000)
+        .onComplete(() => this.isShooting = false);
     }
 }

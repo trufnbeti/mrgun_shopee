@@ -65,4 +65,9 @@ export class Enemy extends Container{
         this.velocity.y = -this.jumpHeight;
     }
 
+    reCooldown(){
+        this.isReady = false;
+        this.cooldown = 50;
+    }
+
 }
