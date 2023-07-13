@@ -33,7 +33,7 @@ export class Stair extends Container{
     _initShade(){
         this.graphics.beginFill("#000000");
         this.graphics.lineStyle(0);
-        this.graphics.alpha = (-this.zIndex/13);
+        this.graphics.alpha = (-this.zIndex/10);
         this.shade =  this.drawStair();
         this.addChild(this.shade);
     }

@@ -45,7 +45,7 @@ export class Map extends Container{
         this.moveDistance = this.stairs[this.currentIndex].stepNumber*25;
         if(this.currentIndex > 3){
             for(let i = this.currentIndex - 3; i < this.currentIndex+8; i++){
-            const alpha = 0.3 + (i - this.currentIndex)/13;
+            const alpha = 0.3 + (i - this.currentIndex)/10;
             this.stairs[i].updateShade(alpha);
             }
             this.removeChild(this.stairs[this.currentIndex-4])
