@@ -36,7 +36,7 @@ export class BulletManager extends Container {
                 for(let i = 0; i < 5; i++){
                     const blood = new Blood(this.enemyManager.enemy);
                     this.map.addChild(blood);
-                    blood._initForce(bullet.damage* 4);
+                    blood._initForce(bullet.damage* 3);
                     blood._initPlatform(steps);
                     this.bloods.push(blood)
                 }

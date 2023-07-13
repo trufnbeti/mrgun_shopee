@@ -21,7 +21,7 @@ export class Blood extends Container{
     _initForce(force){
         this.direction = this.enemy.direction;
         this.vectorX = Util.random(0.5, force);
-        this.frictionForce = 0.1;  
+        this.frictionForce = 0.02;  
         this.gravity = 0.5;
         this.vectorYMin = 5;
         this.vectorY = Util.random(-this.vectorYMin, 0) - 2*this.vectorYMin;
@@ -34,8 +34,13 @@ export class Blood extends Container{
     _checkOnPlatform(){
         this.steps.forEach( step => {
             if(Util.checkCollision(this, step)) {
+                const blood = this.getBounds();
+                const stepBound = step.getBounds();
+                if(this.direction == -1 && blood.right > stepBound.right && blood.left <= stepBound.right||
+                    this.direction == 1 && blood.left < stepBound.left && blood.right >= stepBound.left ) 
+                    this.vectorX = 0;
                 this.y -= this.vectorY;
-                this.frictionForce = 0.2;
+                this.frictionForce = 0.04;
                 this.vectorY = this.vectorYMin;
                 return;
             }
