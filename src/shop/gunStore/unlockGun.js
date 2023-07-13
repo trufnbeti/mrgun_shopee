@@ -7,8 +7,8 @@ import {
   RenderTexture,
   Sprite,
 } from "pixi.js";
-import { GameConstant } from "../gameConstant";
-import { Game } from "../game";
+import { GameConstant } from "../../gameConstant";
+import { Game } from "../../game";
 
 export class UnlockGun extends Container{
 

@@ -2,7 +2,7 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { Player } from "../objects/player/player";
 import { Map } from "../objects/map/map";
 import { Menu } from "../menu/menu";
-import { GameOverUI } from "../menu/gameOverUI";
+import { GameOverUI } from "./gameOverUI";
 import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
 import { PlayUI } from "../menu/playUI";
 import { BulletManager } from "../manager/bulletManager";
