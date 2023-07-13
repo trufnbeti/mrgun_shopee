@@ -18,20 +18,39 @@ export class GameOverUI extends Container {
     this.menu = menu;
 
     this._initTextBig();
+    this._initTextSmall();
+    this._initTextNormal();
 
     this._initButtonRestart();
     this._initButtonCap();
     this._initButtonRank();
+    this._bestScore();
 
-    // this._initLevel();
+    this._initLevel();
     this._initMoney();
-    this._initBestScore();
+    this._initTextBestScore();
 
     this.sortChildren();
   }
 
+  _bestScore(){
+    let score = 0;
+    score = localStorage.getItem('bestScore');
+    this.score = new PIXI.Text(score, this.bigTextStyle);
+    this.score.anchor.set(0.5);
+    this.score.zIndex = 2;
+    this.score.position.set(GameConstant.GAME_WIDTH/2, 350);
+    this.addChild(this.score);
+  }
 
-  _initLevel() {}
+  _initLevel() {
+    console.log("level");
+    this.textLevel = new PIXI.Text("LEVEL: ", this.normalTextStyle);
+    this.textLevel.anchor.set(0.5);
+    this.textLevel.zIndex = 2;
+    this.textLevel.position.set(GameConstant.GAME_WIDTH/2, 440);
+    this.addChild(this.textLevel);
+  }
 
   _initMoney(){
     this.money = Sprite.from(Assets.get("money"));
@@ -40,8 +59,8 @@ export class GameOverUI extends Container {
     this.addChild(this.money);
 }
 
-  _initBestScore() {
-    this.textTitle = new PIXI.Text("BEST SCORE", this.bigTextStyle);
+  _initTextBestScore() {
+    this.textTitle = new PIXI.Text("BEST SCORE", this.smallTextStyle);
     this.textTitle.anchor.set(0.5);
     this.textTitle.zIndex = 2;
     this.textTitle.position.set(GameConstant.GAME_WIDTH/2, 250);
@@ -95,11 +114,27 @@ export class GameOverUI extends Container {
     // });
   }
 
+  _initTextSmall() {
+    this.smallTextStyle = new PIXI.TextStyle({
+      fontFamily: "Triomphe Light Autoinstr",
+      fontSize: 35,
+      fill: ["#fbe64d"],
+    });
+  }
+
+  _initTextNormal() {
+    this.normalTextStyle = new PIXI.TextStyle({
+      fontFamily: "Triomphe Light Autoinstr",
+      fontSize: 38,
+      fill: ["#ffffff"],
+    });
+  }
+
   _initTextBig() {
     this.bigTextStyle = new PIXI.TextStyle({
-      fontFamily: "Arial",
-      fontSize: 35,
-      fill: ["#FFFF00"],
+      fontFamily: "Triomphe Regular Autoinstr",
+      fontSize: 145,
+      fill: ["#fbe64d"],
     });
   }
 

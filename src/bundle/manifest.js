@@ -95,6 +95,10 @@ export const manifest = {
                     name: 'triompheRegular',
                     srcs: 'assets/font/triomphe-regular-autoinstr.ttf'
                 },
+                {
+                    name: 'triompheLight',
+                    srcs: 'assets/font/triomphe-light-autoinstr.ttf'
+                },
             ]
         },
         {
