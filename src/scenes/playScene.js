@@ -7,6 +7,7 @@ import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
 import { PlayUI } from "../menu/playUI";
 import { BulletManager } from "../manager/bulletManager";
 import { InputEvent, InputManager } from "../input/inputManager";
+import { HitEffect } from "../enemy/hitEffect";
 
 export const GameState = Object.freeze({
     Menu: "menu",
@@ -104,7 +105,7 @@ export class PlayScene extends Container{
     }
 
     update(dt) {
-        this.dt = dt;  
+        this.dt = dt;
         if(this.state == GameState.Playing || this.state == GameState.BossFight){
             this.player.update(dt);
             this.map.update(dt);

@@ -4,6 +4,7 @@ import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
 import { GameState } from "../scenes/playScene";
 import { Blood } from "../objects/blood/blood";
+import { HitEffect } from "../enemy/hitEffect";
 
 export class BulletManager extends Container {
     constructor(player, map , enemyManager, playScene){
@@ -13,6 +14,7 @@ export class BulletManager extends Container {
         this.enemyManager = enemyManager;
         this.playScene = playScene;
         this.bloods = [];
+        this.explodes = [];
     }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
@@ -30,7 +32,11 @@ export class BulletManager extends Container {
                 else{
                     this.player.score += 25;
                     sound.play("hitSound");
-                } 
+                }
+                const explode = new HitEffect(this.enemyManager.enemy, 5);
+                this.map.addChild(explode);
+                this.explodes.push(explode);
+                //==========
                 bulletsToRemove.push(bullet);
                 
                 for(let i = 0; i < 5; i++){
@@ -115,6 +121,10 @@ export class BulletManager extends Container {
             if (this.enemyManager.enemy.y > GameConstant.GAME_HEIGHT)
                 this.enemyManager._onHit();
         //===========
+
+        this.explodes.forEach(explode => {
+            explode.update(dt);
+        });
 
         this.bloods.forEach(blood => {
             blood.update(dt);
