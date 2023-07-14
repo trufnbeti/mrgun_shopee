@@ -61,13 +61,14 @@ export class Blood extends Container{
 
     _onRemoved(){
         this.emit(BloodEvent.Removed);
-        console.log("Im still here");
     }
     
     update(dt){
+        this._checkOnScreen();
+        if(this.destroyed) return;
         this.y += this.vectorY;
         this._checkOnPlatform();
-        this._checkOnScreen();
+
         if(this.vectorX < 0) return;
         else {
             

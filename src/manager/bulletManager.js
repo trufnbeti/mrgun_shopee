@@ -19,10 +19,10 @@ export class BulletManager extends Container {
         this.playScene = playScene;
 
         this.bloods = [];
-        this.bloods.forEach(blood => {
-            blood.on(BloodEvent.Removed, this.removeBlood(blood))
-        })
-        
+        // this.bloods.forEach(blood => {
+        //     blood.on(BloodEvent.Removed, this.removeBlood(blood))
+        // })
+
         this.explodes = [];
     }
     _checkBullets(dt){
@@ -60,6 +60,7 @@ export class BulletManager extends Container {
                     blood._initForce(bullet.damage* 3);
                     blood._initPlatform(steps);
                     this.bloods.push(blood)
+                    blood.on(BloodEvent.Removed, this.removeBlood.bind(this,blood))
                 }
 
 
@@ -125,7 +126,6 @@ export class BulletManager extends Container {
     }
 
     removeBlood(blood){
-        console.log("hi");
         let index = this.bloods.indexOf(blood);
         if (index >= 0) {
             this.bloods.splice(index, 1);
@@ -148,7 +148,7 @@ export class BulletManager extends Container {
         });
 
         this.bloods.forEach(blood => {
-            blood.update(dt);
+            blood && blood.update(dt);
         });
     }
 }
