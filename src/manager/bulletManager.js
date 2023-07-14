@@ -24,7 +24,7 @@ export class BulletManager extends Container {
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
-            if(Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
+            if( (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted ){ // kiểm tra va chạm giữa đạn và địch
                 
                 let explode;
                 
@@ -38,13 +38,14 @@ export class BulletManager extends Container {
                     this.player.score += 25;
                     sound.play("hitSound");
                 }
+                this.playScene.playUI.updateScore(this.player.score);
                 
                 this.map.addChild(explode);
                 this.explodes.push(explode);
                 //==========
                 bulletsToRemove.push(bullet);
                 
-                for(let i = 0; i < 5; i++){
+                for(let i = 0; i < bullet.damage*2; i++){
                     const blood = new Blood(this.enemyManager.enemy);
                     this.map.addChild(blood);
                     blood._initForce(bullet.damage* 3);

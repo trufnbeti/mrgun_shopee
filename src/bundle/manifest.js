@@ -40,6 +40,10 @@ export const manifest = {
                 {
                     name: 'usp_s',
                     srcs: 'assets/images/guns/usp_s.png'
+                },
+                {
+                    name: 'shooting_particle',
+                    srcs: 'assets/images/guns/shooting_particle.png'
                 }
             ]
         },
