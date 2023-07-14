@@ -3,8 +3,12 @@ import { Container } from "pixi.js";
 import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
 import { GameState } from "../scenes/playScene";
-import { Blood } from "../objects/blood/blood";
+import { Blood, BloodEvent } from "../objects/blood/blood";
 import { HitEffect } from "../objects/enemy/hitEffect";
+
+export const ManagerEvent = Object.freeze({
+    Removed: "manager:remove",
+})
 
 export class BulletManager extends Container {
     constructor(player, map , enemyManager, playScene){
@@ -13,7 +17,12 @@ export class BulletManager extends Container {
         this.map = map;
         this.enemyManager = enemyManager;
         this.playScene = playScene;
+
         this.bloods = [];
+        this.bloods.forEach(blood => {
+            blood.on(BloodEvent.Removed, this.removeBlood(blood))
+        })
+        
         this.explodes = [];
     }
     _checkBullets(dt){
@@ -114,12 +123,18 @@ export class BulletManager extends Container {
             
         }
     }
-    _checkEnemy(){
 
+    removeBlood(blood){
+        console.log("hi");
+        let index = this.bloods.indexOf(blood);
+        if (index >= 0) {
+            this.bloods.splice(index, 1);
+            this.map.removeChild(blood);
+            this.emit(ManagerEvent.Removed, blood);
+            blood.destroy();
+        }
     }
-    _checkWall(){
 
-    }
     update(dt){
         this._checkBullets(dt);
         //enemy ngã xuống thì spawn thằng mới

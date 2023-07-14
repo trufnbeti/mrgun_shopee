@@ -1,5 +1,10 @@
 import { Container, Graphics } from "pixi.js";
 import { Util } from "../../helper/utils";
+import { GameConstant } from "../../gameConstant";
+
+export const BloodEvent = Object.freeze({
+    Removed: "blood:removed",
+})
 
 export class Blood extends Container{
     constructor(enemy){
@@ -47,15 +52,31 @@ export class Blood extends Container{
         });
         this.vectorY += this.gravity;
     }
+
+    _checkOnScreen(){
+        const global =  this.getGlobalPosition();
+        if(global.x < 0 || global.x > GameConstant.GAME_WIDTH || global.y > GameConstant.GAME_HEIGHT)
+            this._onRemoved();
+    }
+
+    _onRemoved(){
+        this.emit(BloodEvent.Removed);
+        console.log("Im still here");
+    }
     
     update(dt){
         this.y += this.vectorY;
         this._checkOnPlatform();
+        this._checkOnScreen();
         if(this.vectorX < 0) return;
         else {
             
             this.x += this.direction *  this.vectorX *dt;
             this.vectorX -= this.frictionForce*dt;
         }
+    }
+
+    destroy(){
+        super.destroy();
     }
 }
