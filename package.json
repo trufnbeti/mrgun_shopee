@@ -24,6 +24,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@pixi/particle-emitter": "^5.0.8",
     "@pixi/sound": "^5.2.0",
     "@pixi/ui": "^0.7.4",
     "@tweenjs/tween.js": "^21.0.0",

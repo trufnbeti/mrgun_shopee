@@ -2,6 +2,7 @@ import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Bullet } from "./bullet";
 import GunData from "../../../assets/json/data.json"
 import TWEEN, { Tween } from "@tweenjs/tween.js"
+import { ShootingEffect } from "./shootingEffect";
 
 export class Gun extends Container{
     constructor(parent, name){
@@ -11,6 +12,7 @@ export class Gun extends Container{
         this.name = name;
         this.dt = 0;
         this._init();
+        this._initEffect();
     }
     _init(){
         this.sortableChildren = true;
@@ -44,10 +46,16 @@ export class Gun extends Container{
         this.bullets = [];
 
     }
+
+    _initEffect(){
+        this.shootingEffect = new ShootingEffect();
+        this.addChild(this.shootingEffect);
+    }
     update(dt){
         this.flip();
         this.x = 10*this.parent.direction;
-        this.drawAimBar(dt);
+        this.graphics.clear();
+        if(!this.isShooting) this.drawAimBar(dt);
         this.dt += Ticker.shared.deltaMS;
         this.sprite.angle = this.parent.direction == -1 ? this.currentAnlge : -this.currentAnlge
         this.direction = this.parent.direction
@@ -70,9 +78,9 @@ export class Gun extends Container{
         }
     }
     drawAimBar(dt){
-        if(!this.isShooting)this.runAngle(dt);
+        this.runAngle(dt);
         this.graphics.clear();
-        if(this.parent.isMoving){
+        if(this.parent.isMoving || this.isShot){
             this.isIncresing = false;
         } 
         else this.drawCircularSector(this.currentAnlge);
@@ -114,15 +122,20 @@ export class Gun extends Container{
         }
         else for(let i = 0; i < this.bulletNumber; i++) this.bullets.push(new Bullet(this)); 
         this.isShot = true;
+        this._onShootAnimation(dt);
+    }
 
-        
+    _onShootAnimation(dt){
         const moveTween = new TWEEN.Tween(this.sprite).to({ x: this.sprite.x - this.direction * 20 }, 50* 1000);
-
         const returnTween = new TWEEN.Tween(this.sprite).to({ x: 0}, 50* 1000);
 
-        moveTween.chain(returnTween);
+        // moveTween.chain(returnTween);
         moveTween.onStart(() => this.isShooting = true)
         .start(this.dt * 1000)
-        .onComplete(() => this.isShooting = false);
+        .onComplete(() => {
+            returnTween.onComplete(() => this.isShooting = false).start(this.dt * 1000);
+        })
+        
+        this.shootingEffect.play();
     }
 }
