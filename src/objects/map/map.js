@@ -1,6 +1,7 @@
 import { Container, Graphics, Ticker } from "pixi.js";
 import { Stair } from "./stair";
 import { GameConstant } from "../../gameConstant";
+import { Util } from "../../helper/utils";
 
 export class Map extends Container{
     constructor(app){
@@ -58,23 +59,23 @@ export class Map extends Container{
       
         const randomNumber = Math.floor(Math.random() * 3);
         const max = 200;
-        const ranMax = 150;
-        const ranMin = 30;
+        const ranMax = 200;
+        const ranMin = 100;
       
         switch (randomNumber) {
             case 0:
-                red = Math.floor(Math.random() * ranMin);
+                red = Util.random(ranMin, ranMax);
                 green = max;
-                blue = Math.floor(Math.random() * ranMax);
+                blue = Util.random(ranMin, ranMax);
                 break;
             case 1:
                 red = max;
-                green = Math.floor(Math.random() * ranMin);;
-                blue = Math.floor(Math.random() * ranMax);
+                green = Util.random(ranMin, ranMax);
+                blue = Util.random(ranMin, ranMax);
                 break;
             case 2:
-                red = Math.floor(Math.random() * ranMax);
-                green = Math.floor(Math.random() * ranMin);;
+                red = Util.random(ranMin, ranMax);
+                green = Util.random(ranMin, ranMax);
                 blue = max;
                 break;
         }
