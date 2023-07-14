@@ -19,7 +19,7 @@ export class Player extends Container {
         this.addChild(this.sprite);
     }
     _initGun(){
-        this.gun = new Gun(this, 'aug');
+        this.gun = new Gun(this, 'negev');
         this.gun.zIndex = 1;
     }
     _initAbility(){
