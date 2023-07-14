@@ -9,7 +9,7 @@ export class HitEffect extends Graphics{
     }
     _init(){
         this.color = this.enemy.color;
-        this.opacity = 0.5;
+        this.opacity = 0.1;
         this.beginFill(this.color, this.opacity);
         this.radius = 5;
         this.deltaRadius = (this.maxRadius - this.radius) / 10
@@ -26,7 +26,7 @@ export class HitEffect extends Graphics{
         if (this.radius < this.maxRadius){
 
             this.radius += this.deltaRadius * dt;
-            this.opacity -= 0.04 * dt;
+            this.opacity -= 0.005 * dt;
 
             this.beginFill(this.color, this.opacity);
             this.drawCircle(0, 0, this.radius);
