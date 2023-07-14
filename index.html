@@ -5088,7 +5088,8 @@ const InputEvent = Object.freeze({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BulletManager: () => (/* binding */ BulletManager)
+/* harmony export */   BulletManager: () => (/* binding */ BulletManager),
+/* harmony export */   ManagerEvent: () => (/* binding */ ManagerEvent)
 /* harmony export */ });
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
@@ -5104,6 +5105,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const ManagerEvent = Object.freeze({
+  Removed: "manager:remove"
+});
 class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   constructor(player, map, enemyManager, playScene) {
     super();
@@ -5143,6 +5147,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           blood._initForce(bullet.damage * 3);
           blood._initPlatform(steps);
           this.bloods.push(blood);
+          blood.on(_objects_blood_blood__WEBPACK_IMPORTED_MODULE_5__.BloodEvent.Removed, this.removeBlood.bind(this, blood));
         }
         if (!this.enemyManager.enemy.isShooted) {
           if (this.enemyManager.enemy.name === "Normal") {
@@ -5192,9 +5197,14 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       }
     }
   }
-  _checkEnemy() {
-  }
-  _checkWall() {
+  removeBlood(blood) {
+    let index = this.bloods.indexOf(blood);
+    if (index >= 0) {
+      this.bloods.splice(index, 1);
+      this.map.removeChild(blood);
+      this.emit(ManagerEvent.Removed, blood);
+      blood.destroy();
+    }
   }
   update(dt) {
     this._checkBullets(dt);
@@ -5206,7 +5216,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       explode.update(dt);
     });
     this.bloods.forEach((blood) => {
-      blood.update(dt);
+      blood && blood.update(dt);
     });
   }
 }
@@ -5608,12 +5618,18 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Blood: () => (/* binding */ Blood)
+/* harmony export */   Blood: () => (/* binding */ Blood),
+/* harmony export */   BloodEvent: () => (/* binding */ BloodEvent)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _helper_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../helper/utils */ "./src/helper/utils.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
 
 
+
+const BloodEvent = Object.freeze({
+  Removed: "blood:removed"
+});
 class Blood extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(enemy) {
     super();
@@ -5656,7 +5672,18 @@ class Blood extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
     this.vectorY += this.gravity;
   }
+  _checkOnScreen() {
+    const global = this.getGlobalPosition();
+    if (global.x < 0 || global.x > _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH || global.y > _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT)
+      this._onRemoved();
+  }
+  _onRemoved() {
+    this.emit(BloodEvent.Removed);
+  }
   update(dt) {
+    this._checkOnScreen();
+    if (this.destroyed)
+      return;
     this.y += this.vectorY;
     this._checkOnPlatform();
     if (this.vectorX < 0)
@@ -5665,6 +5692,9 @@ class Blood extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.x += this.direction * this.vectorX * dt;
       this.vectorX -= this.frictionForce * dt;
     }
+  }
+  destroy() {
+    super.destroy();
   }
 }
 
@@ -6710,7 +6740,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.jumpForce = this.maxJumpForce;
     this.minY = this.y;
     this.gravity = 0.3;
-    this.hp = 10;
+    this.hp = 2;
   }
   onPointerDown(dt) {
     if (!this.gun.isShot)
