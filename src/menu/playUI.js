@@ -1,4 +1,4 @@
-import { Container, Text, TextStyle, Graphics } from "pixi.js";
+import { Container, Text, TextStyle, Graphics, Sprite, Assets } from "pixi.js";
 import { Game } from "../game";
 import { GameConstant } from "../gameConstant";
 
@@ -38,8 +38,9 @@ export class PlayUI extends Container{
 
     _initPlayerHp(player){
         this.player = player;
-        this.playerHp = new Graphics();
-        this.addChild(this.playerHp);
+        this.healthBar = new Container();
+        this.healthBar.position.set(50, 150);
+        this.addChild(this.healthBar);
         this.updatePlayerHp();
     }
 
@@ -52,16 +53,13 @@ export class PlayUI extends Container{
         this.bossHp.endFill();
     }
 
-    updatePlayerHp(){
-        this.playerHp.clear();
-        for(let i = 0; i < this.player.hp; i++){
-          this.playerHp.lineStyle(1, 0xffffff);
-          this.playerHp.drawRect(50 + i* 40, 150, 30, 30);
-          this.playerHp.beginFill(0xFF0000);
-          this.playerHp.drawRect(50 + i* 40, 150, 30, 30);
-          this.playerHp.endFill();
-        }
-        
+    updatePlayerHp() {  
+      this.healthBar.removeChildren();
+      for (let i = 0; i < this.player.hp; i++) {
+        let heart = Sprite.from(Assets.get("heart"));
+        this.healthBar.addChild(heart);
+        heart.x = i * 40;
+      }
     }
   
     updateScore(score) {

@@ -59,7 +59,7 @@ export class Map extends Container{
       
         const randomNumber = Math.floor(Math.random() * 3);
         const max = 200;
-        const ranMax = 200;
+        const ranMax = 150;
         const ranMin = 100;
       
         switch (randomNumber) {
