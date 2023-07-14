@@ -100,7 +100,6 @@ export class PlayScene extends Container{
                 this.playUI.updateBossHp();
             }
         }
-        this.playUI.updateScore(this.player.score);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
         this.enemyManager.enemy.isShooted = true;
     }

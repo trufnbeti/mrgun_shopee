@@ -45,7 +45,7 @@ export class BulletManager extends Container {
                 //==========
                 bulletsToRemove.push(bullet);
                 
-                for(let i = 0; i < 5; i++){
+                for(let i = 0; i < bullet.damage*2; i++){
                     const blood = new Blood(this.enemyManager.enemy);
                     this.map.addChild(blood);
                     blood._initForce(bullet.damage* 3);

@@ -114,7 +114,8 @@ export class Gun extends Container{
         if(this.type == "rapid"){
             new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000*Math.abs(1-dt)).repeat(this.bulletNumber).onRepeat(()=> {
                 this.isShooting = true;
-                this.bullets.push(new Bullet(this));  
+                this.bullets.push(new Bullet(this)); 
+                this.shootingEffect.play(); 
             }).start(this.dt * 1000)
             .onComplete(() => {
                 this.isShooting = false;
@@ -122,11 +123,11 @@ export class Gun extends Container{
         }
         else for(let i = 0; i < this.bulletNumber; i++) this.bullets.push(new Bullet(this)); 
         this.isShot = true;
-        this._onShootAnimation(dt);
+        this._onShootAnimation();
     }
 
-    _onShootAnimation(dt){
-        const moveTween = new TWEEN.Tween(this.sprite).to({ x: this.sprite.x - this.direction * 20 }, 50* 1000);
+    _onShootAnimation(){
+        const moveTween = new TWEEN.Tween(this.sprite).to({ x: this.sprite.x - this.direction * this.damage * 5 }, 50* 1000);
         const returnTween = new TWEEN.Tween(this.sprite).to({ x: 0}, 50* 1000);
 
         // moveTween.chain(returnTween);
@@ -135,7 +136,7 @@ export class Gun extends Container{
         .onComplete(() => {
             returnTween.onComplete(() => this.isShooting = false).start(this.dt * 1000);
         })
-        
+
         this.shootingEffect.play();
     }
 }
