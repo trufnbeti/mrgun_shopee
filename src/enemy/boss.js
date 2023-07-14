@@ -1,8 +1,8 @@
 import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Enemy } from "./enemy";
-import { GameConstant } from "../gameConstant";
-import { Util } from "../helper/utils";
-import { Weapon } from "../objects/weapon/weapon";
+import { GameConstant } from "../../gameConstant";
+import { Util } from "../../helper/utils";
+import { Weapon } from "../weapon/weapon";
 
 export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
