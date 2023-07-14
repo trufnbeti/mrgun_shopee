@@ -44,7 +44,6 @@ export class GameOverUI extends Container {
   }
 
   _initLevel() {
-    console.log("level");
     this.textLevel = new PIXI.Text("LEVEL: ", this.normalTextStyle);
     this.textLevel.anchor.set(0.5);
     this.textLevel.zIndex = 2;
@@ -146,7 +145,7 @@ export class GameOverUI extends Container {
   }
 
   update(delta) {
-    
+    this.score.text = localStorage.getItem('bestScore');
   }
 
 }

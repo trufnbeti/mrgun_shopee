@@ -1,6 +1,6 @@
 export class Util {
     static random(min, max) {
-      return Math.random() * (max - min) + min;
+      return Math.random() * (max - min + 1) + min;
     }
   
     static AABBCheck(x1, y1, w1, h1, x2, y2, w2, h2) {

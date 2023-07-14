@@ -8,6 +8,7 @@ import { PlayUI } from "../menu/playUI";
 import { BulletManager } from "../manager/bulletManager";
 import { InputEvent, InputManager } from "../input/inputManager";
 import { HitEffect } from "../enemy/hitEffect";
+import { Util } from "../helper/utils";
 
 export const GameState = Object.freeze({
     Menu: "menu",
@@ -58,7 +59,7 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Math.floor(Math.random() * (10 - 8 + 1) + 2);
+        this.killNeed = Util.random(5, 10);
 
         this.player.score = 0;
     }
