@@ -1,6 +1,6 @@
 import { AnimatedSprite, Container, Sprite } from "pixi.js";
-import GunData from "../../assets/json/data.json"
-import { Bullet } from "../objects/player/bullet";
+import GunData from "../../../assets/json/data.json"
+import { Bullet } from "../player/bullet";
 
 
 export class Weapon extends Container{

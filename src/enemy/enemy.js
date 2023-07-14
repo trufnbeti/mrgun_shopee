@@ -1,5 +1,5 @@
 import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
-import { Weapon } from "../weapon/weapon";
+import { Weapon } from "../objects/weapon/weapon";
 
 export const EnemyEvent = Object.freeze({
     Collide: "enemy:collide"
