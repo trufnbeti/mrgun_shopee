@@ -13,6 +13,7 @@ import { Game } from "../game";
 import { BlackListScene } from "../scenes/blackListScene";
 import { OutfitsScene } from "../scenes/outFitsScene";
 import { GunStoreScene } from "../scenes/gunStoreScene";
+import { SettingScene } from "../scenes/settingScene";
 
 export class MenuUI extends Container {
   constructor() {
@@ -98,11 +99,26 @@ export class MenuUI extends Container {
     // Tạo container để chứa các button
     this.buttonContainer = new Container();
 
+    this._initButtonSetting();
     this._initButtonOutfits();
     this._initButtonBlacklist();
     this._initButtonGuns();
 
     this.addChild(this.buttonContainer);
+  }
+
+  _initButtonSetting() {
+    this.buttonSetting = Sprite.from(Assets.get("setting"));
+    this.buttonSetting.position.set(40, 80);
+    this.buttonContainer.addChild(this.buttonSetting);
+    this.buttonSetting.interactive = true;
+    this.buttonSetting.cursor = "pointer";
+
+    this.buttonSetting.on("pointerdown", () => {
+      this._onAnotherScene();
+      this.settingScene = new SettingScene(this.app);
+      Game.app.stage.addChild(this.settingScene);
+    });
   }
 
   _initButtonBlacklist() {

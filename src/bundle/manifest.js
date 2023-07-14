@@ -209,6 +209,10 @@ export const manifest = {
                     name: 'watchPR',
                     srcs: 'assets/images/button/watchPR.png'
                 },
+                {
+                    name: 'setting',
+                    srcs: 'assets/images/button/setting.png'
+                },
             ]
         },
         {

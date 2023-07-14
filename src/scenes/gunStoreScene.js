@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import { Application, Assets, Container, Graphics, RenderTexture, Sprite,} from "pixi.js";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
-import { UnlockGun } from "../objects/gunStore/unlockGun";
+import { UnlockGun } from "../shop/gunStore/unlockGun";
 import { Lamp } from "../shop/lamp";
 
 export class GunStoreScene extends Container{
