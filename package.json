@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@pixi/sound": "^5.2.0",
+    "@pixi/ui": "^0.7.4",
     "@tweenjs/tween.js": "^21.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.20.0",

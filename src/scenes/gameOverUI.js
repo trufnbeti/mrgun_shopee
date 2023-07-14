@@ -1,9 +1,9 @@
 import * as PIXI from "pixi.js";
 import {Application,Assets,Container,Graphics,RenderTexture,Sprite,} from "pixi.js";
-import { PlayScene } from "../scenes/playScene";
+import { PlayScene } from "./playScene";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
-import { Menu } from "./menu";
+import { Menu } from "../menu/menu";
 
 export class GameOverUI extends Container {
   constructor(menu) {
