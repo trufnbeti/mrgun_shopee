@@ -25,15 +25,20 @@ export class BulletManager extends Container {
             bullet.update(dt);
             const bound = bullet.getBounds();
             if(Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
+                
+                let explode;
+                
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
+                    explode = new HitEffect(this.enemyManager.enemy, 80);
                     this.player.score += 50;
                     sound.play("headshotSound");
                 } 
                 else{
+                    explode = new HitEffect(this.enemyManager.enemy, 40);
                     this.player.score += 25;
                     sound.play("hitSound");
                 }
-                const explode = new HitEffect(this.enemyManager.enemy, 5);
+                
                 this.map.addChild(explode);
                 this.explodes.push(explode);
                 //==========

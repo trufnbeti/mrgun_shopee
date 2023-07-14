@@ -145,7 +145,7 @@ export class GameOverUI extends Container {
   }
 
   update(delta) {
-    
+    this.score.text = localStorage.getItem('bestScore');
   }
 
 }
