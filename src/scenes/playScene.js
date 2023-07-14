@@ -7,7 +7,7 @@ import { EnemyManager, EnemyManagerEvent } from "../manager/enemyManager";
 import { PlayUI } from "../menu/playUI";
 import { BulletManager } from "../manager/bulletManager";
 import { InputEvent, InputManager } from "../input/inputManager";
-import { HitEffect } from "../enemy/hitEffect";
+import { HitEffect } from "../objects/enemy/hitEffect";
 import { Util } from "../helper/utils";
 
 export const GameState = Object.freeze({
@@ -59,7 +59,7 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Util.random(5, 10);
+        this.killNeed = Util.random(8, 13);
 
         this.player.score = 0;
     }

@@ -4,7 +4,7 @@ import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
 import { GameState } from "../scenes/playScene";
 import { Blood } from "../objects/blood/blood";
-import { HitEffect } from "../enemy/hitEffect";
+import { HitEffect } from "../objects/enemy/hitEffect";
 
 export class BulletManager extends Container {
     constructor(player, map , enemyManager, playScene){
@@ -29,7 +29,7 @@ export class BulletManager extends Container {
                 let explode;
                 
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-                    explode = new HitEffect(this.enemyManager.enemy, 80);
+                    explode = new HitEffect(this.enemyManager.enemy, 70);
                     this.player.score += 50;
                     sound.play("headshotSound");
                 } 

@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
 import { Util } from "../helper/utils";
 import { GameConstant } from "../gameConstant";
-import { ShortFatEnemy } from "../enemy/short_fat_enemy";
-import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
-import { TallEnemy } from "../enemy/tall_enemy";
-import { Boss } from "../enemy/boss";
+import { ShortFatEnemy } from "../objects/enemy/short_fat_enemy";
+import { ShortSkinnyEnemy } from "../objects/enemy/short_skinny_enemy";
+import { TallEnemy } from "../objects/enemy/tall_enemy";
+import { Boss } from "../objects/enemy/boss";
 import { Game } from "../game";
 
 export const EnemyManagerEvent = Object.freeze({
