@@ -85,6 +85,10 @@ export const manifest = {
                 {
                     name: 'sprinter',
                     srcs: 'assets/images/character/sprinter.png'
+                },
+                {
+                    name: 'heart',
+                    srcs: 'assets/images/character/heart.png'
                 }
             ]
         },
