@@ -19,11 +19,14 @@ export class BulletManager extends Container {
         this.playScene = playScene;
 
         this.bloods = [];
-        // this.bloods.forEach(blood => {
-        //     blood.on(BloodEvent.Removed, this.removeBlood(blood))
-        // })
 
-        this.explodes = [];
+        this._initEffect();
+    }
+    _initEffect(){
+        this.hitBodyEffect = new HitEffect(this.enemyManager.enemy, 40);
+        this.map.addChild(this.hitBodyEffect);
+        this.hitHeadEffect = new HitEffect(this.enemyManager.enemy, 70);
+        this.map.addChild(this.hitHeadEffect);
     }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
@@ -33,24 +36,21 @@ export class BulletManager extends Container {
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
-            if( (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted ){ // kiểm tra va chạm giữa đạn và địch
-                
-                let explode;
-                
+            if( (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted ){ // kiểm tra va chạm giữa đạn và địch                
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-                    explode = new HitEffect(this.enemyManager.enemy, 70);
+                    this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
+                    this.hitHeadEffect.playOnce();
                     this.player.score += 50;
                     sound.play("headshotSound");
                 } 
                 else{
-                    explode = new HitEffect(this.enemyManager.enemy, 40);
+                    this.hitBodyEffect._initEnemy(this.enemyManager.enemy);
+                    this.hitBodyEffect.playOnce();
                     this.player.score += 25;
                     sound.play("hitSound");
                 }
                 this.playScene.playUI.updateScore(this.player.score);
                 
-                this.map.addChild(explode);
-                this.explodes.push(explode);
                 //==========
                 bulletsToRemove.push(bullet);
                 
@@ -143,9 +143,8 @@ export class BulletManager extends Container {
                 this.enemyManager._onHit();
         //===========
 
-        this.explodes.forEach(explode => {
-            explode.update(dt);
-        });
+        this.hitBodyEffect.update(dt);
+        this.hitHeadEffect.update(dt);
 
         this.bloods.forEach(blood => {
             blood && blood.update(dt);
