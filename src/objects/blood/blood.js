@@ -68,7 +68,6 @@ export class Blood extends Container{
         if(this.destroyed) return;
         this.y += this.vectorY;
         this._checkOnPlatform();
-
         if(this.vectorX < 0) return;
         else {
             
