@@ -5116,7 +5116,18 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.enemyManager = enemyManager;
     this.playScene = playScene;
     this.bloods = [];
-    this.explodes = [];
+    this.bloodNumber = this.player.gun.damage * 2;
+    this.currentBloodIndex = 0;
+    for (let i = 0; i < 4; i++) {
+      this._spawnBloods();
+    }
+    this._initEffect();
+  }
+  _initEffect() {
+    this.hitBodyEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 40);
+    this.map.addChild(this.hitBodyEffect);
+    this.hitHeadEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 70);
+    this.map.addChild(this.hitHeadEffect);
   }
   _checkBullets(dt) {
     let bullets = this.player.gun.bullets;
@@ -5127,28 +5138,25 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       bullet.update(dt);
       const bound = bullet.getBounds();
       if ((_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head) || _helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted) {
-        let explode;
         if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head)) {
-          explode = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 70);
+          this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
+          this.hitHeadEffect.playOnce();
           this.player.score += 50;
           _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("headshotSound");
         } else {
-          explode = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 40);
+          this.hitBodyEffect._initEnemy(this.enemyManager.enemy);
+          this.hitBodyEffect.playOnce();
           this.player.score += 25;
           _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("hitSound");
         }
         this.playScene.playUI.updateScore(this.player.score);
-        this.map.addChild(explode);
-        this.explodes.push(explode);
-        bulletsToRemove.push(bullet);
-        for (let i = 0; i < bullet.damage * 2; i++) {
-          const blood = new _objects_blood_blood__WEBPACK_IMPORTED_MODULE_5__.Blood(this.enemyManager.enemy);
-          this.map.addChild(blood);
-          blood._initForce(bullet.damage * 3);
-          blood._initPlatform(steps);
-          this.bloods.push(blood);
-          blood.on(_objects_blood_blood__WEBPACK_IMPORTED_MODULE_5__.BloodEvent.Removed, this.removeBlood.bind(this, blood));
+        for (let i = this.currentBloodIndex * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++) {
+          this.bloods[i]._initEnemy(this.enemyManager.enemy);
+          this.bloods[i]._initForce(bullet.damage * 3);
+          this.bloods[i]._initPlatform(steps);
         }
+        this.currentBloodIndex = (this.currentBloodIndex + 1) % 4;
+        bulletsToRemove.push(bullet);
         if (!this.enemyManager.enemy.isShooted) {
           if (this.enemyManager.enemy.name === "Normal") {
             this.enemyManager.enemy.deaded = true;
@@ -5197,6 +5205,14 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       }
     }
   }
+  _spawnBloods() {
+    for (let i = 0; i < this.bloodNumber; i++) {
+      const blood = new _objects_blood_blood__WEBPACK_IMPORTED_MODULE_5__.Blood();
+      blood._initPlatform([]);
+      this.map.addChild(blood);
+      this.bloods.push(blood);
+    }
+  }
   removeBlood(blood) {
     let index = this.bloods.indexOf(blood);
     if (index >= 0) {
@@ -5212,9 +5228,8 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       if (this.enemyManager.enemy.y > _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_HEIGHT)
         this.enemyManager._onHit();
     }
-    this.explodes.forEach((explode) => {
-      explode.update(dt);
-    });
+    this.hitBodyEffect.update(dt);
+    this.hitHeadEffect.update(dt);
     this.bloods.forEach((blood) => {
       blood && blood.update(dt);
     });
@@ -5631,20 +5646,23 @@ const BloodEvent = Object.freeze({
   Removed: "blood:removed"
 });
 class Blood extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor(enemy) {
+  constructor() {
     super();
-    this.enemy = enemy;
-    this._initSprite();
   }
-  _initSprite() {
+  _init() {
     this.color = this.enemy.color;
     this.radius = _helper_utils__WEBPACK_IMPORTED_MODULE_1__.Util.random(4, 6);
+    this.removeChild(this.sprite);
     this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.sprite.beginFill(this.color);
     this.addChild(this.sprite);
     this.sprite.drawCircle(0, 0, this.radius);
     this.x = this.enemy.x;
     this.y = this.enemy.y;
+  }
+  _initEnemy(enemy) {
+    this.enemy = enemy;
+    this._init();
   }
   _initForce(force) {
     this.direction = this.enemy.direction;
@@ -5725,11 +5743,15 @@ __webpack_require__.r(__webpack_exports__);
 class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX) {
     super();
+    this._init(x, y, direction, maxX);
+  }
+  _init(x, y, direction, maxX) {
     this.name = "Boss";
     this.direction = direction;
     this.maxX = maxX + this.width / 2;
     this.hp = 50;
     this.maxHp = 50;
+    this._initBody();
     this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_4__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("usp_s"));
     this.position.set(x, y - this.height / 2);
     const centerX = this.width / 2;
@@ -5746,8 +5768,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.angleRotation = 20;
     this._initAbility();
   }
-  _init() {
-    super._init();
+  _initBody() {
     let indexR = Math.floor(Math.random() * 22) + 1;
     this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_head_" + indexR));
     this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_body_" + indexR));
@@ -5927,7 +5948,10 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     super();
     this.name = "Normal";
     this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_1__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("usp_s"));
-    this._init();
+    this.cooldown = 50;
+    this.isShot = false;
+    this.isReady = false;
+    this.isShooted = false;
     this.velocity = {
       x: 0,
       y: 0
@@ -5939,12 +5963,24 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.deadAngle = 20;
     this.timeRotateDead = 0;
   }
-  _init() {
-    this.cooldown = 50;
-    this.isShot = false;
-    this.isReady = false;
-    this.isShooted = false;
-  }
+  // _init(){
+  //     this.name = "Normal";
+  //     this.weapon = new Weapon(Assets.get('usp_s'));
+  //     this.cooldown = 50;
+  //     this.isShot = false;
+  //     this.isReady = false;
+  //     this.isShooted = false;
+  //     this.velocity = {
+  //         x: 0,
+  //         y: 0
+  //     };
+  //     this.deaded = false;
+  //     this.isDead = false;
+  //     this.jumpHeight = 15;
+  //     this.gravity = 0.98;
+  //     this.deadAngle = 20;
+  //     this.timeRotateDead = 0;
+  // }
   equipWeapon() {
     if (this.direction == -1)
       this.weapon.sprite.scale.x *= -1;
@@ -5997,36 +6033,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   HitEffect: () => (/* binding */ HitEffect)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
 
 class HitEffect extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics {
   constructor(enemy, radius) {
     super();
     this.enemy = enemy;
     this.maxRadius = radius;
-    this._init();
+    this.dt = 0;
   }
   _init() {
     this.color = this.enemy.color;
-    this.opacity = 0.15;
-    this.beginFill(this.color, this.opacity);
-    this.radius = 5;
-    this.deltaRadius = (this.maxRadius - this.radius) / 10;
-    this.drawCircle(0, 0, this.radius);
-    this.endFill();
+    this.alpha = 1;
+    this.scale.set(1);
     this.x = this.enemy.x;
-    this.y = this.enemy.y;
+    this.y = this.enemy.y - this.enemy.height / 3;
+    this.clear();
+    this.beginFill(this.color, this.alpha);
+    this.drawCircle(0, 0, 5);
+    this.endFill();
+  }
+  _initEnemy(enemy) {
+    this.enemy = enemy;
+  }
+  playOnce() {
+    const effectDuration = 300 * 1e3;
+    const finalScale = this.maxRadius / 5;
+    const finalAlpha = 0;
+    this._init();
+    new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__["default"].Tween(this).to({ scale: { x: finalScale, y: finalScale }, alpha: finalAlpha }, effectDuration).onUpdate(() => {
+    }).onComplete(() => {
+    }).start(this.dt * 1e3);
   }
   update(dt) {
-    this.clear();
-    if (this.opacity < 0)
-      return;
-    if (this.radius < this.maxRadius) {
-      this.radius += this.deltaRadius * dt;
-      this.opacity -= 1e-3 * dt;
-      this.beginFill(this.color, this.opacity);
-      this.drawCircle(0, 0, this.radius);
-      this.endFill();
-    }
+    this.dt += pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.deltaMS;
   }
 }
 
@@ -6051,6 +6092,9 @@ __webpack_require__.r(__webpack_exports__);
 class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super();
+    this._init(x, y, direction, maxX, color);
+  }
+  _init(x, y, direction, maxX, color) {
     this.direction = direction;
     this.speed = this.direction * 2.5;
     this.maxX = maxX;
@@ -6139,6 +6183,9 @@ __webpack_require__.r(__webpack_exports__);
 class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super();
+    this._init(x, y, direction, maxX, color);
+  }
+  _init(x, y, direction, maxX, color) {
     this.direction = direction;
     this.speed = this.direction * 4;
     this.color = color;
@@ -6201,6 +6248,9 @@ __webpack_require__.r(__webpack_exports__);
 class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super(x, y);
+    this._init(x, y, direction, maxX, color);
+  }
+  _init(x, y, direction, maxX, color) {
     this.direction = direction;
     this.speed = this.direction * 13;
     this.color = color;
@@ -6321,7 +6371,9 @@ class Map extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const nextIndex = (this.currentIndex + 1) % this.stairs.length;
     this.currentIndex = nextIndex;
     this.genNewStair();
-    this.moveDistance = this.stairs[this.currentIndex].stepNumber * 25;
+    setTimeout(() => {
+      this.moveDistance = this.stairs[this.currentIndex].stepNumber * 25;
+    }, 500);
     if (this.currentIndex > 3) {
       for (let i = this.currentIndex - 3; i < this.currentIndex + 8; i++) {
         const alpha = 0.3 + (i - this.currentIndex) / 10;
@@ -6740,7 +6792,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.jumpForce = this.maxJumpForce;
     this.minY = this.y;
     this.gravity = 0.3;
-    this.hp = 2;
+    this.hp = 5;
   }
   onPointerDown(dt) {
     if (!this.gun.isShot)
