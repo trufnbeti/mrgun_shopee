@@ -19,7 +19,11 @@ export class BulletManager extends Container {
         this.playScene = playScene;
 
         this.bloods = [];
-
+        this.bloodNumber = this.player.gun.damage*2;
+        this.currentBloodIndex = 0;
+        for(let i = 0; i < 4; i++){
+            this._spawnBloods();
+        }
         this._initEffect();
     }
     _initEffect(){
@@ -51,19 +55,17 @@ export class BulletManager extends Container {
                 }
                 this.playScene.playUI.updateScore(this.player.score);
                 
-                //==========
+                //cập nhật thông tin cho những giọt máu đang xét
+                for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
+                    this.bloods[i]._initEnemy(this.enemyManager.enemy);
+                    this.bloods[i]._initForce(bullet.damage* 3);
+                    this.bloods[i]._initPlatform(steps);
+                }
+                this.currentBloodIndex = (this.currentBloodIndex + 1) % 4;
+                //==============
+                
                 bulletsToRemove.push(bullet);
                 
-                for(let i = 0; i < bullet.damage*2; i++){
-                    const blood = new Blood(this.enemyManager.enemy);
-                    this.map.addChild(blood);
-                    blood._initForce(bullet.damage* 3);
-                    blood._initPlatform(steps);
-                    this.bloods.push(blood)
-                    blood.on(BloodEvent.Removed, this.removeBlood.bind(this,blood))
-                }
-
-
                 if(!this.enemyManager.enemy.isShooted){
                     if (this.enemyManager.enemy.name === "Normal"){
                         this.enemyManager.enemy.deaded = true;
@@ -122,6 +124,15 @@ export class BulletManager extends Container {
                 }
             }
             
+        }
+    }
+    
+    _spawnBloods(){
+        for(let i = 0; i < this.bloodNumber; i++){
+            const blood = new Blood();
+            blood._initPlatform([]);
+            this.map.addChild(blood);
+            this.bloods.push(blood)
         }
     }
 

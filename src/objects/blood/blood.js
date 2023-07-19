@@ -7,14 +7,13 @@ export const BloodEvent = Object.freeze({
 })
 
 export class Blood extends Container{
-    constructor(enemy){
+    constructor(){
         super();
-        this.enemy = enemy;
-        this._initSprite();
     }
-    _initSprite(){
+    _init(){
         this.color = this.enemy.color;
         this.radius = Util.random(4, 6);
+        this.removeChild(this.sprite);
         this.sprite = new Graphics();
         this.sprite.beginFill(this.color)
         this.addChild(this.sprite);
@@ -22,6 +21,10 @@ export class Blood extends Container{
 
         this.x = this.enemy.x;
         this.y = this.enemy.y;
+    }
+    _initEnemy(enemy){
+        this.enemy = enemy;
+        this._init();
     }
     _initForce(force){
         this.direction = this.enemy.direction;

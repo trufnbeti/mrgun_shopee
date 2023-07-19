@@ -43,7 +43,10 @@ export class Map extends Container{
         this.currentIndex = nextIndex;
 
         this.genNewStair();
-        this.moveDistance = this.stairs[this.currentIndex].stepNumber*25;
+        setTimeout(()=> {
+            this.moveDistance = this.stairs[this.currentIndex].stepNumber*25;
+        }, 500)
+
         if(this.currentIndex > 3){
             for(let i = this.currentIndex - 3; i < this.currentIndex+8; i++){
             const alpha = 0.3 + (i - this.currentIndex)/10;
