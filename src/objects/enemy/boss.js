@@ -7,12 +7,15 @@ import { Weapon } from "../weapon/weapon";
 export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
         super();
+        this._init(x, y, direction, maxX);
+    }
+    _init(x, y, direction, maxX){
         this.name = "Boss";
         this.direction = direction;
         this.maxX = maxX + this.width/2;
         this.hp = 50;
         this.maxHp = 50;
-        // this._init();
+        this._initBody();
         this.weapon =new Weapon(Assets.get('usp_s'))
         this.position.set(x, y - this.height / 2);
         const centerX = this.width / 2;
@@ -27,12 +30,9 @@ export class Boss extends Enemy{
         this.power = 20;
         this.timer = 0;
         this.angleRotation = 20;
-
-        //
         this._initAbility();
     }
-    _init(){
-        super._init();
+    _initBody(){
         let indexR = Math.floor(Math.random() * 22) + 1;
         this.head = new Sprite(Assets.get('boss_head_' + indexR));
         this.body = new Sprite(Assets.get('boss_body_' + indexR));

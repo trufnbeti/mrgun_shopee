@@ -4,6 +4,9 @@ import { Enemy } from "./enemy";
 export class ShortFatEnemy extends Enemy{
     constructor(x, y, direction, maxX, color){
         super();
+        this._init(x, y, direction, maxX, color);
+    }
+    _init(x, y, direction, maxX, color){
         this.direction = direction;
         this.speed = this.direction * 2.5;
         this.maxX = maxX;
@@ -20,6 +23,7 @@ export class ShortFatEnemy extends Enemy{
         this.isLeanLeft = false;
         this.angleLean = 1;
         this.timer = 0;
+        
     }
     move(dt){
         if (!this.deaded){

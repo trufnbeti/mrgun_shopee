@@ -9,9 +9,13 @@ export class Enemy extends Container{
     constructor(){
         super();
         this.name = "Normal";
-        // this.position.set(x, y);
         this.weapon = new Weapon(Assets.get('usp_s'));
-        this._init();
+
+        this.cooldown = 50;
+        this.isShot = false;
+        this.isReady = false;
+        this.isShooted = false;
+
         this.velocity = {
             x: 0,
             y: 0
@@ -22,14 +26,27 @@ export class Enemy extends Container{
         this.gravity = 0.98;
         this.deadAngle = 20;
         this.timeRotateDead = 0;
+    }
+    // _init(){
+    //     this.name = "Normal";
+    //     this.weapon = new Weapon(Assets.get('usp_s'));
 
-    }
-    _init(){
-        this.cooldown = 50;
-        this.isShot = false;
-        this.isReady = false;
-        this.isShooted = false;
-    }
+    //     this.cooldown = 50;
+    //     this.isShot = false;
+    //     this.isReady = false;
+    //     this.isShooted = false;
+
+    //     this.velocity = {
+    //         x: 0,
+    //         y: 0
+    //     };
+    //     this.deaded = false;
+    //     this.isDead = false;
+    //     this.jumpHeight = 15;
+    //     this.gravity = 0.98;
+    //     this.deadAngle = 20;
+    //     this.timeRotateDead = 0;
+    // }
     equipWeapon(){
         if (this.direction == -1) //weapon ben trai
             this.weapon.sprite.scale.x *= -1;
