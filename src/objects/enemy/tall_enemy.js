@@ -5,11 +5,13 @@ import { Enemy } from "./enemy";
 export class TallEnemy extends Enemy{
     constructor(x, y, direction, maxX, color){
         super(x, y);
+        this._init(x, y, direction, maxX, color);
+    }
+    _init(x, y, direction, maxX, color){
         this.direction = direction;
         this.speed = this.direction * 13;
         this.color = color;
         this.maxX = maxX;
-        // this.weapon.scale.x = direction;
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
