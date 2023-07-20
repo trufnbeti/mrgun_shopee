@@ -47,29 +47,84 @@ export class MenuUI extends Container {
     this.layoutUIContainer = new PIXI.Container();
     this.addChild(this.layoutUIContainer);
 
-    // this._initLevel();
-    // this._initMoney();
+    this._initLevel();
+    this._initMoney();
     this._initLOGO();
-    // this._initBestScore();
+    this.bestScore();
   }
 
   _initLOGO() {
     this.logoSpriter = Sprite.from(Assets.get("logoMRGUN"));
-    this.logoSpriter.position.set(GameConstant.GAME_WIDTH / 2 - this.logoSpriter.width*0.4, GameConstant.GAME_HEIGHT / 8);
+    this.logoSpriter.position.set(GameConstant.GAME_WIDTH / 2 - this.logoSpriter.width*0.4, GameConstant.GAME_HEIGHT / 7 + 20);
     this.logoSpriter.scale.set(0.75);;
     this.layoutUIContainer.addChild(this.logoSpriter);
   }
 
-  _initLevel() {}
+  _initLevel() {
+    const graphicLevel = new Graphics();
+    graphicLevel.beginFill(0x525252);
+    const w = 350; 
+    graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
+    graphicLevel.endFill();
+    this.addChild(graphicLevel);
 
-  _initMoney() {}
+    this._initTextNormal();
+    this.textLevel = new PIXI.Text("LEVEL 1", this.normalTextStyle);
+    this.textLevel.position.set((GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
+    this.addChild(this.textLevel);
+  }
 
-  _initBestScore() {}
+  _initMoney() {
+    this.money = Sprite.from(Assets.get("money"));
+    this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
+    this.money.scale.set(0.4);
+    this.addChild(this.money);
+  }
+
+  bestScore(){
+    this.bestScore = new Container();
+
+    this._initTextBig();
+    this.textTitle = new PIXI.Text("BEST:", this.bigTextStyle);
+    this.textTitle.anchor.set(0.5);
+    this.textTitle.zIndex = 2;
+    this.textTitle.position.set(0, 0);
+
+    let score = 0;
+    score = localStorage.getItem('bestScore');
+    this.score = new PIXI.Text(score, this.bigTextStyle);
+    this.score.anchor.set(0.5);
+    this.score.zIndex = 2;
+    this.score.position.set(this.textTitle.width + 20, 0)
+
+    this.bestScore.position.set((GameConstant.GAME_WIDTH - this.textTitle.width)/2, 
+                                      this.logoSpriter.y + this.logoSpriter.height + 40);
+    this.bestScore.addChild(this.textTitle);
+    this.bestScore.addChild(this.score);
+
+    this.addChild(this.bestScore);
+  }
 
   _initTextSmall() {
     this.smallTextStyle = new PIXI.TextStyle({
       fontFamily: "Triomphe Bold Autoinstr",
       fontSize: 35,
+      fill: ["#ffffff"],
+    });
+  }
+
+  _initTextNormal() {
+    this.normalTextStyle = new PIXI.TextStyle({
+      fontFamily: "Triomphe Regular Autoinstr",
+      fontSize: 25,
+      fill: ["#ffffff"],
+    });
+  }
+
+  _initTextBig() {
+    this.bigTextStyle = new PIXI.TextStyle({
+      fontFamily: "Triomphe Regular Autoinstr",
+      fontSize: 52,
       fill: ["#ffffff"],
     });
   }

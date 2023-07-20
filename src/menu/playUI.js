@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import { Container, Text, TextStyle, Graphics, Sprite, Assets } from "pixi.js";
 import { Game } from "../game";
 import { GameConstant } from "../gameConstant";
@@ -7,8 +8,30 @@ export class PlayUI extends Container{
       super();
       this._initScore();
       this.resize();
+      this._initLevel();
     }
+
+    _initLevel() {
+      const graphicLevel = new Graphics();
+      graphicLevel.beginFill(0x525252);
+      const w = 350; 
+      graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
+      graphicLevel.endFill();
+      this.addChild(graphicLevel);
   
+      this._initTextNormal();
+      this.textLevel = new PIXI.Text("LEVEL 1", this.normalTextStyle);
+      this.textLevel.position.set((GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
+      this.addChild(this.textLevel);
+    }
+    _initTextNormal() {
+      this.normalTextStyle = new PIXI.TextStyle({
+        fontFamily: "Triomphe Regular Autoinstr",
+        fontSize: 25,
+        fill: ["#ffffff"],
+      });
+    }
+
     _initScore() {
       let textStyle = new TextStyle({ 
         fontFamily: "Triomphe Bold Autoinstr",
