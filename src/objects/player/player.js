@@ -50,7 +50,7 @@ export class Player extends Container {
         this.minY = this.y;
         this.gravity = 0.3;
 
-        this.hp = 2;
+        this.hp = 5;
     }
 
     onPointerDown(dt){

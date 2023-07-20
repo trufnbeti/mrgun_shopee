@@ -59,7 +59,7 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Util.random(8, 13);
+        this.killNeed = Util.random(8, 12);
 
         this.player.score = 0;
     }
@@ -84,12 +84,13 @@ export class PlayScene extends Container{
 
     _onEnemyHit(){
 
-        if(this.killCount < this.killNeed) {
+        if(this.killCount < this.killNeed - 1) {
             this.killCount++;
             this.enemyManager._spawnEnemy(this.player);
         }
         else{
             if(this.state == GameState.Playing) {
+                this.killCount++;
                 this.enemyManager._spawnBoss(this.player);
                 this.playUI._initBossHp(this.enemyManager.enemy);
                 this.state = GameState.BossFight;
@@ -100,6 +101,7 @@ export class PlayScene extends Container{
                 this.playUI.updateBossHp();
             }
         }
+        this.playUI.updateLevel(this.killCount / (this.killNeed))
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
         this.enemyManager.enemy.isShooted = true;
     }
