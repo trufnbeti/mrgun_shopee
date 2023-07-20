@@ -54,8 +54,8 @@ export class OutfitsScene extends Container{
         this.buttonBack.cursor = "pointer";
 
         this.buttonBack.on("pointerdown", () => {
-            this.parent.removeChild(this);
-            Game._initScene();
+            Game.playScene.player._initCharacter();
+            this.hide();
         });
     }
 
@@ -105,6 +105,14 @@ export class OutfitsScene extends Container{
       'sniper',
       'sprinter']);
       this.addChild(this.items);
+    }
+
+    hide(){
+      this.visible = false;
+      Game.playScene.menu.menuUI._onPlayScene();
+    }
+    show(){
+      this.visible = true;
     }
     
 }

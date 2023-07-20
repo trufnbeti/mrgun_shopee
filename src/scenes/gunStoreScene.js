@@ -52,8 +52,8 @@ export class GunStoreScene extends Container{
     this.buttonBack.cursor = "pointer";
 
     this.buttonBack.on("pointerdown", () => {
-        this.parent.removeChild(this);
-        Game._initScene();
+        Game.playScene.player._initGun();
+        this.hide();
     });
   }
 
@@ -104,6 +104,14 @@ export class GunStoreScene extends Container{
   _initGun(){
     this.items = new ItemFrame('gun',['ak', 'aug', 'scout', 'sawed_off', 'desert_eagle', 'r8', 'mp5', 'negev', 'usp_s']);
     this.addChild(this.items);
+  }
+
+  hide(){
+    this.visible = false;
+    Game.playScene.menu.menuUI._onPlayScene();
+  }
+  show(){
+    this.visible = true;
   }
     
 }

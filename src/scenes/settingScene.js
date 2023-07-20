@@ -98,6 +98,10 @@ export class SettingScene extends Container{
 
     hide(){
       this.visible = false;
+      Game.playScene.menu.menuUI._onPlayScene();
+    }
+    show(){
+      this.visible = true;
     }
     
 }

@@ -35,8 +35,7 @@ export class BlackListScene extends Container{
         this.buttonCancel.cursor = "pointer";
 
         this.buttonCancel.on("pointerdown", () => {
-            this.parent.removeChild(this);
-            Game._initScene();
+            this.hide();
         });
     }
     
@@ -98,6 +97,12 @@ export class BlackListScene extends Container{
         background.endFill();
         this.addChild(background);
     }
-
+    hide(){
+      this.visible = false;
+      Game.playScene.menu.menuUI._onPlayScene();
+    }
+    show(){
+      this.visible = true;
+    }
     
 }

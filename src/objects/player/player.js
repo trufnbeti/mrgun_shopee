@@ -19,6 +19,7 @@ export class Player extends Container {
             localStorage.setItem('outfit', outfitName);
         } 
         localStorage.setItem(outfitName, false);
+        this.removeChild(this.sprite);
         this.sprite = Sprite.from(outfitName);
         this.sprite.scale.x *= this.direction
         this.sprite.anchor.set(0.5, 0);
@@ -31,6 +32,7 @@ export class Player extends Container {
             localStorage.setItem('gun', gunName);
         } 
         localStorage.setItem(gunName, false);
+        this.removeChild(this.gun);
         this.gun = new Gun(this, gunName);
         this.gun.zIndex = 1;
     }

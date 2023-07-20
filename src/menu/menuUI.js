@@ -172,6 +172,7 @@ export class MenuUI extends Container {
 
     this.buttonSetting.on("pointerdown", () => {
       this._onAnotherScene();
+      Game.app.stage.removeChild(this.settingScene);
       this.settingScene = new SettingScene(this.app);
       Game.app.stage.addChild(this.settingScene);
     });
@@ -187,6 +188,7 @@ export class MenuUI extends Container {
 
     this.buttonBlacklist.on("pointerdown", () => {
       this._onAnotherScene();
+      Game.app.stage.removeChild(this.blackListScene);
       this.blackListScene = new BlackListScene(this.app);
       Game.app.stage.addChild(this.blackListScene);
     });
@@ -202,6 +204,7 @@ export class MenuUI extends Container {
 
     this.buttonOutfits.on("pointerdown", () => {
       this._onAnotherScene();
+      Game.app.stage.removeChild(this.outfitsScene);
       this.outfitsScene = new OutfitsScene(this.app);
       Game.app.stage.addChild(this.outfitsScene);
     });
@@ -218,6 +221,7 @@ export class MenuUI extends Container {
     this.buttonGuns.on("pointerdown", () => {
       this._onAnotherScene();
       
+      Game.app.stage.removeChild(this.gunStoreScene);
       this.gunStoreScene = new GunStoreScene(this.app);
       Game.app.stage.addChild(this.gunStoreScene);
     });
@@ -253,8 +257,16 @@ export class MenuUI extends Container {
   }
   _onAnotherScene(){
     this.gameReloadText.interactive = false;
+    this.buttonGuns.interactive = false;
+    this.buttonBlacklist.interactive = false;
+    this.buttonOutfits.interactive = false;
+    this.buttonSetting.interactive = false;
   }
   _onPlayScene(){
     this.gameReloadText.interactive = true;
+    this.buttonGuns.interactive = true;
+    this.buttonBlacklist.interactive = true;
+    this.buttonOutfits.interactive = true;
+    this.buttonSetting.interactive = true;
   }
 }
