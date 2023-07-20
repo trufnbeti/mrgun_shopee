@@ -12,12 +12,12 @@ export class PlayUI extends Container{
     }
 
     _initLevel() {
-      const graphicLevel = new Graphics();
-      graphicLevel.beginFill(0x525252);
+      this.graphicLevel = new Graphics();
+      this.graphicLevel.beginFill(0x525252);
       const w = 350; 
-      graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
-      graphicLevel.endFill();
-      this.addChild(graphicLevel);
+      this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
+      this.graphicLevel.endFill();
+      this.addChild(this.graphicLevel);
   
       this._initTextNormal();
       this.textLevel = new PIXI.Text("LEVEL 1", this.normalTextStyle);
@@ -94,6 +94,20 @@ export class PlayUI extends Container{
       }
     }
 
+    updateLevel(percent) {
+      if(percent < 1){
+        this.graphicLevel.clear();
+        this.graphicLevel.beginFill(0x525252);
+        const w = 350; 
+        this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
+        this.graphicLevel.endFill();
+  
+        this.graphicLevel.beginFill(0xFF007F);
+        this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w* percent, 32, 27);
+        this.graphicLevel.endFill();
+      }
+      else setTimeout(()=> this.graphicLevel.visible = false, 50); 
+    }
   
     hide() {
       this.visible = false;
