@@ -19,9 +19,9 @@ export class BulletManager extends Container {
         this.playScene = playScene;
 
         this.bloods = [];
-        this.bloodNumber = this.player.gun.damage*2;
+        this.bloodNumber = this.player.gun.damage*3;
         this.currentBloodIndex = 0;
-        for(let i = 0; i < 4; i++){
+        for(let i = 0; i < 6; i++){
             this._spawnBloods();
         }
         this._initEffect();
@@ -37,6 +37,7 @@ export class BulletManager extends Container {
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
         this.enemyManager.enemy.isShooted = false;
+        let bonus = 1;
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
@@ -45,6 +46,8 @@ export class BulletManager extends Container {
                     this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
                     this.hitHeadEffect.playOnce();
                     this.player.score += 50;
+                    bonus = 2;
+                    sound.play("hitSound");
                     sound.play("headshotSound");
                 } 
                 else{
@@ -58,10 +61,10 @@ export class BulletManager extends Container {
                 //cập nhật thông tin cho những giọt máu đang xét
                 for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
                     this.bloods[i]._initEnemy(this.enemyManager.enemy);
-                    this.bloods[i]._initForce(bullet.damage* 3);
+                    this.bloods[i]._initForce(bullet.damage* 2);
                     this.bloods[i]._initPlatform(steps);
                 }
-                this.currentBloodIndex = (this.currentBloodIndex + 1) % 4;
+                this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                 //==============
                 
                 bulletsToRemove.push(bullet);
@@ -78,7 +81,7 @@ export class BulletManager extends Container {
                     // console.log(this.enemy.name == "Normal");
 
                 }
-                else this.enemyManager.enemy.takeDmg(this.player.gun.damage)
+                else this.enemyManager.enemy.takeDmg(this.player.gun.damage * bonus)
                 
             }
             else {
@@ -120,6 +123,14 @@ export class BulletManager extends Container {
                         this.playScene.gameOverUI.show(); 
                     }
                     
+                    this.hitHeadEffect._initEnemy(this.player);
+                    this.hitHeadEffect.playOnce();
+                    for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
+                        this.bloods[i]._initEnemy(this.player);
+                        this.bloods[i]._initForce(eBullet.damage* 2);
+                        this.bloods[i]._initPlatform(steps);
+                    }
+                    this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                     
                 }
             }

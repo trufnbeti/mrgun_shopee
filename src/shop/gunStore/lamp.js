@@ -7,7 +7,7 @@ import {
   RenderTexture,
   Sprite,
 } from "pixi.js";
-import { GameConstant } from "../gameConstant";
+import { GameConstant } from "../../gameConstant";
 // import { TWEEN } from "@tweenjs/tween.js"; // Import TWEEN from the installed package
 
 export class Lamp extends Container{

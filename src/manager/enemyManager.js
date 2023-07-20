@@ -15,8 +15,16 @@ export const EnemyManagerEvent = Object.freeze({
     constructor(map) {
       super();
       this.map = map;
-      this.enemy = this.createEnemy(0, this.map.stairs[0].y, 1, 75, Util.randomColor());
-      this.map.addChild(this.enemy)
+      this._init();
+    }
+
+    _init(){
+        this.shortFat = new ShortFatEnemy(0, 0, 1, 0, 0x00000);
+        this.shortSkinny = new ShortSkinnyEnemy(0, 0, 1, 0, 0x00000);
+        this.tall = new TallEnemy(0, 0, 1, 0, 0x00000);
+        this.enemy = this.randomEnemy();
+        this.enemy._init(0, this.map.stairs[0].y, 1, 75, Util.randomColor());
+        this.map.addChild(this.enemy)
     }
   
     _spawnEnemy(player) {
@@ -28,22 +36,23 @@ export const EnemyManagerEvent = Object.freeze({
       const y = nextStair.y;
       const colorNextEnemy = Util.randomColor();
       this.map.removeChild(this.enemy);
-      this.enemy = this.createEnemy(x, y, player.direction, xMax, colorNextEnemy);
+      this.enemy = this.randomEnemy();
+      this.enemy._init(x, y, player.direction, xMax, colorNextEnemy);
       this.map.addChild(this.enemy);
     }
 
-    createEnemy(x, y, direction, maxX, color){
+    randomEnemy(){
         const run = Math.floor(Math.random() * 3) + 1;
         let enemy = null;
         switch (run) {
             case 1:
-                enemy = new ShortFatEnemy(x, y, direction, maxX, color);
+                enemy = this.shortFat;
                 break;
             case 2:
-                enemy = new ShortSkinnyEnemy(x, y, direction, maxX, color);
+                enemy = this.shortSkinny;
                 break;
             case 3:
-                enemy = new TallEnemy(x, y, direction, maxX, color);
+                enemy = this.tall;
                 break;
             default:
                 break;
@@ -65,17 +74,18 @@ export const EnemyManagerEvent = Object.freeze({
     }
 
     _onHit(){
-        this.emit(EnemyManagerEvent.Hit)
+        this.emit(EnemyManagerEvent.Hit);
     }
   
     _onBossHit(){
         const nextStair = this.map.stairs[this.map.currentIndex+2];
         this.enemy.takeDmg(this.player.gun.damage);
+        if(this.enemy.hp <= 0) Game._initScene();
         if(!this.enemy.isMoving){
             if(!this.enemy.isShooted) this.enemy.calPath(nextStair);
             this.enemy.reCooldown();
         }
-        if(this.enemy.hp <= 0) Game._initScene();
+
     }
     update(dt) {
       this.enemy.update(dt);

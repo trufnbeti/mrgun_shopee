@@ -4,4 +4,6 @@ export const GameConstant = Object.freeze({
 
     Step_Size: 25,
 
+    ITEM_WIDTH: 140,
+    ITEM_HEIGHT: 160,
   })

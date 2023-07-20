@@ -15,7 +15,8 @@ export class HitEffect extends Graphics {
     this.alpha = 1;
     this.scale.set(1); // Kích thước ban đầu
     this.x = this.enemy.x;
-    this.y = this.enemy.y - this.enemy.height / 3;
+    this.y = this.enemy.y;
+    this.zIndex = 3;
   
     this.clear();
     this.beginFill(this.color, this.alpha);

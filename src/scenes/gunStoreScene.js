@@ -3,6 +3,8 @@ import { Application, Assets, Container, Graphics, RenderTexture, Sprite,} from 
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { ItemFrame } from "../objects/item/itemFrame";
+import { Lamp } from "../shop/gunStore/lamp";
+import { UnlockGun } from "../shop/gunStore/unlockGun";
 
 
 export class GunStoreScene extends Container{
@@ -11,7 +13,7 @@ export class GunStoreScene extends Container{
     this._initBackGround();
     this._initBG();
 
-    // this._initLamp();
+    this._initLamp();
     
     this._initTextBig();
     this._initTextSmall();
@@ -20,6 +22,8 @@ export class GunStoreScene extends Container{
     this._initMoney();
 
     this._initUnlockGun(); 
+    
+    this._initGun(); 
   }
 
   _initLamp(){
@@ -97,4 +101,9 @@ export class GunStoreScene extends Container{
     this.addChild(background);
   }
 
+  _initGun(){
+    this.items = new ItemFrame('gun',['ak', 'aug', 'scout', 'sawed_off', 'desert_eagle', 'r8', 'mp5', 'negev', 'usp_s']);
+    this.addChild(this.items);
+  }
+    
 }
