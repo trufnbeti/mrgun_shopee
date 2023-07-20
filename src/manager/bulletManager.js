@@ -21,7 +21,7 @@ export class BulletManager extends Container {
         this.bloods = [];
         this.bloodNumber = this.player.gun.damage*3;
         this.currentBloodIndex = 0;
-        for(let i = 0; i < 4; i++){
+        for(let i = 0; i < 6; i++){
             this._spawnBloods();
         }
         this._initEffect();
@@ -45,6 +45,7 @@ export class BulletManager extends Container {
                     this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
                     this.hitHeadEffect.playOnce();
                     this.player.score += 50;
+                    sound.play("hitSound");
                     sound.play("headshotSound");
                 } 
                 else{
@@ -61,7 +62,7 @@ export class BulletManager extends Container {
                     this.bloods[i]._initForce(bullet.damage* 2);
                     this.bloods[i]._initPlatform(steps);
                 }
-                this.currentBloodIndex = (this.currentBloodIndex + 1) % 4;
+                this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                 //==============
                 
                 bulletsToRemove.push(bullet);
@@ -120,6 +121,14 @@ export class BulletManager extends Container {
                         this.playScene.gameOverUI.show(); 
                     }
                     
+                    this.hitHeadEffect._initEnemy(this.player);
+                    this.hitHeadEffect.playOnce();
+                    for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
+                        this.bloods[i]._initEnemy(this.player);
+                        this.bloods[i]._initForce(eBullet.damage* 2);
+                        this.bloods[i]._initPlatform(steps);
+                    }
+                    this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                     
                 }
             }

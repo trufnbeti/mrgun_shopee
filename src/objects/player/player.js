@@ -38,6 +38,7 @@ export class Player extends Container {
         this.x = GameConstant.GAME_WIDTH/2;
         this.y = this.parent.stairs[0].y + 50 - 55;
         this.zIndex = 1;
+        this.color = 0xFF0000;
         this.direction = -1;
         this.speed = 5;
         this.isMoving = false;
