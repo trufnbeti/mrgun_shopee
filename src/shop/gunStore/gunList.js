@@ -15,19 +15,11 @@ export class GunList extends List {
         });
 
         this._initProperties();
-        this._initGunCards();
     }
 
     _initProperties() {
         this.position.set(20, GameConstant.GAME_HEIGHT / 3);
     }
 
-    _initGunCards() {
-        
-        for (let i = 0; i < 9; i++){
-            const gunCard = new GunCard();
-            this.addChild(gunCard);
-        }
 
-    }
 }
