@@ -37,6 +37,7 @@ export class BulletManager extends Container {
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
         this.enemyManager.enemy.isShooted = false;
+        let bonus = 1;
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
@@ -45,6 +46,7 @@ export class BulletManager extends Container {
                     this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
                     this.hitHeadEffect.playOnce();
                     this.player.score += 50;
+                    bonus = 2;
                     sound.play("hitSound");
                     sound.play("headshotSound");
                 } 
@@ -79,7 +81,7 @@ export class BulletManager extends Container {
                     // console.log(this.enemy.name == "Normal");
 
                 }
-                else this.enemyManager.enemy.takeDmg(this.player.gun.damage)
+                else this.enemyManager.enemy.takeDmg(this.player.gun.damage * bonus)
                 
             }
             else {

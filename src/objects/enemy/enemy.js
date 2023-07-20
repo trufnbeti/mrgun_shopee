@@ -48,9 +48,9 @@ export class Enemy extends Container{
     //     this.timeRotateDead = 0;
     // }
     equipWeapon(){
-        if (this.direction == -1) //weapon ben trai
-            this.weapon.sprite.scale.x *= -1;
-            
+        this.weapon.sprite.scale.x = this.direction;
+        this.weapon.restart();
+        this.reCooldown();
     
         this.weapon.x = this.width / 2;
         this.weapon.y = this.height / 2;
@@ -85,6 +85,11 @@ export class Enemy extends Container{
     reCooldown(){
         this.isReady = false;
         this.cooldown = 50;
+        this.angle = 0;
+        this.deaded = false;
+        this.velocity.y = 0;
+        this.timeRotateDead = 0;
+        this.isDead = false;
     }
 
 }
