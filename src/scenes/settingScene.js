@@ -20,6 +20,9 @@ export class SettingScene extends Container{
         this._initTextTitle();
         this._initButtonBack();
         this._initMoney();
+
+        this._initTextMusic();
+        this._initTextSounds();
         
     }
 
@@ -45,11 +48,27 @@ export class SettingScene extends Container{
     }
 
     _initTextTitle() {
-        this.textTitle = new PIXI.Text("OUTFITS", this.bigTextStyle);
+        this.textTitle = new PIXI.Text("SETTINGS", this.bigTextStyle);
         this.textTitle.anchor.set(0.5);
         this.textTitle.zIndex = 2;
         this.textTitle.position.set(GameConstant.GAME_WIDTH/2, 80);
         this.addChild(this.textTitle);
+      }
+
+      _initTextMusic() {
+        this.textMusic= new PIXI.Text("MUSIC", this.smallTextStyle);
+        this.textMusic.anchor.set(0.5);
+        this.textMusic.zIndex = 2;
+        this.textMusic.position.set(GameConstant.GAME_WIDTH/4, GameConstant.GAME_HEIGHT /3);
+        this.addChild(this.textMusic);
+      }
+
+      _initTextSounds() {
+        this.textSound = new PIXI.Text("SOUNDS", this.smallTextStyle);
+        this.textSound.anchor.set(0.5);
+        this.textSound.zIndex = 2;
+        this.textSound.position.set(this.textMusic.x + 12, GameConstant.GAME_HEIGHT /3 + 100);
+        this.addChild(this.textSound);
       }
 
       _initTextBig() {
@@ -63,7 +82,7 @@ export class SettingScene extends Container{
       _initTextSmall() {
         this.smallTextStyle = new PIXI.TextStyle({
           fontFamily: "Triomphe Bold Autoinstr",
-          fontSize: 25,
+          fontSize: 30,
           fill: ["#ffffff"],
         });
     }

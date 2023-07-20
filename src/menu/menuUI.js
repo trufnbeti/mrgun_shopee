@@ -19,6 +19,7 @@ export class MenuUI extends Container {
   constructor() {
     super();
 
+    this._initBackGround();
     this.gameOverBar = new PIXI.Container();
 
     this.game = new Game();
@@ -109,7 +110,7 @@ export class MenuUI extends Container {
 
   _initButtonSetting() {
     this.buttonSetting = Sprite.from(Assets.get("setting"));
-    this.buttonSetting.position.set(40, 80);
+    this.buttonSetting.position.set(40, 40);
     this.buttonContainer.addChild(this.buttonSetting);
     this.buttonSetting.interactive = true;
     this.buttonSetting.cursor = "pointer";
@@ -171,6 +172,23 @@ export class MenuUI extends Container {
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
   }
+
+  _initBackGround() {
+    // Add black background
+    const background = new PIXI.Graphics();
+    let colorFill = 0x000000;
+    let startOpacity = 0.9; 
+    let endOpacity = 0.0;   
+    // Create a gradient fill with fading opacity
+    const height = 300; // Adjust the height as needed
+    for (let i = 0; i < height; i+=2) {
+      const alpha = startOpacity - (startOpacity - endOpacity) * (i / height);
+      background.beginFill(colorFill, alpha);
+      background.drawRect(0, i, GameConstant.GAME_WIDTH, 6);
+      background.endFill();
+    }
+    this.addChild(background);
+}
 
   show() {
     this.visible = true;
