@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { Application, Assets, Container, Graphics, RenderTexture, Sprite,} from "pixi.js";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
+import { ItemFrame } from "../objects/item/itemFrame";
 
 
 
@@ -12,7 +13,7 @@ export class GunStoreScene extends Container{
     this._initBackGround();
     this._initBG();
 
-    this._initLamp();
+    // this._initLamp();
     
     this._initTextBig();
     this._initTextSmall();
@@ -20,7 +21,7 @@ export class GunStoreScene extends Container{
     this._initButtonBack();
     this._initMoney();
 
-    this._initUnlockGun();     
+    this._initGun(); 
   }
 
   _initLamp(){
@@ -96,6 +97,11 @@ export class GunStoreScene extends Container{
       background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
       background.endFill();
       this.addChild(background);
+  }
+
+  _initGun(){
+    this.items = new ItemFrame('gun',['ak', 'aug', 'scout', 'sawed_off', 'desert_eagle', 'r8', 'mp5', 'negev', 'usp_s']);
+    this.addChild(this.items);
   }
     
 }

@@ -9,6 +9,7 @@ import {
 } from "pixi.js";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
+import { ItemFrame } from "../objects/item/itemFrame";
 
 export class OutfitsScene extends Container{
 
@@ -21,6 +22,8 @@ export class OutfitsScene extends Container{
         this._initButtonBack();
         this._initMoney();
         this._initBGOutfits();
+
+       this._initOutfit();
 
         console.log("outfits scene");
         
@@ -88,6 +91,20 @@ export class OutfitsScene extends Container{
         background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         background.endFill();
         this.addChild(background);
+    }
+
+    _initOutfit(){
+      this.items = new ItemFrame('outfit',
+      ['classic',
+      'camouflage',
+      'charged',
+      'commando',
+      'cowboy',
+      'gunner',
+      'hitman',
+      'sniper',
+      'sprinter']);
+      this.addChild(this.items);
     }
     
 }

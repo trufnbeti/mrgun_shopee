@@ -13,13 +13,25 @@ export class Player extends Container {
     }
     _initCharacter(){
         this.sortableChildren = true;
-        this.sprite = Sprite.from(Assets.get('camouflage'))
+        let outfitName = localStorage.getItem('outfit');
+        if(outfitName == null){
+            outfitName = "classic";
+            localStorage.setItem('outfit', outfitName);
+        } 
+        localStorage.setItem(outfitName, false);
+        this.sprite = Sprite.from(outfitName);
         this.sprite.scale.x *= this.direction
         this.sprite.anchor.set(0.5, 0);
         this.addChild(this.sprite);
     }
     _initGun(){
-        this.gun = new Gun(this, 'scout');
+        let gunName = localStorage.getItem('gun');
+        if(gunName == null){
+            gunName = "aug";
+            localStorage.setItem('gun', gunName);
+        } 
+        localStorage.setItem(gunName, false);
+        this.gun = new Gun(this, gunName);
         this.gun.zIndex = 1;
     }
     _initAbility(){

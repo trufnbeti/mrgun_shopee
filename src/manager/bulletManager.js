@@ -19,7 +19,7 @@ export class BulletManager extends Container {
         this.playScene = playScene;
 
         this.bloods = [];
-        this.bloodNumber = this.player.gun.damage*2;
+        this.bloodNumber = this.player.gun.damage*3;
         this.currentBloodIndex = 0;
         for(let i = 0; i < 4; i++){
             this._spawnBloods();
@@ -58,7 +58,7 @@ export class BulletManager extends Container {
                 //cập nhật thông tin cho những giọt máu đang xét
                 for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
                     this.bloods[i]._initEnemy(this.enemyManager.enemy);
-                    this.bloods[i]._initForce(bullet.damage* 3);
+                    this.bloods[i]._initForce(bullet.damage* 2);
                     this.bloods[i]._initPlatform(steps);
                 }
                 this.currentBloodIndex = (this.currentBloodIndex + 1) % 4;
