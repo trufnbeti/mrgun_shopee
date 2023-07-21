@@ -12,7 +12,7 @@ export class Blood extends Container{
     }
     _init(){
         this.color = this.enemy.color;
-        this.radius = Util.random(4, 6);
+        this.radius = Util.random(2, 4);
         this.removeChild(this.sprite);
         this.sprite = new Graphics();
         this.sprite.beginFill(this.color)
