@@ -23,9 +23,99 @@ export class SettingScene extends Container{
 
         this._initTextMusic();
         this._initTextSounds();
+
+        this.musicStage();
+        this.soundStage();
         
     }
 
+    musicStage(){
+      this.musicContainer = new Container();
+      this.musicContainer.cursor = "pointer";
+      this.musicContainer.interactive = true;
+
+      this.OnStage1 = Sprite.from(Assets.get("on"));
+      this.OnStage1.scale.set(0.7);
+      this.OnStage1.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT /3 - 30);
+      this.musicContainer.addChild(this.OnStage1);
+
+      this.OffStage1 = Sprite.from(Assets.get("off"));
+      this.OffStage1.scale.set(0.7);
+      this.OffStage1.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT /3 - 30);
+      this.musicContainer.addChild(this.OffStage1);
+      this.OffStage1.visible = false;
+
+      this.addChild(this.musicContainer);
+
+      let tmp1 = 1;
+      const savedTmp1 = localStorage.getItem("musicStage");
+      if (savedTmp1 !== null) {
+        tmp1 = parseInt(savedTmp1, 10);
+        // Khôi phục trạng thái hiển thị dựa trên giá trị tmp1
+        this.OnStage1.visible = tmp1 === 1;
+        this.OffStage1.visible = tmp1 === 0;
+      }
+
+      // Sự kiện click để thay đổi trạng thái và lưu vào localStorage
+      this.musicContainer.on("pointerdown", () => {
+        if (tmp1 === 1) {
+          this.OnStage1.visible = false;
+          this.OffStage1.visible = true;
+          tmp1 = 0;
+        } else {
+          this.OnStage1.visible = true;
+          this.OffStage1.visible = false;
+          tmp1 = 1;
+        }
+        // Lưu trạng thái tmp1 vào localStorage
+        localStorage.setItem("musicStage", tmp1);
+        Game.startBackgroundMusic();
+
+      });
+    }
+
+    soundStage(){
+      this.soundContainer = new Container();
+      this.soundContainer.cursor = "pointer";
+      this.soundContainer.interactive = true;
+
+      this.OnStage = Sprite.from(Assets.get("on"));
+      this.OnStage.scale.set(0.7);
+      this.OnStage.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT /3 + 73);
+      this.soundContainer.addChild(this.OnStage);
+
+      this.OffStage = Sprite.from(Assets.get("off"));
+      this.OffStage.scale.set(0.7);
+      this.OffStage.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT /3 + 73);
+      this.soundContainer.addChild(this.OffStage);
+      this.OffStage.visible = false;
+
+      this.addChild(this.soundContainer);
+
+      let tmp = 1;
+      const savedTmp = localStorage.getItem("soundStage");
+      if (savedTmp !== null) {
+        tmp = parseInt(savedTmp, 10);
+        // Khôi phục trạng thái hiển thị dựa trên giá trị tmp1
+        this.OnStage.visible = tmp === 1;
+        this.OffStage.visible = tmp === 0;
+      }
+
+      // Sự kiện click để thay đổi trạng thái và lưu vào localStorage
+      this.soundContainer.on("pointerdown", () => {
+        if (tmp === 1) {
+          this.OnStage.visible = false;
+          this.OffStage.visible = true;
+          tmp = 0;
+        } else {
+          this.OnStage.visible = true;
+          this.OffStage.visible = false;
+          tmp = 1;
+        }
+        // Lưu trạng thái tmp1 vào localStorage
+        localStorage.setItem("soundStage", tmp);
+      });
+    }
     _initMoney(){
         this.money = Sprite.from(Assets.get("money"));
         this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
@@ -66,7 +156,7 @@ export class SettingScene extends Container{
         this.textSound = new PIXI.Text("SOUNDS", this.smallTextStyle);
         this.textSound.anchor.set(0.5);
         this.textSound.zIndex = 2;
-        this.textSound.position.set(this.textMusic.x + 12, GameConstant.GAME_HEIGHT /3 + 100);
+        this.textSound.position.set(this.textMusic.x + 12, GameConstant.GAME_HEIGHT /3 + 110);
         this.addChild(this.textSound);
       }
 

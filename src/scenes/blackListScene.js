@@ -21,9 +21,35 @@ export class BlackListScene extends Container{
         this._initBGListBoss();
         this._iniTextList();
         this._initButtonCancel();
-
-        console.log("black list scene");
+        this.listBoss();
         
+    }
+
+    listBoss(){
+      let h = 0;
+      for (let i = 0; i < 4; i++) {
+        this.stageBoss(h);
+        h = h + 200;
+      }
+    }
+
+    stageBoss(h){
+      this.stageboss = new Container();
+
+      this.defeated = Sprite.from(Assets.get("bldefeated"));
+      this.defeated.scale.set(0.76);
+      this.stageboss.addChild(this.defeated);
+
+      this.live = Sprite.from(Assets.get("bllive"));
+      this.live.scale.set(0.76);
+      this.stageboss.addChild(this.live);
+
+      const x = (GameConstant.GAME_WIDTH - this.defeated.width)/2;
+      const y = this.textList.y + 100;
+
+      this.stageboss.position.set(x, y + h);
+
+      this.addChild(this.stageboss);
     }
 
     _initButtonCancel() {
