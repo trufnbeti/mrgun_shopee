@@ -6052,7 +6052,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.hp = 50;
     this.maxHp = 50;
     this._initBody();
-    this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_4__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("usp_s"));
+    this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_4__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("USP-S"));
     this.position.set(x, y - this.height / 2);
     const centerX = this.width / 2;
     const centerY = this.height / 2;
@@ -6247,7 +6247,7 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this.name = "Normal";
-    this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_1__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("usp_s"));
+    this.weapon = new _weapon_weapon__WEBPACK_IMPORTED_MODULE_1__.Weapon(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("USP-S"));
     this.cooldown = 50;
     this.isShot = false;
     this.isReady = false;
@@ -7236,7 +7236,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.sortableChildren = true;
     let outfitName = localStorage.getItem("outfit");
     if (outfitName == null) {
-      outfitName = "classic";
+      outfitName = "CLASSIC";
       localStorage.setItem("outfit", outfitName);
     }
     localStorage.setItem(outfitName, false);
@@ -7460,7 +7460,7 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   shoot() {
     if (!this.isShot) {
-      const gunData = _assets_json_data_json__WEBPACK_IMPORTED_MODULE_1__["usp_s"];
+      const gunData = _assets_json_data_json__WEBPACK_IMPORTED_MODULE_1__["USP-S"];
       this.type = gunData.type;
       this.radius = gunData.radius;
       this.speed = gunData.speed;
