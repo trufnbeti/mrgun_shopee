@@ -6,7 +6,7 @@
             "type": "rapid",
             "bulletNumber": 3,
             "bulletRadius": 4,
-            "bulletSpeed": 7,
+            "bulletSpeed": 9,
             "deviation": 10,
             "damage": 5
         },
@@ -17,7 +17,7 @@
             "type": "shotgun",
             "bulletNumber": 4,
             "bulletRadius": 2,
-            "bulletSpeed": 5,
+            "bulletSpeed": 7,
             "deviation": 15,
             "damage": 3
         },
@@ -28,7 +28,7 @@
             "type": "rapid",
             "bulletNumber": 2,
             "bulletRadius": 3, 
-            "bulletSpeed": 6,
+            "bulletSpeed": 10,
             "deviation": 5,
             "damage": 4
         },
@@ -39,7 +39,7 @@
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 4, 
-        "bulletSpeed": 8,
+        "bulletSpeed": 15,
         "deviation": 5,
         "damage": 10
     },
@@ -50,7 +50,7 @@
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 3, 
-        "bulletSpeed": 6,
+        "bulletSpeed": 8,
         "deviation": 5,
         "damage": 4
     },
@@ -61,7 +61,7 @@
         "type": "rapid",
         "bulletNumber": 4,
         "bulletRadius": 2, 
-        "bulletSpeed": 6,
+        "bulletSpeed": 8,
         "deviation": 20,
         "damage": 2
     },
@@ -72,7 +72,7 @@
         "type": "rapid",
         "bulletNumber": 8,
         "bulletRadius": 2, 
-        "bulletSpeed": 6,
+        "bulletSpeed": 8,
         "deviation": 30,
         "damage": 1
     },
@@ -83,7 +83,7 @@
         "type": "sniper",
         "bulletNumber": 1,
         "bulletRadius": 3, 
-        "bulletSpeed": 8,
+        "bulletSpeed": 18,
         "deviation": 5,
         "damage": 5
     },
@@ -94,7 +94,7 @@
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 4, 
-        "bulletSpeed": 5,
+        "bulletSpeed": 8,
         "deviation": 5,
         "damage": 4
     }
