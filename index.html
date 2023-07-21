@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo</title><style>body {
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mr.Gun</title><style>body {
       margin: 0;
       padding: 0;
       background: black;
@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       background: black;
-    }</style><script defer="defer">/******/ (() => { // webpackBootstrap
+    }</style><link rel="icon" type="image/png" href="assets\images\layoutImg\iconlogo.png"><script defer="defer">/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/@pixi/particle-emitter/lib/particle-emitter.es.js":
@@ -5251,7 +5251,10 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           for (let i = this.currentBloodIndex * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++) {
             this.bloods[i]._initEnemy(this.player);
             this.bloods[i]._initForce(eBullet.damage * 2);
-            this.bloods[i]._initPlatform(this.map.stairs[this.map.currentIndex].stairSprites);
+            let index = this.map.currentIndex;
+            if (index < 0)
+              index = 0;
+            this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
           }
           this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
         }
@@ -7837,14 +7840,14 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       "gun",
       [
         "AK-47",
+        "1887",
         "AUG",
-        "EVO 3",
-        "UZI",
-        "USP-S",
-        "SCOUT",
+        "DE",
+        "R8",
         "MP5",
-        "M240",
-        "R8"
+        "NEGEV",
+        "SCOUT",
+        "USP-S"
       ]
     );
     this.addChild(this.items);
