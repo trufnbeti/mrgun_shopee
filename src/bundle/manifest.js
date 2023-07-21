@@ -6,39 +6,39 @@ export const manifest = {
                 //gun
                 
                 {
-                    name: 'ak',
+                    name: 'AK-47',
                     srcs: 'assets/images/guns/ak.png'
                 },
                 {
-                    name: 'aug',
+                    name: 'AUG',
                     srcs: 'assets/images/guns/aug.png'
                 },
                 {
-                    name: 'desert_eagle',
+                    name: 'EVO 3',
                     srcs: 'assets/images/guns/desert_eagle.png'
                 },
                 {
-                    name: 'mp5',
+                    name: 'MP5',
                     srcs: 'assets/images/guns/mp5.png'
                 },
                 {
-                    name: 'negev',
+                    name: 'M240',
                     srcs: 'assets/images/guns/negev.png'
                 },
                 {
-                    name: 'r8',
+                    name: 'R8',
                     srcs: 'assets/images/guns/r8.png'
                 },
                 {
-                    name: 'sawed_off',
+                    name: 'UZI',
                     srcs: 'assets/images/guns/sawed_off.png'
                 },
                 {
-                    name: 'scout',
+                    name: 'SCOUT',
                     srcs: 'assets/images/guns/scout.png'
                 },
                 {
-                    name: 'usp_s',
+                    name: 'USP-S',
                     srcs: 'assets/images/guns/usp_s.png'
                 },
                 {
@@ -51,39 +51,39 @@ export const manifest = {
             name: 'player',
             assets :[
                 {
-                    name: 'classic',
+                    name: 'CLASSIC',
                     srcs: 'assets/images/character/classic.png'
                 },
                 {
-                    name: 'camouflage',
+                    name: 'HITMAN',
                     srcs: 'assets/images/character/camouflage.png'
                 },
                 {
-                    name: 'charged',
+                    name: 'ATIS',
                     srcs: 'assets/images/character/charged.png'
                 },
                 {
-                    name: 'commando',
+                    name: 'DARKA',
                     srcs: 'assets/images/character/commando.png'
                 },
                 {
-                    name: 'cowboy',
+                    name: 'TRUG',
                     srcs: 'assets/images/character/cowboy.png'
                 },
                 {
-                    name: 'gunner',
+                    name: 'PIXI',
                     srcs: 'assets/images/character/gunner.png'
                 },
                 {
-                    name: 'hitman',
+                    name: 'MRKIN',
                     srcs: 'assets/images/character/hitman.png'
                 },
                 {
-                    name: 'sniper',
+                    name: 'MRKHIM',
                     srcs: 'assets/images/character/sniper.png'
                 },
                 {
-                    name: 'sprinter',
+                    name: 'TINY',
                     srcs: 'assets/images/character/sprinter.png'
                 },
                 {

@@ -102,7 +102,16 @@ export class GunStoreScene extends Container{
   }
 
   _initGun(){
-    this.items = new ItemFrame('gun',['ak', 'aug', 'scout', 'sawed_off', 'desert_eagle', 'r8', 'mp5', 'negev', 'usp_s']);
+    this.items = new ItemFrame('gun',
+    ['AK-47', 
+    'AUG',
+     'EVO 3', 
+     'UZI', 
+     'USP-S', 
+     'SCOUT', 
+     'MP5', 
+     'M240', 
+     'R8']);
     this.addChild(this.items);
   }
 

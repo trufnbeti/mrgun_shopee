@@ -24,9 +24,6 @@ export class OutfitsScene extends Container{
         this._initBGOutfits();
 
        this._initOutfit();
-
-        console.log("outfits scene");
-        
     }
 
     _initBGOutfits(){
@@ -95,15 +92,15 @@ export class OutfitsScene extends Container{
 
     _initOutfit(){
       this.items = new ItemFrame('outfit',
-      ['classic',
-      'camouflage',
-      'charged',
-      'commando',
-      'cowboy',
-      'gunner',
-      'hitman',
-      'sniper',
-      'sprinter']);
+      ['CLASSIC',
+      'HITMAN',
+      'ATIS',
+      'DARKA',
+      'TRUG',
+      'PIXI',
+      'MRKIN',
+      'MRKHIM',
+      'TINY']);
       this.addChild(this.items);
     }
 

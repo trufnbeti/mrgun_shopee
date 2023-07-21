@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import { Assets, Container, Graphics, Sprite, Text } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 
@@ -22,14 +23,14 @@ export class Item extends Container{
     _initFrame(){
         this.frame = new Graphics();
         this.addChild(this.frame);
-        this.frame.lineStyle(4, 0xFFFF00);
+        this.frame.lineStyle(10, 0xf4b544);
         this.frame.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
     }
 
     _initBg(){
         this.bg = new Graphics();
         this.addChild(this.bg);
-        this.bg.beginFill(0xFFFF00);
+        this.bg.beginFill(0xf4b544);
         this.bg.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
         this.bg.visible = false;
     }
@@ -54,19 +55,30 @@ export class Item extends Container{
     }
 
     _initText(){
-        this.text = new Text(this.name);
+        this._initTextSmall();
+        this.text = new Text(this.name, this.smallTextStyle);
+
         this.addChild(this.text);
+    }
+    _initTextSmall() {
+        this.smallTextStyle = new PIXI.TextStyle({
+          fontFamily: "Triomphe Bold Autoinstr",
+          fontSize: 25,
+          fontStyle: 'bold',
+          fill: ["#ffffff"],
+        });
     }
 
     _onPointdown(){
         this.bg.visible = !this.bg.visible;
     }
     resize(){
+        this.sprite.scale.set(1.45)
         this.sprite.anchor.set(0.5);
         this.sprite.x = this.width/2 - this.sprite.width/4;
-        this.sprite.y = this.height/2 - this.sprite.height/2;
+        this.sprite.y = this.height/2 - this.sprite.height/2 + 40;
 
         this.text.x = this.width/2 - this.text.width/2;
-        this.text.y = this.height/2 + this.sprite.height/4;
+        this.text.y = this.height/4 - this.text.height + 10;
     }
 }

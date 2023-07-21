@@ -1,5 +1,5 @@
 {
-    "ak":
+    "AK-47":
         {
             "radius": 150,
             "speed": 0.6,
@@ -10,7 +10,7 @@
             "deviation": 10,
             "damage": 5
         },
-    "sawed_off":
+    "AUG":
         {
             "radius": 100,
             "speed": 1.2,
@@ -21,7 +21,7 @@
             "deviation": 15,
             "damage": 3
         },
-    "aug":
+    "EVO 3":
         {
             "radius": 200,
             "speed": 0.6,
@@ -32,7 +32,7 @@
             "deviation": 5,
             "damage": 4
         },
-    "desert_eagle":
+    "MP5":
     {
         "radius": 80,
         "speed": 0.6,
@@ -43,7 +43,7 @@
         "deviation": 5,
         "damage": 10
     },
-    "r8":
+    "M240":
     {
         "radius": 90,
         "speed": 0.6,
@@ -54,7 +54,7 @@
         "deviation": 5,
         "damage": 4
     },
-    "mp5":
+    "R8":
     {
         "radius": 100,
         "speed": 0.7,
@@ -65,7 +65,7 @@
         "deviation": 20,
         "damage": 2
     },
-    "negev":
+    "UZI":
     {
         "radius": 120,
         "speed": 0.8,
@@ -76,7 +76,7 @@
         "deviation": 30,
         "damage": 1
     },
-    "scout":
+    "SCOUT":
     {
         "radius": 250,
         "speed": 0.7,
@@ -87,7 +87,7 @@
         "deviation": 5,
         "damage": 5
     },
-    "usp_s":
+    "USP-S":
     {
         "radius": 80,
         "speed": 0.8,
