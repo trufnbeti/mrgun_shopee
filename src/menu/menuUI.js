@@ -278,5 +278,6 @@ export class MenuUI extends Container {
     this.buttonBlacklist.interactive = true;
     this.buttonOutfits.interactive = true;
     this.buttonSetting.interactive = true;
+    Game.playScene.bulletManager._initEffect();
   }
 }
