@@ -4355,7 +4355,7 @@ const manifest = {
           srcs: "assets/images/guns/aug.png"
         },
         {
-          name: "EVO 3",
+          name: "DE",
           srcs: "assets/images/guns/desert_eagle.png"
         },
         {
@@ -4363,7 +4363,7 @@ const manifest = {
           srcs: "assets/images/guns/mp5.png"
         },
         {
-          name: "M240",
+          name: "NEGEV",
           srcs: "assets/images/guns/negev.png"
         },
         {
@@ -4371,7 +4371,7 @@ const manifest = {
           srcs: "assets/images/guns/r8.png"
         },
         {
-          name: "UZI",
+          name: "1887",
           srcs: "assets/images/guns/sawed_off.png"
         },
         {
@@ -7249,7 +7249,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initGun() {
     let gunName = localStorage.getItem("gun");
     if (gunName == null) {
-      gunName = "aug";
+      gunName = "AUG";
       localStorage.setItem("gun", gunName);
     }
     localStorage.setItem(gunName, false);
@@ -48083,7 +48083,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"AK-47":{"radius":150,"speed":0.6,"type":"rapid","bulletNumber":3,"bulletRadius":4,"bulletSpeed":9,"deviation":10,"damage":5},"AUG":{"radius":100,"speed":1.2,"type":"shotgun","bulletNumber":4,"bulletRadius":2,"bulletSpeed":7,"deviation":15,"damage":3},"EVO 3":{"radius":200,"speed":0.6,"type":"rapid","bulletNumber":2,"bulletRadius":3,"bulletSpeed":10,"deviation":5,"damage":4},"MP5":{"radius":80,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":15,"deviation":5,"damage":10},"M240":{"radius":90,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":3,"bulletSpeed":8,"deviation":5,"damage":4},"R8":{"radius":100,"speed":0.7,"type":"rapid","bulletNumber":4,"bulletRadius":2,"bulletSpeed":8,"deviation":20,"damage":2},"UZI":{"radius":120,"speed":0.8,"type":"rapid","bulletNumber":8,"bulletRadius":2,"bulletSpeed":8,"deviation":30,"damage":1},"SCOUT":{"radius":250,"speed":0.7,"type":"sniper","bulletNumber":1,"bulletRadius":3,"bulletSpeed":18,"deviation":5,"damage":5},"USP-S":{"radius":80,"speed":0.8,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":8,"deviation":5,"damage":4}}');
+module.exports = JSON.parse('{"1887":{"radius":100,"speed":1.2,"type":"shotgun","bulletNumber":4,"bulletRadius":2,"bulletSpeed":7,"deviation":15,"damage":3},"AK-47":{"radius":150,"speed":0.6,"type":"rapid","bulletNumber":3,"bulletRadius":4,"bulletSpeed":9,"deviation":10,"damage":5},"AUG":{"radius":200,"speed":0.6,"type":"rapid","bulletNumber":2,"bulletRadius":3,"bulletSpeed":10,"deviation":5,"damage":4},"DE":{"radius":80,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":15,"deviation":5,"damage":10},"R8":{"radius":90,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":3,"bulletSpeed":8,"deviation":5,"damage":4},"MP5":{"radius":100,"speed":0.7,"type":"rapid","bulletNumber":4,"bulletRadius":2,"bulletSpeed":8,"deviation":20,"damage":2},"NEGEV":{"radius":120,"speed":0.8,"type":"rapid","bulletNumber":8,"bulletRadius":2,"bulletSpeed":8,"deviation":30,"damage":1},"SCOUT":{"radius":250,"speed":0.7,"type":"sniper","bulletNumber":1,"bulletRadius":3,"bulletSpeed":18,"deviation":5,"damage":5},"USP-S":{"radius":80,"speed":0.8,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":8,"deviation":5,"damage":4}}');
 
 /***/ }),
 
