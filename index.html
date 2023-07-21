@@ -5526,6 +5526,10 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.money.addChild(this.moneySprite);
     this.moneySprite.scale.set(0.4);
     let money = localStorage.getItem("money");
+    if (money == null) {
+      money = 0;
+      localStorage.setItem("money", 0);
+    }
     this.moneyText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(money, {
       fontFamily: "Triomphe Bold Autoinstr",
       fontSize: 30,
@@ -5781,6 +5785,10 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.money.addChild(this.moneySprite);
     this.moneySprite.scale.set(0.4);
     let money = localStorage.getItem("money");
+    if (money == null) {
+      money = 0;
+      localStorage.setItem("money", 0);
+    }
     this.moneyText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(money, this.textStyle);
     this.moneyText.x = this.moneySprite.width + 10;
     this.money.addChild(this.moneyText);
