@@ -16,7 +16,7 @@ export class Boss extends Enemy{
         this.hp = 50;
         this.maxHp = 50;
         this._initBody();
-        this.weapon =new Weapon(Assets.get('usp_s'))
+        this.weapon =new Weapon(Assets.get('USP-S'))
         this.position.set(x, y - this.height / 2);
         const centerX = this.width / 2;
         const centerY = this.height / 2;

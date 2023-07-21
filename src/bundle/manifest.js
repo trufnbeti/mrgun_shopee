@@ -14,7 +14,7 @@ export const manifest = {
                     srcs: 'assets/images/guns/aug.png'
                 },
                 {
-                    name: 'EVO 3',
+                    name: 'DE',
                     srcs: 'assets/images/guns/desert_eagle.png'
                 },
                 {
@@ -22,7 +22,7 @@ export const manifest = {
                     srcs: 'assets/images/guns/mp5.png'
                 },
                 {
-                    name: 'M240',
+                    name: 'NEGEV',
                     srcs: 'assets/images/guns/negev.png'
                 },
                 {
@@ -30,7 +30,7 @@ export const manifest = {
                     srcs: 'assets/images/guns/r8.png'
                 },
                 {
-                    name: 'UZI',
+                    name: '1887',
                     srcs: 'assets/images/guns/sawed_off.png'
                 },
                 {

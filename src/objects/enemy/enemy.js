@@ -9,7 +9,7 @@ export class Enemy extends Container{
     constructor(){
         super();
         this.name = "Normal";
-        this.weapon = new Weapon(Assets.get('usp_s'));
+        this.weapon = new Weapon(Assets.get('USP-S'));
 
         this.cooldown = 50;
         this.isShot = false;

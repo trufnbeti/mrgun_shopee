@@ -15,7 +15,7 @@ export class Player extends Container {
         this.sortableChildren = true;
         let outfitName = localStorage.getItem('outfit');
         if(outfitName == null){
-            outfitName = "classic";
+            outfitName = "CLASSIC";
             localStorage.setItem('outfit', outfitName);
         } 
         localStorage.setItem(outfitName, false);
@@ -28,7 +28,7 @@ export class Player extends Container {
     _initGun(){
         let gunName = localStorage.getItem('gun');
         if(gunName == null){
-            gunName = "aug";
+            gunName = "AUG";
             localStorage.setItem('gun', gunName);
         } 
         localStorage.setItem(gunName, false);

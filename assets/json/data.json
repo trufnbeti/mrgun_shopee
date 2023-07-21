@@ -10,7 +10,7 @@
             "deviation": 10,
             "damage": 5
         },
-    "AUG":
+    "1887":
         {
             "radius": 100,
             "speed": 1.2,
@@ -21,7 +21,7 @@
             "deviation": 15,
             "damage": 3
         },
-    "EVO 3":
+    "AUG":
         {
             "radius": 200,
             "speed": 0.6,
@@ -32,7 +32,7 @@
             "deviation": 5,
             "damage": 4
         },
-    "MP5":
+    "DE":
     {
         "radius": 80,
         "speed": 0.6,
@@ -43,7 +43,7 @@
         "deviation": 5,
         "damage": 10
     },
-    "M240":
+    "R8":
     {
         "radius": 90,
         "speed": 0.6,
@@ -54,7 +54,7 @@
         "deviation": 5,
         "damage": 4
     },
-    "R8":
+    "MP5":
     {
         "radius": 100,
         "speed": 0.7,
@@ -65,7 +65,7 @@
         "deviation": 20,
         "damage": 2
     },
-    "UZI":
+    "NEGEV":
     {
         "radius": 120,
         "speed": 0.8,

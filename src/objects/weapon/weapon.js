@@ -52,7 +52,7 @@ export class Weapon extends Container{
     shoot(){
         if(!this.isShot){
 
-            const gunData = GunData['usp_s'];
+            const gunData = GunData['USP-S'];
             this.type = gunData.type;
             this.radius = gunData.radius;
             this.speed = gunData.speed;
