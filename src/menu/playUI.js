@@ -95,7 +95,7 @@ export class PlayUI extends Container{
     }
 
     updateLevel(percent) {
-      if(percent < 1){
+      if(percent <= 1){
         this.graphicLevel.clear();
         this.graphicLevel.beginFill(0x525252);
         const w = 350; 
@@ -106,7 +106,10 @@ export class PlayUI extends Container{
         this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w* percent, 32, 27);
         this.graphicLevel.endFill();
       }
-      else setTimeout(()=> this.graphicLevel.visible = false, 50); 
+      else setTimeout(()=> {
+        this.graphicLevel.visible = false;
+        this.textLevel.visible = false;
+      }, 50); 
     }
   
     hide() {
