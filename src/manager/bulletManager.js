@@ -150,7 +150,9 @@ export class BulletManager extends Container {
                     for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
                         this.bloods[i]._initEnemy(this.player);
                         this.bloods[i]._initForce(eBullet.damage* 2);
-                        this.bloods[i]._initPlatform(this.map.stairs[this.map.currentIndex].stairSprites);
+                        let index = this.map.currentIndex;
+                        if(index < 0) index = 0;
+                        this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
                     }
                     this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                     
