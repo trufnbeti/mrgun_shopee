@@ -77,6 +77,10 @@ export class PlayUI extends Container{
       this.moneySprite.scale.set(0.4);
 
       let money = localStorage.getItem('money');
+      if(money == null){
+        money = 0;
+        localStorage.setItem('money', 0);
+      } 
       this.moneyText = new Text(money,this.textStyle);
       this.moneyText.x = this.moneySprite.width + 10;
       this.money.addChild(this.moneyText)

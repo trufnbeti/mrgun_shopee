@@ -81,6 +81,10 @@ export class MenuUI extends Container {
     this.moneySprite.scale.set(0.4);
 
     let money = localStorage.getItem('money');
+    if(money == null){
+      money = 0;
+      localStorage.setItem('money', 0);
+    } 
     this.moneyText = new PIXI.Text(money,{ 
       fontFamily: "Triomphe Bold Autoinstr",
       fontSize: 30,
