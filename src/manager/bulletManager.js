@@ -5,6 +5,7 @@ import { GameConstant } from "../gameConstant";
 import { GameState } from "../scenes/playScene";
 import { Blood, BloodEvent } from "../objects/blood/blood";
 import { HitEffect } from "../objects/enemy/hitEffect";
+import { HeadshotEffect } from "../objects/effect/headshotEffect";
 
 export const ManagerEvent = Object.freeze({
     Removed: "manager:remove",
@@ -28,23 +29,40 @@ export class BulletManager extends Container {
     }
     _initEffect(){
         this.hitBodyEffect = new HitEffect(this.enemyManager.enemy, 40);
+        this.hitBodyEffect._initText(this.player.gun.damage);
         this.map.addChild(this.hitBodyEffect);
         this.hitHeadEffect = new HitEffect(this.enemyManager.enemy, 70);
+        this.hitHeadEffect._initText(this.player.gun.damage*2);
         this.map.addChild(this.hitHeadEffect);
+
+        this.headshotEffect = new HeadshotEffect();
+        this.addChild(this.headshotEffect);
     }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
-        this.enemyManager.enemy.isShooted = false;
         let bonus = 1;
         bullets.forEach(bullet => {
             bullet.update(dt);
             const bound = bullet.getBounds();
             if( (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted ){ // kiểm tra va chạm giữa đạn và địch                
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-                    this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
-                    this.hitHeadEffect.playOnce();
+
+                    
+                    if(!this.enemyManager.enemy.isShooted){
+
+                        this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
+                        this.hitHeadEffect.playOnce();
+
+                        this.headshotEffect._onHeadshot();
+                        this.headshotEffect.updateText();
+                        this.headshotEffect.count ++;
+    
+                        this.playScene.playUI.updateMoney();
+                    }
+
+
                     this.player.score += 50;
                     bonus = 2;
                     sound.play("hitSound");
@@ -53,6 +71,10 @@ export class BulletManager extends Container {
                 else{
                     this.hitBodyEffect._initEnemy(this.enemyManager.enemy);
                     this.hitBodyEffect.playOnce();
+
+                    this.headshotEffect.count = 0;
+                    this.headshotEffect.updateText();
+
                     this.player.score += 25;
                     sound.play("hitSound");
                 }
@@ -167,6 +189,7 @@ export class BulletManager extends Container {
 
         this.hitBodyEffect.update(dt);
         this.hitHeadEffect.update(dt);
+        this.headshotEffect.update(dt);
 
         this.bloods.forEach(blood => {
             blood && blood.update(dt);

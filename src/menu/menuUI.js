@@ -22,7 +22,6 @@ export class MenuUI extends Container {
     this._initBackGround();
     this.gameOverBar = new PIXI.Container();
 
-    this.game = new Game();
     this._initLayout();
 
     this._initTextSmall();
@@ -75,10 +74,21 @@ export class MenuUI extends Container {
   }
 
   _initMoney() {
-    this.money = Sprite.from(Assets.get("money"));
-    this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
+    this.money = new Container();
     this.addChild(this.money);
+    this.moneySprite = Sprite.from(Assets.get("money"));
+    this.money.addChild(this.moneySprite);
+    this.moneySprite.scale.set(0.4);
+
+    let money = localStorage.getItem('money');
+    this.moneyText = new PIXI.Text(money,{ 
+      fontFamily: "Triomphe Bold Autoinstr",
+      fontSize: 30,
+      fill: ["#ffffff"],
+    });
+    this.moneyText.x = this.moneySprite.width + 10;
+    this.money.addChild(this.moneyText);
+    this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
   }
 
   bestScore(){

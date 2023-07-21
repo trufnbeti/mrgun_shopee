@@ -7,8 +7,10 @@ export class PlayUI extends Container{
     constructor() {
       super();
       this._initScore();
-      this.resize();
       this._initLevel();
+      this._initMoney();
+
+      this.resize();
     }
 
     _initLevel() {
@@ -33,12 +35,12 @@ export class PlayUI extends Container{
     }
 
     _initScore() {
-      let textStyle = new TextStyle({ 
+      this.textStyle = new TextStyle({ 
         fontFamily: "Triomphe Bold Autoinstr",
         fontSize: 30,
         fill: ["#ffffff"],
       });
-      this.scoreText = new Text(`Score: 0`, textStyle);
+      this.scoreText = new Text(`Score: 0`, this.textStyle);
       this.addChild(this.scoreText);
 
       let textStyle2 = new TextStyle({ 
@@ -65,6 +67,19 @@ export class PlayUI extends Container{
         this.healthBar.position.set(50, 150);
         this.addChild(this.healthBar);
         this.updatePlayerHp();
+    }
+
+    _initMoney() {
+      this.money = new Container();
+      this.addChild(this.money);
+      this.moneySprite = Sprite.from(Assets.get("money"));
+      this.money.addChild(this.moneySprite);
+      this.moneySprite.scale.set(0.4);
+
+      let money = localStorage.getItem('money');
+      this.moneyText = new Text(money,this.textStyle);
+      this.moneyText.x = this.moneySprite.width + 10;
+      this.money.addChild(this.moneyText)
     }
 
     updateBossHp(){
@@ -111,6 +126,13 @@ export class PlayUI extends Container{
         this.textLevel.visible = false;
       }, 50); 
     }
+
+    updateMoney(){
+      let moneyString = localStorage.getItem('money'); 
+      let moneyNumber = parseInt(moneyString);
+      localStorage.setItem('money', moneyNumber + 1);
+      this.moneyText.text = localStorage.getItem('money');
+    }
   
     hide() {
       this.visible = false;
@@ -123,7 +145,10 @@ export class PlayUI extends Container{
     resize() {
       this.scoreText.x =  50;
       this.scoreText.y = 50;
+
       this.bestScoreText.x = 50;
       this.bestScoreText.y = 100;
+
+      this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
     }
   }
