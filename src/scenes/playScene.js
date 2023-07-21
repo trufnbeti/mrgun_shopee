@@ -39,9 +39,11 @@ export class PlayScene extends Container{
         if(this.state == GameState.GameOver){
             return;
         }
-        this.enemyManager.enemy.isReady = true;
-        this.enemyManager.enemy.isShooted = false;
-        this.player.onPointerDown(this.dt);
+        if(!this.player.isMoving){
+            this.enemyManager.enemy.isReady = true;
+            this.enemyManager.enemy.isShooted = false;
+            this.player.onPointerDown(this.dt);
+        }
     }
 
     _init(){
