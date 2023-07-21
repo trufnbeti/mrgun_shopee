@@ -42,8 +42,7 @@ export class SettingScene extends Container{
         this.buttonBack.cursor = "pointer";
 
         this.buttonBack.on("pointerdown", () => {
-            this.parent.removeChild(this);
-            Game._initScene();
+            this.hide();
         });
     }
 
@@ -95,6 +94,14 @@ export class SettingScene extends Container{
         background.drawRect(0, 0, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         background.endFill();
         this.addChild(background);
+    }
+
+    hide(){
+      this.visible = false;
+      Game.playScene.menu.menuUI._onPlayScene();
+    }
+    show(){
+      this.visible = true;
     }
     
 }
