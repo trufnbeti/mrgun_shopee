@@ -29,8 +29,10 @@ export class BulletManager extends Container {
     }
     _initEffect(){
         this.hitBodyEffect = new HitEffect(this.enemyManager.enemy, 40);
+        this.hitBodyEffect._initText(this.player.gun.damage);
         this.map.addChild(this.hitBodyEffect);
         this.hitHeadEffect = new HitEffect(this.enemyManager.enemy, 70);
+        this.hitHeadEffect._initText(this.player.gun.damage*2);
         this.map.addChild(this.hitHeadEffect);
 
         this.headshotEffect = new HeadshotEffect();

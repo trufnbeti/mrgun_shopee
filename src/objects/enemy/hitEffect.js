@@ -1,5 +1,6 @@
-import { Graphics, Ticker } from "pixi.js";
+import { Graphics, Text, Ticker } from "pixi.js";
 import TWEEN from "@tweenjs/tween.js";
+import { Game } from "../../game";
 
 export class HitEffect extends Graphics {
   constructor(enemy, radius) {
@@ -11,6 +12,9 @@ export class HitEffect extends Graphics {
 
   _init() {
     this.color = this.enemy.color;
+
+    this.text.x = 0;
+    this.text.y = -20;
     
     this.alpha = 1;
     this.scale.set(1); // Kích thước ban đầu
@@ -29,6 +33,13 @@ export class HitEffect extends Graphics {
     this.enemy = enemy;
   }
 
+  _initText(damage){
+    this.text = new Text(damage, {fontSize: 50, fill: 0xFFFF00, fontStyle: 'bold'})
+    this.text.scale.set(0.1);
+    this.addChild(this.text);
+
+  }
+
   playOnce() {
     const effectDuration = 300 * 1000; // Thời gian hiệu ứng (ms)
     const finalScale = this.maxRadius / 5; // Kích thước cuối cùng
@@ -45,6 +56,15 @@ export class HitEffect extends Graphics {
       .onComplete(() => {
       })
       .start(this.dt * 1000);
+
+    new TWEEN.Tween(this.text)
+    .to({ x: this.enemy.direction * 5, y: -10}, effectDuration)
+    .onUpdate(() => {
+
+    })
+    .onComplete(() => {
+    })
+    .start(this.dt * 1000);
   }
 
   update(dt) {

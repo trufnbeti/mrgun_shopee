@@ -2,7 +2,7 @@
     "ak":
         {
             "radius": 150,
-            "speed": 0.2,
+            "speed": 0.6,
             "type": "rapid",
             "bulletNumber": 3,
             "bulletRadius": 4,
@@ -35,7 +35,7 @@
     "desert_eagle":
     {
         "radius": 80,
-        "speed": 0.4,
+        "speed": 0.6,
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 4, 
@@ -46,7 +46,7 @@
     "r8":
     {
         "radius": 90,
-        "speed": 0.3,
+        "speed": 0.6,
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 3, 
@@ -57,7 +57,7 @@
     "mp5":
     {
         "radius": 100,
-        "speed": 0.5,
+        "speed": 0.7,
         "type": "rapid",
         "bulletNumber": 4,
         "bulletRadius": 2, 
@@ -68,7 +68,7 @@
     "negev":
     {
         "radius": 120,
-        "speed": 0.6,
+        "speed": 0.8,
         "type": "rapid",
         "bulletNumber": 8,
         "bulletRadius": 2, 
@@ -79,7 +79,7 @@
     "scout":
     {
         "radius": 250,
-        "speed": 0.6,
+        "speed": 0.7,
         "type": "sniper",
         "bulletNumber": 1,
         "bulletRadius": 3, 
@@ -90,7 +90,7 @@
     "usp_s":
     {
         "radius": 80,
-        "speed": 0.3,
+        "speed": 0.8,
         "type": "singer",
         "bulletNumber": 1,
         "bulletRadius": 4, 
