@@ -5,6 +5,7 @@ import { PlayScene } from "./scenes/playScene";
 import { sound } from "@pixi/sound";
 import { LoadingScene } from "./scenes/loadingScene";
 import { InputManager } from "./input/inputManager";
+import { SettingScene } from "./scenes/settingScene";
 
 export class Game {
     static init() {
@@ -58,9 +59,14 @@ export class Game {
     static startBackgroundMusic() {
         sound.volumeAll = 1;
         const bgMusic = sound.find("bgMusic");
-        bgMusic.volume = 0.3;
-        bgMusic.autoPlay = true;
-        bgMusic.play();
+        console.log(localStorage.getItem("musicStage"));
+        let conhac = localStorage.getItem("musicStage");
+        if(conhac == 1){
+          bgMusic.volume = 0.3;
+        }else{
+          bgMusic.volume = 0;
+        };
+        if(!bgMusic.isPlaying)bgMusic.play();
     }
 
     static update(dt){

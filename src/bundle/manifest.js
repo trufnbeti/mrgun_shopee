@@ -178,12 +178,12 @@ export const manifest = {
                     srcs: 'assets/images/button/music.png'
                 },
                 {
-                    name: 'offMusic',
-                    srcs: 'assets/images/button/offMusic.png'
+                    name: 'on',
+                    srcs: 'assets/images/button/on.png'
                 },
                 {
-                    name: 'sound',
-                    srcs: 'assets/images/button/sound.png'
+                    name: 'off',
+                    srcs: 'assets/images/button/off.png'
                 },
                 {
                     name: 'offSound',
@@ -241,6 +241,14 @@ export const manifest = {
                 {
                     name: 'light',
                     srcs: 'assets/images/layoutImg/light.png'
+                },
+                {
+                    name: 'bldefeated',
+                    srcs: 'assets/images/layoutImg/bldefeated.png'
+                },
+                {
+                    name: 'bllive',
+                    srcs: 'assets/images/layoutImg/bllive.png'
                 },
             ]
         },
