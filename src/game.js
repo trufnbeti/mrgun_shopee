@@ -59,14 +59,21 @@ export class Game {
     static startBackgroundMusic() {
         sound.volumeAll = 1;
         const bgMusic = sound.find("bgMusic");
-        console.log(localStorage.getItem("musicStage"));
         let conhac = localStorage.getItem("musicStage");
+        if(conhac == null){
+          conhac = 1;
+          localStorage.setItem("musicStage", 1);
+        }
+        console.log(localStorage.getItem("musicStage"));
         if(conhac == 1){
           bgMusic.volume = 0.3;
         }else{
           bgMusic.volume = 0;
         };
-        if(!bgMusic.isPlaying)bgMusic.play();
+        if(!bgMusic.isPlaying){
+          bgMusic.autoPlay = true;
+          bgMusic.play();
+        }
     }
 
     static update(dt){
