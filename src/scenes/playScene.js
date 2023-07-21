@@ -40,6 +40,7 @@ export class PlayScene extends Container{
             return;
         }
         this.enemyManager.enemy.isReady = true;
+        this.enemyManager.enemy.isShooted = false;
         this.player.onPointerDown(this.dt);
     }
 
