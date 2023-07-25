@@ -228,7 +228,7 @@ export class MenuUI extends Container {
   _initButtonGuns() {
     // Button 'guns'
     this.buttonGuns = Sprite.from(Assets.get("gunstore"));
-    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 995);
+    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 1000);
     this.buttonContainer.addChild(this.buttonGuns);
     this.buttonGuns.interactive = true;
     this.buttonGuns.cursor = "pointer";
@@ -247,6 +247,14 @@ export class MenuUI extends Container {
   _pulsingAnimation(button) {
     const scaleTween = new TWEEN.Tween(button.scale)
     .to({ x: 1.2, y: 1.2 }, 300)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .repeat(Infinity)
+    .yoyo(true)
+    .start();
+
+    const translateTween = new TWEEN.Tween(button.position)
+    .to({ x: this.buttonGuns.x - 12, y: this.buttonGuns.y - 12}, 300)
+    .easing(TWEEN.Easing.Quadratic.InOut)
     .repeat(Infinity)
     .yoyo(true)
     .start();
@@ -262,7 +270,7 @@ export class MenuUI extends Container {
       clearInterval(_animationLoop);
     });
   }
-  
+
   update(delta) {
     TWEEN.update();
 
