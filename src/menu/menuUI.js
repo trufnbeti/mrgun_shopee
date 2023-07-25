@@ -14,6 +14,7 @@ import { BlackListScene } from "../scenes/blackListScene";
 import { OutfitsScene } from "../scenes/outFitsScene";
 import { GunStoreScene } from "../scenes/gunStoreScene";
 import { SettingScene } from "../scenes/settingScene";
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class MenuUI extends Container {
   constructor() {
@@ -227,10 +228,12 @@ export class MenuUI extends Container {
   _initButtonGuns() {
     // Button 'guns'
     this.buttonGuns = Sprite.from(Assets.get("gunstore"));
-    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 1000);
+    this.buttonGuns.position.set(this.buttonOutfits.x + this.buttonGuns.width + 40, 995);
     this.buttonContainer.addChild(this.buttonGuns);
     this.buttonGuns.interactive = true;
     this.buttonGuns.cursor = "pointer";
+
+    this._pulsingAnimation(this.buttonGuns);
 
     this.buttonGuns.on("pointerdown", () => {
       this._onAnotherScene();
@@ -241,7 +244,28 @@ export class MenuUI extends Container {
     });
   }
 
+  _pulsingAnimation(button) {
+    const scaleTween = new TWEEN.Tween(button.scale)
+    .to({ x: 1.2, y: 1.2 }, 300)
+    .repeat(Infinity)
+    .yoyo(true)
+    .start();
+
+    function _animationLoop(delta) {
+      scaleTween.update(delta);
+      requestAnimationFrame(_animationLoop);
+    }
+  
+    _animationLoop();
+  
+    button.on("destroy", () => {
+      clearInterval(_animationLoop);
+    });
+  }
+  
   update(delta) {
+    TWEEN.update();
+
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
   }

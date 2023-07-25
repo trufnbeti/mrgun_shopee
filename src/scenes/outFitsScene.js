@@ -10,6 +10,7 @@ import {
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { ItemFrame } from "../objects/item/itemFrame";
+import { UnlockGun } from "../shop/gunStore/unlockGun";
 
 export class OutfitsScene extends Container{
 
@@ -19,11 +20,29 @@ export class OutfitsScene extends Container{
         this._initTextBig();
         this._initTextSmall();
         this._initTextTitle();
+
+        this._initLight();
+
         this._initButtonBack();
         this._initMoney();
         this._initBGOutfits();
 
        this._initOutfit();
+
+       this._initUnlockGun();
+    }
+
+    _initUnlockGun() {
+      const unlockGun = new UnlockGun(); 
+      this.addChild(unlockGun); // Add the UnlockGun to the GunStoreScene container
+    }
+
+    _initLight() {
+      this.lightImg = Sprite.from(Assets.get("light"));
+      this.lightImg.scale.y = 1.55;
+      this.lightImg.scale.x = 1.15;
+      this.lightImg.position.set((GameConstant.GAME_WIDTH - this.lightImg.width)/2 + 11, 0);
+      this.addChild(this.lightImg);
     }
 
     _initBGOutfits(){
