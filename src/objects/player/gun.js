@@ -12,13 +12,23 @@ export class Gun extends Container{
         this.name = name;
         this.dt = 0;
         this._init();
-        this._initEffect();
     }
     _init(){
         this.sortableChildren = true;
-        this.graphics = new Graphics();
-        this.addChild(this.graphics);
-        this.parent.addChild(this);
+        this._initSprite();
+        this._initData();
+        this._initEffect();
+        this._initBullet();
+
+        this.currentAnlge = 0;
+        this.maxAngle = 45;
+        this.isIncresing = true;
+        this.isShot = false;
+        this.isShooting = false;
+
+    }
+
+    _initSprite(){
         this.sprite = Sprite.from(Assets.get(this.name));
         this.sprite.scale.x *= this.parent.direction;
         this.x = 10*this.parent.direction;
@@ -26,6 +36,12 @@ export class Gun extends Container{
         this.sprite.anchor.set(0.5);
         this.sprite.zIndex = 2;
 
+        this.graphics = new Graphics();
+        this.addChild(this.graphics);
+        this.parent.addChild(this);
+    }
+
+    _initData(){
         const gunData = GunData[this.name]
 
         this.type = gunData.type;
@@ -36,21 +52,22 @@ export class Gun extends Container{
         this.bulletNumber = gunData.bulletNumber;
         this.bulletSpeed = gunData.bulletSpeed
         this.deviation = gunData.deviation;
-
-
-        this.currentAnlge = 0;
-        this.maxAngle = 45;
-        this.isIncresing = true;
-        this.isShot = false;
-        this.isShooting = false;
-        this.bullets = [];
-
     }
 
     _initEffect(){
         this.shootingEffect = new ShootingEffect();
         this.addChild(this.shootingEffect);
     }
+
+    _initBullet(){
+        this.bullets = [];
+        for(let i = 0; i < this.bulletNumber; i++){
+            let bullet = new Bullet();
+            this.addChild(bullet);
+            this.bullets.push(bullet);
+        }
+    }
+
     update(dt){
         this.flip();
         this.x = 10*this.parent.direction;
@@ -112,16 +129,18 @@ export class Gun extends Container{
     }
     shoot(dt){
         if(this.type == "rapid"){
+            let index = 0;
             new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000*Math.abs(1-dt)).repeat(this.bulletNumber).onRepeat(()=> {
-                this.isShooting = true;
-                this.bullets.push(new Bullet(this)); 
-                this.shootingEffect.play(); 
+                this.isShooting = true; 
+                this.shootingEffect.play();
+                this.bullets[index]._init();
+                index++;
             }).start(this.dt * 1000)
             .onComplete(() => {
                 this.isShooting = false;
             });
         }
-        else for(let i = 0; i < this.bulletNumber; i++) this.bullets.push(new Bullet(this)); 
+        else for(let i = 0; i < this.bulletNumber; i++) this.bullets[i]._init(); 
         this.isShot = true;
         this._onShootAnimation();
     }

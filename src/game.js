@@ -64,7 +64,6 @@ export class Game {
           conhac = 1;
           localStorage.setItem("musicStage", 1);
         }
-        console.log(localStorage.getItem("musicStage"));
         if(conhac == 1){
           bgMusic.volume = 0.3;
         }else{

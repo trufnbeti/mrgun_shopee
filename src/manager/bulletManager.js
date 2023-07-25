@@ -40,30 +40,27 @@ export class BulletManager extends Container {
     }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
-        let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
         let bonus = 1;
         bullets.forEach(bullet => {
             bullet.update(dt);
-            const bound = bullet.getBounds();
-            if( (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted ){ // kiểm tra va chạm giữa đạn và địch                
-                if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){
-
-                    
+            if(!bullet.isDestroyed && (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) ){ // kiểm tra va chạm giữa đạn và địch                
+                if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){ 
                     if(!this.enemyManager.enemy.isShooted){
 
                         this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
-                        this.hitHeadEffect.playOnce();
+                        
+                        this.player.score += 50;
 
-                        this.headshotEffect._onHeadshot();
                         this.headshotEffect.updateText();
                         this.headshotEffect.count ++;
     
                         this.playScene.playUI.updateMoney();
                     }
+                    this.hitHeadEffect.playOnce();
 
+                    this.headshotEffect._onHeadshot();
 
-                    this.player.score += 50;
                     bonus = 2;
                     sound.play("hitSound");
                     sound.play("headshotSound");
@@ -89,41 +86,27 @@ export class BulletManager extends Container {
                 this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
                 //==============
                 
-                bulletsToRemove.push(bullet);
-                
-                if(!this.enemyManager.enemy.isShooted){
-                    if (this.enemyManager.enemy.name === "Normal"){
-                        this.enemyManager.enemy.deaded = true;
-                        this.enemyManager.enemy.isReady = false;
-                    }
-                    
-                    else{
-                        this.enemyManager._onHit();
-                    }
-                    // console.log(this.enemy.name == "Normal");
-
+                if (this.enemyManager.enemy.name === "Normal"){
+                    this.enemyManager.enemy.deaded = true;
+                    this.enemyManager.enemy.isReady = false;
                 }
-                else this.enemyManager.enemy.takeDmg(this.player.gun.damage * bonus)
                 
+                else{
+                    this.enemyManager._onHit(bonus);
+                }
+
+                bullet._onDestroyed();
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
-                if(Util.checkCollision(step, bullet)){
-                    bulletsToRemove.push(bullet)
+                if(!bullet.isDestroyed && Util.checkCollision(step, bullet)){
+                    bullet._onDestroyed();
                     sound.play("hitWallSound");
                 }
                 })
             }
-            if(bound.x < 0 || bound.x > GameConstant.GAME_WIDTH) bulletsToRemove.push(bullet)
         });
-        bulletsToRemove.forEach(bullet => { // loại bỏ các viên đạn va chạm đã được đánh dấu
-            const index = bullets.indexOf(bullet);
-            if (index > -1) {
-                bullets.splice(index, 1);
-            }
-            bullet.destroy();
-        });
-        
+
         // enemy bullet
         if(this.enemyManager.enemy.weapon.isShot){
             let eBullet = this.enemyManager.enemy.weapon.bullet;
@@ -132,10 +115,10 @@ export class BulletManager extends Container {
                 if(Util.checkCollision(eBullet, this.player.sprite)){
                     sound.play("hitSound");
                     this.player.hp -= 1;
-                    eBullet.destroy();
+
+                    eBullet._onDestroyed();
                     
                     this.enemyManager.enemy.reCooldown();
-                    this.enemyManager.enemy.weapon.restart();
 
                     this.player.gun.isShot = false;
                     this.playScene.playUI.updatePlayerHp();

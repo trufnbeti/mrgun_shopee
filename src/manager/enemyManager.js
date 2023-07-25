@@ -25,6 +25,7 @@ export const EnemyManagerEvent = Object.freeze({
         this.enemy = this.randomEnemy();
         this.enemy._init(0, this.map.stairs[0].y, 1, 75, Util.randomColor());
         this.map.addChild(this.enemy)
+        this.bonus = 1;
     }
   
     _spawnEnemy(player) {
@@ -73,13 +74,14 @@ export const EnemyManagerEvent = Object.freeze({
         this.map.addChild(this.enemy);
     }
 
-    _onHit(){
+    _onHit(bonus){
+        this.bonus = bonus;
         this.emit(EnemyManagerEvent.Hit);
     }
   
     _onBossHit(){
         const nextStair = this.map.stairs[this.map.currentIndex+2];
-        this.enemy.takeDmg(this.player.gun.damage);
+        this.enemy.takeDmg(this.player.gun.damage * this.bonus);
         if(this.enemy.hp <= 0) {
             Game._initScene();
             return;
@@ -89,6 +91,11 @@ export const EnemyManagerEvent = Object.freeze({
             this.enemy.reCooldown();
         }
 
+    }
+
+    _onPlayerShoot(){
+        this.enemy.isReady = true;
+        this.enemy.isShooted = false;
     }
     update(dt) {
       this.enemy.update(dt);

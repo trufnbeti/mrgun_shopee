@@ -33,17 +33,14 @@ export class PlayScene extends Container{
     }
 
     _onPointerDown(pos) {
-        if (this.state == GameState.Menu) {
-            return;
+        if (this.state == GameState.Playing || this.state == GameState.BossFight) {
+            if(!this.player.isMoving){
+                this.enemyManager._onPlayerShoot();
+                this.player.onPointerDown(this.dt);
+            }
         }
-        if(this.state == GameState.GameOver){
-            return;
-        }
-        if(!this.player.isMoving){
-            this.enemyManager.enemy.isReady = true;
-            this.enemyManager.enemy.isShooted = false;
-            this.player.onPointerDown(this.dt);
-        }
+        else return;
+
     }
 
     _init(){

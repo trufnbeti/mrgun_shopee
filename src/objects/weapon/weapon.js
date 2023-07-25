@@ -13,6 +13,9 @@ export class Weapon extends Container{
         this.runAngle = 0;
         this.isShot = false;
         this.speed = 1.2;
+
+        this.bullet = new Bullet()
+        this.addChild(this.bullet);
     }
     update(dt){
             if(this.runAngle < this.currentAnlge*1.4) {
@@ -47,6 +50,7 @@ export class Weapon extends Container{
         this.sprite.angle = 0;
         this.runAngle = 0;
         this.speed = 1.2;
+        this.bullet._onDestroyed();
     }
 
     shoot(){
@@ -62,7 +66,7 @@ export class Weapon extends Container{
             this.bulletSpeed = gunData.bulletSpeed
             this.deviation = 0;
 
-            this.bullet = new Bullet(this)
+            this.bullet._init();
         }
     }
 }

@@ -48,7 +48,7 @@ export class Enemy extends Container{
     //     this.timeRotateDead = 0;
     // }
     equipWeapon(){
-        // this.removeChild(this.weapon);
+        this.removeChild(this.weapon);
         this.weapon.sprite.scale.x = this.direction;
         this.reCooldown();
     

@@ -2,17 +2,19 @@ import { Assets, Container, Graphics, Ticker } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { sound } from "@pixi/sound";
 
+export const BulletEvent = Object.freeze({
+    Shoot: "shoot",
+    Destroyed: "destroyed"
+})
 export class Bullet extends Container{
-    constructor(parent){
+    constructor(){
         super();
-        this.parent = parent;
-        this._init()
-    }
-    _init(){
-        this.parent.addChild(this);
         this.graphics = new Graphics();
         this.addChild(this.graphics);
-
+        this.on(BulletEvent.Shoot, this.show);
+        this.on(BulletEvent.Destroyed, this.hide);
+    }
+    _init(){
         this.direction = this.parent.direction // hướng bắn
         this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge // góc lệch của đạn
         this.speed = this.parent.bulletSpeed; // tốc độ bay
@@ -22,11 +24,10 @@ export class Bullet extends Container{
         const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
         this.type = this.parent.type; // kiểu bắn
 
-        this.x +=  this.direction*this.parent.sprite.width/4*Math.cos(this.beta*Math.PI/180);
-        this.y +=  this.direction*this.parent.sprite.width/4*Math.sin(this.beta*Math.PI/180);
+        this.x =  this.direction*this.parent.sprite.width/4*Math.cos(this.beta*Math.PI/180);
+        this.y =  this.direction*this.parent.sprite.width/4*Math.sin(this.beta*Math.PI/180);
 
-
-        switch (this.type) {
+       switch (this.type) {
             case "rapid":
                 const pistolSound = sound.find("pistolSound");
                 pistolSound.volume = 0.1;
@@ -56,24 +57,44 @@ export class Bullet extends Container{
             default:
                 break;
         }
-
+        this._onShoot();
+        this.drawBullet();
     }
     update(dt){
-        if(this.destroyed){
+        if(this.isDestroyed){
             return;
         }
         const realspeed = this.speed* this.direction;
         this.x += realspeed*Math.cos(this.beta*Math.PI/180) * dt;
         this.y += realspeed * Math.sin(this.beta*Math.PI/180) * dt;
-        this.drawBullet();
     }
     drawBullet(){
         this.graphics.clear();
         this.graphics.beginFill(0xFFFFFF)
-        this.graphics.drawCircle(this.x, this.y, this.parent.bulletRadius);
+        this.graphics.drawCircle(0, 0, this.parent.bulletRadius);
     }
 
     destroy(){
         super.destroy();
+    }
+
+    _onShoot(){
+        this.emit(BulletEvent.Shoot);
+    }
+
+    _onDestroyed(){
+        this.emit(BulletEvent.Destroyed);
+
+    }
+
+    hide(){
+        this.visible = false;
+        this.isDestroyed = true;
+        this.x = 0;
+        this.y = 0;
+    }
+    show(){
+        this.visible = true;
+        this.isDestroyed = false;
     }
 }
