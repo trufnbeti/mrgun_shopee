@@ -11,6 +11,7 @@ import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { ItemFrame } from "../objects/item/itemFrame";
 import { UnlockGun } from "../shop/gunStore/unlockGun";
+import { Money } from "../objects/money/money";
 
 export class OutfitsScene extends Container{
 
@@ -24,12 +25,16 @@ export class OutfitsScene extends Container{
         this._initLight();
 
         this._initButtonBack();
-        this._initMoney();
         this._initBGOutfits();
-
+        this._initMoney();
        this._initOutfit();
 
        this._initUnlockGun();
+    }
+
+    _initMoney(){
+      const money = new Money();
+      this.addChild(money);
     }
 
     _initUnlockGun() {
@@ -52,13 +57,6 @@ export class OutfitsScene extends Container{
         bGOutfits.drawRect(0, GameConstant.GAME_HEIGHT / 3, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         bGOutfits.endFill();
         this.addChild(bGOutfits);
-    }
-
-    _initMoney(){
-        this.money = Sprite.from(Assets.get("money"));
-        this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
-        this.money.scale.set(0.4);
-        this.addChild(this.money);
     }
 
     _initButtonBack() {

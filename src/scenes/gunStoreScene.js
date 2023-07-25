@@ -5,6 +5,7 @@ import { Game } from "../game";
 import { ItemFrame } from "../objects/item/itemFrame";
 import { Lamp } from "../shop/gunStore/lamp";
 import { UnlockGun } from "../shop/gunStore/unlockGun";
+import { Money } from "../objects/money/money";
 
 
 export class GunStoreScene extends Container{
@@ -37,10 +38,8 @@ export class GunStoreScene extends Container{
   }
 
   _initMoney(){
-    this.money = Sprite.from(Assets.get("money"));
-    this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
-    this.addChild(this.money);
+    const money = new Money();
+    this.addChild(money);
   }
 
   _initButtonBack() {

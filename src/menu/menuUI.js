@@ -15,6 +15,7 @@ import { OutfitsScene } from "../scenes/outFitsScene";
 import { GunStoreScene } from "../scenes/gunStoreScene";
 import { SettingScene } from "../scenes/settingScene";
 import * as TWEEN from "@tweenjs/tween.js";
+import { Money } from "../objects/money/money";
 
 export class MenuUI extends Container {
   constructor() {
@@ -74,26 +75,9 @@ export class MenuUI extends Container {
     this.addChild(this.textLevel);
   }
 
-  _initMoney() {
-    this.money = new Container();
-    this.addChild(this.money);
-    this.moneySprite = Sprite.from(Assets.get("money"));
-    this.money.addChild(this.moneySprite);
-    this.moneySprite.scale.set(0.4);
-
-    let money = localStorage.getItem('money');
-    if(money == null){
-      money = 0;
-      localStorage.setItem('money', 0);
-    } 
-    this.moneyText = new PIXI.Text(money,{ 
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 30,
-      fill: ["#ffffff"],
-    });
-    this.moneyText.x = this.moneySprite.width + 10;
-    this.money.addChild(this.moneyText);
-    this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
+  _initMoney(){
+    const money = new Money();
+    this.addChild(money);
   }
 
   bestScore(){
