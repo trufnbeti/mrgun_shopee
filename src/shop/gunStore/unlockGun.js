@@ -9,6 +9,7 @@ import {
 } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Game } from "../../game";
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class UnlockGun extends Container{
 
@@ -28,11 +29,29 @@ export class UnlockGun extends Container{
         this.btnRandomGun.scale.set(0.6)
         this.addChild(this.btnRandomGun);
 
+        const scaleTween = new TWEEN.Tween(this.btnRandomGun.scale)
+        .to({ x: 0.7, y: 0.7 }, 300)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .repeat(Infinity)
+        .yoyo(true)
+        .start();
+
+        const translateTween = new TWEEN.Tween(this.btnRandomGun.position)
+        .to({ x: this.btnRandomGun.x - 15, y: this.btnRandomGun.y - 10}, 300)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .repeat(Infinity)
+        .yoyo(true)
+        .start();
+
         this.btnRandomGun.interactive = true;
         this.btnRandomGun.cursor = "pointer";
         let tmp = 1;
         this.btnRandomGun.on("pointerdown", () => {
             if(tmp == 1){
+                scaleTween.stop();
+                translateTween.stop();
+                this.btnRandomGun.scale.set(0.6);
+                this.btnRandomGun.position.set(70, GameConstant.GAME_HEIGHT - 120);
                 tmp = 0;
                 this._LockRandomGun();
                 console.log("lock random gun");
@@ -56,7 +75,7 @@ export class UnlockGun extends Container{
     _LockRandomGun() {
         const lockRandomGun = new Graphics();
         lockRandomGun.beginFill(0x000000, 0.7);
-        lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, 333, 97, 16);
+        lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, this.btnRandomGun.width+1,  this.btnRandomGun.height, 17);
         lockRandomGun.endFill();
         this.addChild(lockRandomGun);
     }
@@ -68,5 +87,9 @@ export class UnlockGun extends Container{
     hide(){
         this.visible = false;
     }
+
+      update(delta) {
+        TWEEN.update();
+      }
 
 }
