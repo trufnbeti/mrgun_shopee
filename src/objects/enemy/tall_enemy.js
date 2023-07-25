@@ -15,9 +15,9 @@ export class TallEnemy extends Enemy{
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
-        this.position.set(x, y - this.height / 2);
-        const centerX = this.width / 2;
-        const centerY = this.height / 2;
+        this.position.set(x, y - (this.head.height + this.body.height) / 2);
+        const centerX = this.body.width / 2;
+        const centerY = (this.head.height + this.body.height) / 2;
         this.pivot.set(centerX, centerY);
         this.equipWeapon();
         this.isJumping = false;

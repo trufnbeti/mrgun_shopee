@@ -48,12 +48,12 @@ export class Enemy extends Container{
     //     this.timeRotateDead = 0;
     // }
     equipWeapon(){
+        // this.removeChild(this.weapon);
         this.weapon.sprite.scale.x = this.direction;
-        this.weapon.restart();
         this.reCooldown();
     
-        this.weapon.x = this.width / 2;
-        this.weapon.y = this.height / 2;
+        this.weapon.x = this.body.width / 2;
+        this.weapon.y = this.head.height + this.body.height/4;
         
         this.addChild(this.weapon);
     }
@@ -90,6 +90,7 @@ export class Enemy extends Container{
         this.velocity.y = 0;
         this.timeRotateDead = 0;
         this.isDead = false;
+        this.weapon.restart();
     }
 
 }
