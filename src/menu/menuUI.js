@@ -14,6 +14,8 @@ import { BlackListScene } from "../scenes/blackListScene";
 import { OutfitsScene } from "../scenes/outFitsScene";
 import { GunStoreScene } from "../scenes/gunStoreScene";
 import { SettingScene } from "../scenes/settingScene";
+import * as TWEEN from "@tweenjs/tween.js";
+import { Money } from "../objects/money/money";
 
 export class MenuUI extends Container {
   constructor() {
@@ -73,26 +75,9 @@ export class MenuUI extends Container {
     this.addChild(this.textLevel);
   }
 
-  _initMoney() {
-    this.money = new Container();
-    this.addChild(this.money);
-    this.moneySprite = Sprite.from(Assets.get("money"));
-    this.money.addChild(this.moneySprite);
-    this.moneySprite.scale.set(0.4);
-
-    let money = localStorage.getItem('money');
-    if(money == null){
-      money = 0;
-      localStorage.setItem('money', 0);
-    } 
-    this.moneyText = new PIXI.Text(money,{ 
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 30,
-      fill: ["#ffffff"],
-    });
-    this.moneyText.x = this.moneySprite.width + 10;
-    this.money.addChild(this.moneyText);
-    this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
+  _initMoney(){
+    const money = new Money();
+    this.addChild(money);
   }
 
   bestScore(){
@@ -232,6 +217,8 @@ export class MenuUI extends Container {
     this.buttonGuns.interactive = true;
     this.buttonGuns.cursor = "pointer";
 
+    this._pulsingAnimation(this.buttonGuns);
+
     this.buttonGuns.on("pointerdown", () => {
       this._onAnotherScene();
       
@@ -241,7 +228,36 @@ export class MenuUI extends Container {
     });
   }
 
+  _pulsingAnimation(button) {
+    const scaleTween = new TWEEN.Tween(button.scale)
+    .to({ x: 1.2, y: 1.2 }, 300)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .repeat(Infinity)
+    .yoyo(true)
+    .start();
+
+    const translateTween = new TWEEN.Tween(button.position)
+    .to({ x: this.buttonGuns.x - 12, y: this.buttonGuns.y - 12}, 300)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .repeat(Infinity)
+    .yoyo(true)
+    .start();
+
+    function _animationLoop(delta) {
+      scaleTween.update(delta);
+      requestAnimationFrame(_animationLoop);
+    }
+  
+    _animationLoop();
+  
+    button.on("destroy", () => {
+      clearInterval(_animationLoop);
+    });
+  }
+
   update(delta) {
+    TWEEN.update();
+
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
   }

@@ -23,14 +23,16 @@ export class Item extends Container{
     _initFrame(){
         this.frame = new Graphics();
         this.addChild(this.frame);
-        this.frame.lineStyle(10, 0xf4b544);
+        let yellowc = 0xf3b23d;
+        this.frame.lineStyle(10, yellowc);
         this.frame.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
     }
 
     _initBg(){
         this.bg = new Graphics();
         this.addChild(this.bg);
-        this.bg.beginFill(0xf4b544);
+        let yellowc = 0xf3b23d;
+        this.bg.beginFill(yellowc);
         this.bg.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
         this.bg.visible = false;
     }
@@ -62,9 +64,8 @@ export class Item extends Container{
     }
     _initTextSmall() {
         this.smallTextStyle = new PIXI.TextStyle({
-          fontFamily: "Triomphe Bold Autoinstr",
-          fontSize: 25,
-          fontStyle: 'bold',
+          fontFamily: "Triomphe Light Autoinstr",
+          fontSize: 20,
           fill: ["#ffffff"],
         });
     }
@@ -79,6 +80,6 @@ export class Item extends Container{
         this.sprite.y = this.height/2 - this.sprite.height/2 + 40;
 
         this.text.x = this.width/2 - this.text.width/2;
-        this.text.y = this.height/4 - this.text.height + 10;
+        this.text.y = this.height/4 - this.text.height ;
     }
 }
