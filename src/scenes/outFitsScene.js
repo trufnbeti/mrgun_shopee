@@ -12,6 +12,7 @@ import { Game } from "../game";
 import { ItemFrame } from "../objects/item/itemFrame";
 import { UnlockGun } from "../shop/gunStore/unlockGun";
 import { Money } from "../objects/money/money";
+import { Player } from "../objects/player/player";
 
 export class OutfitsScene extends Container{
 
@@ -29,17 +30,21 @@ export class OutfitsScene extends Container{
         this._initMoney();
        this._initOutfit();
 
-       this._initUnlockGun();
+       this.stairs = [];
+       this.stairs.push(new PIXI.Point(0,0))
+       this.player = new Player(this);
+        this.addChild(this.player);
+        this.player.scale.set(2);
+        this.player.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT/3 - 108);
+       this.interactive = true;
+        this.on("pointerdown", () => {
+          this.player._initCharacter();
+        });
     }
 
     _initMoney(){
       const money = new Money();
       this.addChild(money);
-    }
-
-    _initUnlockGun() {
-      const unlockGun = new UnlockGun(); 
-      this.addChild(unlockGun); // Add the UnlockGun to the GunStoreScene container
     }
 
     _initLight() {
@@ -68,8 +73,8 @@ export class OutfitsScene extends Container{
         this.buttonBack.cursor = "pointer";
 
         this.buttonBack.on("pointerdown", () => {
-            Game.playScene.player._initCharacter();
             this.hide();
+            Game.playScene.player._initCharacter();
         });
     }
 
