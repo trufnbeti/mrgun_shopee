@@ -6,9 +6,12 @@ import { GameState } from "../scenes/playScene";
 import { Blood, BloodEvent } from "../objects/blood/blood";
 import { HitEffect } from "../objects/enemy/hitEffect";
 import { HeadshotEffect } from "../objects/effect/headshotEffect";
+import { EffectManager } from "./effectManager";
 
-export const ManagerEvent = Object.freeze({
-    Removed: "manager:remove",
+export const BulletManagerEvent = Object.freeze({
+    HitEnemyBody: "hit:enemybody",
+    HitEnemyHead: "hit:enemyhead",
+    HitPlayer: 'hit:player'
 })
 
 export class BulletManager extends Container {
@@ -25,19 +28,10 @@ export class BulletManager extends Container {
         for(let i = 0; i < 6; i++){
             this._spawnBloods();
         }
-        this._initEffect();
+        this.effectManager = new EffectManager(map, player, enemyManager);
+        this.addChild(this.effectManager);
     }
-    _initEffect(){
-        this.hitBodyEffect = new HitEffect(this.enemyManager.enemy, 40);
-        this.hitBodyEffect._initText(this.player.gun.damage);
-        this.map.addChild(this.hitBodyEffect);
-        this.hitHeadEffect = new HitEffect(this.enemyManager.enemy, 70);
-        this.hitHeadEffect._initText(this.player.gun.damage*2);
-        this.map.addChild(this.hitHeadEffect);
 
-        this.headshotEffect = new HeadshotEffect();
-        this.addChild(this.headshotEffect);
-    }
     _checkBullets(dt){
         let bullets = this.player.gun.bullets;
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
@@ -48,49 +42,31 @@ export class BulletManager extends Container {
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){ 
                     if(!this.enemyManager.enemy.isShooted){
 
-                        this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
-                        
                         this.player.score += 50;
 
-                        this.headshotEffect.updateText();
-                        this.headshotEffect.count ++;
+                        this.effectManager.updateHeadshotCount();
     
                         this.playScene.playUI.updateMoney();
                     }
-                    this.hitHeadEffect.playOnce();
-
-                    this.headshotEffect._onHeadshot();
+                    this.effectManager._onHitEnemyHead();
 
                     bonus = 2;
-                    sound.play("hitSound");
-                    sound.play("headshotSound");
                 } 
                 else{
-                    this.hitBodyEffect._initEnemy(this.enemyManager.enemy);
-                    this.hitBodyEffect.playOnce();
-
-                    this.headshotEffect.count = 0;
-                    this.headshotEffect.updateText();
-
-                    this.player.score += 25;
-                    sound.play("hitSound");
+                    if(!this.enemyManager.enemy.isShooted){
+                        this.player.score += 25;
+                        this.effectManager.resetHeadshotCount();
+                    }
+                    this.effectManager._onHitEnemyBody();
                 }
                 this.playScene.playUI.updateScore(this.player.score);
                 
-                //cập nhật thông tin cho những giọt máu đang xét
-                for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
-                    this.bloods[i]._initEnemy(this.enemyManager.enemy);
-                    this.bloods[i]._initForce(bullet.damage* 2);
-                    this.bloods[i]._initPlatform(steps);
-                }
-                this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
-                //==============
+                this.updateBloods(this.enemyManager.enemy, bullet);
                 
                 if (this.enemyManager.enemy.name === "Normal"){
                     this.enemyManager.enemy.deaded = true;
                     this.enemyManager.enemy.isReady = false;
                 }
-                
                 else{
                     this.enemyManager._onHit(bonus);
                 }
@@ -113,12 +89,13 @@ export class BulletManager extends Container {
             if(!eBullet.destroyed){
                 eBullet.update(dt)
                 if(Util.checkCollision(eBullet, this.player.sprite)){
-                    sound.play("hitSound");
                     this.player.hp -= 1;
 
                     eBullet._onDestroyed();
                     
                     this.enemyManager.enemy.reCooldown();
+
+                    this.effectManager._onHitPlayer();
 
                     this.player.gun.isShot = false;
                     this.playScene.playUI.updatePlayerHp();
@@ -127,21 +104,9 @@ export class BulletManager extends Container {
                         this.playScene.state = GameState.GameOver;
                         this.playScene.gameOverUI.show(); 
                     }
-                    
-                    this.hitHeadEffect._initEnemy(this.player);
-                    this.hitHeadEffect.playOnce();
-                    for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
-                        this.bloods[i]._initEnemy(this.player);
-                        this.bloods[i]._initForce(eBullet.damage* 2);
-                        let index = this.map.currentIndex;
-                        if(index < 0) index = 0;
-                        this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
-                    }
-                    this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
-                    
+                    this.updateBloods(this.player, eBullet)       
                 }
             }
-            
         }
     }
     
@@ -154,14 +119,16 @@ export class BulletManager extends Container {
         }
     }
 
-    removeBlood(blood){
-        let index = this.bloods.indexOf(blood);
-        if (index >= 0) {
-            this.bloods.splice(index, 1);
-            this.map.removeChild(blood);
-            this.emit(ManagerEvent.Removed, blood);
-            blood.destroy();
+    updateBloods(enemy, bullet){
+        for(let i = (this.currentBloodIndex) * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++){
+            this.bloods[i]._initEnemy(enemy);
+            this.bloods[i]._initForce(bullet.damage* 2);
+            let index = this.map.currentIndex;
+            if(enemy == this.enemyManager.enemy) index ++;
+            if(index < 0) index = 0;
+            this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
         }
+        this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
     }
 
     update(dt){
@@ -172,9 +139,7 @@ export class BulletManager extends Container {
                 this.enemyManager._onHit();
         //===========
 
-        this.hitBodyEffect.update(dt);
-        this.hitHeadEffect.update(dt);
-        this.headshotEffect.update(dt);
+        this.effectManager.update(dt);
 
         this.bloods.forEach(blood => {
             blood && blood.update(dt);

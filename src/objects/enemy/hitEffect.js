@@ -40,6 +40,10 @@ export class HitEffect extends Graphics {
 
   }
 
+  updateText(damage){
+    this.text.text = damage;
+  }
+
   playOnce() {
     const effectDuration = 300 * 1000; // Thời gian hiệu ứng (ms)
     const finalScale = this.maxRadius / 5; // Kích thước cuối cùng

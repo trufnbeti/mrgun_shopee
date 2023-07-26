@@ -29,7 +29,7 @@ export class HeadshotEffect extends Container{
     }
     _onHeadshot(){
         this.show();
-        const effectDuration = 300 * 1000; // Thời gian hiệu ứng (ms)
+        const effectDuration = 400 * 1000; // Thời gian hiệu ứng (ms)
         const finalTextScale = 1;
         const finalAlpha = 0; // Độ mờ cuối cùng
 

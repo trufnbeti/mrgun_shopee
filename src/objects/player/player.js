@@ -134,17 +134,5 @@ export class Player extends Container {
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;
     }
-    changeClothes(name){
-        this.sprite.destroy();
-        this.removeChild(this.sprite);
-        this.sprite = Sprite.from(Assets.get(name));
-        this.sprite.zIndex = 0;
-        this.sprite.anchor.set(0.5, 0);
-        this.addChild(this.sprite);
-    }
-    changeGun(name){
-        this.gun.destroy();
-        this.removeChild(this.gun);
-        this.gun = new Gun(this, name);
-    }
+ 
 }
