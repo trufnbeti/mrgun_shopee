@@ -229,30 +229,12 @@ export class MenuUI extends Container {
   }
 
   _pulsingAnimation(button) {
-    const scaleTween = new TWEEN.Tween(button.scale)
-    .to({ x: 1.2, y: 1.2 }, 300)
+    const scaleTween = new TWEEN.Tween(button)
+    .to( {scale:{ x: 1.1, y: 1.1 }, position: { x: button.x - button.width*0.05, y: button.y - button.height*0.075}}, 300)
     .easing(TWEEN.Easing.Quadratic.InOut)
     .repeat(Infinity)
     .yoyo(true)
     .start();
-
-    const translateTween = new TWEEN.Tween(button.position)
-    .to({ x: this.buttonGuns.x - 12, y: this.buttonGuns.y - 12}, 300)
-    .easing(TWEEN.Easing.Quadratic.InOut)
-    .repeat(Infinity)
-    .yoyo(true)
-    .start();
-
-    function _animationLoop(delta) {
-      scaleTween.update(delta);
-      requestAnimationFrame(_animationLoop);
-    }
-  
-    _animationLoop();
-  
-    button.on("destroy", () => {
-      clearInterval(_animationLoop);
-    });
   }
 
   update(delta) {
