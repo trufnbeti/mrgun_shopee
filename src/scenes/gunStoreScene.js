@@ -38,8 +38,8 @@ export class GunStoreScene extends Container{
   }
 
   _initMoney(){
-    const money = new Money();
-    this.addChild(money);
+    this.money = new Money();
+    this.addChild(this.money);
   }
 
   _initButtonBack() {
