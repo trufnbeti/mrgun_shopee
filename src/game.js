@@ -51,7 +51,7 @@ export class Game {
                 this.loadingScene.setProgress(totalProgress);
               });
               resolve();
-            }, 300); // Delay of 1 second (1000 milliseconds)
+            }, 50);
           });
         }
       }

@@ -4,6 +4,7 @@ import { PlayScene } from "./playScene";
 import { GameConstant } from "../gameConstant";
 import { Game } from "../game";
 import { Menu } from "../menu/menu";
+import { Money } from "../objects/money/money";
 
 export class GameOverUI extends Container {
   constructor(menu) {
@@ -52,9 +53,7 @@ export class GameOverUI extends Container {
   }
 
   _initMoney(){
-    this.money = Sprite.from(Assets.get("money"));
-    this.money.position.set(GameConstant .GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
+    this.money = new Money();
     this.addChild(this.money);
 }
 

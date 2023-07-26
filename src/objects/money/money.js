@@ -38,7 +38,7 @@ export class Money extends Container{
         });
         this.moneyText.x = this.moneySprite.width + 10;
         this.money.addChild(this.moneyText);
-        this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
+        this.money.position.set(GameConstant.GAME_WIDTH - 130, 30);
     }
     updateText(){
       let money = localStorage.getItem('money');

@@ -22,26 +22,28 @@ export class Item extends Container{
     }
     _initFrame(){
         this.frame = new Graphics();
-        this.addChild(this.frame);
         let yellowc = 0xf3b23d;
         this.frame.lineStyle(10, yellowc);
-        this.frame.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
+        this.frame.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT, 20);
+        this.addChild(this.frame);
     }
 
     _initBg(){
         this.bg = new Graphics();
-        this.addChild(this.bg);
         let yellowc = 0xf3b23d;
         this.bg.beginFill(yellowc);
-        this.bg.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT);
+        this.bg.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT, 20);
+        this.addChild(this.bg);
+
         this.bg.visible = false;
     }
 
     _initLock(){
         this.lock = new Graphics();
-        this.addChild(this.lock);
         this.lock.beginFill(0x00000, 0.5);
-        this.lock.drawRoundedRect(-4,-4, GameConstant.ITEM_WIDTH + 8, GameConstant.ITEM_HEIGHT+8);
+        this.lock.drawRoundedRect(-5,-5, GameConstant.ITEM_WIDTH + 10, GameConstant.ITEM_HEIGHT + 10, 20);
+        this.addChild(this.lock);
+
         this.isLock = localStorage.getItem(this.name);
         if(this.isLock == null){
             this.isLock = true;
