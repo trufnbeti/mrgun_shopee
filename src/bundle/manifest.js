@@ -86,10 +86,6 @@ export const manifest = {
                     name: 'TINY',
                     srcs: 'assets/images/character/sprinter.png'
                 },
-                {
-                    name: 'heart',
-                    srcs: 'assets/images/character/heart.png'
-                }
             ]
         },
         {
@@ -249,6 +245,18 @@ export const manifest = {
                 {
                     name: 'bllive',
                     srcs: 'assets/images/layoutImg/bllive.png'
+                },
+                {
+                    name: 'heart',
+                    srcs: 'assets/images/layoutImg/heart.png'
+                },
+                {
+                    name: 'bossIcon',
+                    srcs: 'assets/images/layoutImg/bossIcon.png'
+                },
+                {
+                    name: 'wingame',
+                    srcs: 'assets/images/layoutImg/wingame.png'
                 },
             ]
         },

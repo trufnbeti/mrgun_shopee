@@ -7,11 +7,22 @@ import { Money } from "../objects/money/money";
 export class PlayUI extends Container{
     constructor() {
       super();
+      this._initTextNormal();
+      this._initTextBig();
       this._initScore();
       this._initLevel();
       this._initMoney();
 
+      this._bossIcon();
+      this.bossIcon.visible = false;
+
       this.resize();
+    }
+    _bossIcon(){
+      this.bossIcon = Sprite.from(Assets.get("bossIcon"));
+      this.bossIcon.position.set(GameConstant.GAME_WIDTH/2 - 216, 100 - this.bossIcon.height/20);
+      this.bossIcon.scale.set(0.15);
+      this.addChild(this.bossIcon);
     }
 
     _initLevel() {
@@ -21,51 +32,53 @@ export class PlayUI extends Container{
       this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
       this.graphicLevel.endFill();
       this.addChild(this.graphicLevel);
-  
-      this._initTextNormal();
+
       this.textLevel = new PIXI.Text("LEVEL 1", this.normalTextStyle);
       this.textLevel.position.set((GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
       this.addChild(this.textLevel);
     }
     _initTextNormal() {
       this.normalTextStyle = new PIXI.TextStyle({
-        fontFamily: "Triomphe Regular Autoinstr",
+        fontFamily: 'Triomphe Light Autoinstr',
         fontSize: 25,
         fill: ["#ffffff"],
       });
     }
 
-    _initScore() {
-      this.textStyle = new TextStyle({ 
+    _initTextBig() {
+      this.BigTextStyle = new PIXI.TextStyle({
         fontFamily: "Triomphe Bold Autoinstr",
-        fontSize: 30,
+        fontSize: 55,
         fill: ["#ffffff"],
       });
-      this.scoreText = new Text(`Score: 0`, this.textStyle);
+    }
+
+    _initScore() {
+      this.scoreText = new Text(`0`, this.BigTextStyle);
       this.addChild(this.scoreText);
 
-      let textStyle2 = new TextStyle({ 
-        fontFamily: "Triomphe Bold Autoinstr",
-        fontSize: 20,
-        fill: ["#ffffff"], 
-      });
-
       this.bestScore = localStorage.getItem('bestScore');
-      this.bestScoreText = new Text(this.bestScore, textStyle2);
-      this.addChild(this.bestScoreText);
     }
 
     _initBossHp(boss){
         this.enemy = boss;
+
+        this.bossHpBG = new Graphics();
+        this.bossHpBG.beginFill(0x525252);
+        this.bossHpBG.drawRoundedRect(GameConstant.GAME_WIDTH/2 - 175, 100, 350, 12, 10);
+        this.bossHpBG.endFill();
+        this.addChild(this.bossHpBG);
+
         this.bossHp = new Graphics();
         this.addChild(this.bossHp);
+
         this.updateBossHp();
+        this.bossIcon.visible = true;
     }
 
     _initPlayerHp(player){
         this.player = player;
         this.healthBar = new Container();
-        this.healthBar.position.set(50, 150);
         this.addChild(this.healthBar);
         this.updatePlayerHp();
     }
@@ -77,10 +90,8 @@ export class PlayUI extends Container{
 
     updateBossHp(){
         this.bossHp.clear();
-        this.bossHp.lineStyle(1, 0xffffff);
-        this.bossHp.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300, 25);
-        this.bossHp.beginFill(0xFF0000);
-        this.bossHp.drawRect(GameConstant.GAME_WIDTH/2 - 150, 100, 300 * (this.enemy.hp/ this.enemy.maxHp), 25);
+        this.bossHp.beginFill(0x7c39f0);
+        this.bossHp.drawRoundedRect(GameConstant.GAME_WIDTH/2 - 175, 100, 350 * (this.enemy.hp/ this.enemy.maxHp), 12, 10);
         this.bossHp.endFill();
     }
 
@@ -88,16 +99,17 @@ export class PlayUI extends Container{
       this.healthBar.removeChildren();
       for (let i = 0; i < this.player.hp; i++) {
         let heart = Sprite.from(Assets.get("heart"));
+        heart.scale.set(0.5);
         this.healthBar.addChild(heart);
+        this.healthBar.position.set((GameConstant.GAME_WIDTH - heart.width*i/2 - 40*i)/2, 45);
         heart.x = i * 40;
       }
     }
   
     updateScore(score) {
-      this.scoreText.text = `Score: ${score}`;
+      this.scoreText.text = `${score}`;
       if(score > this.bestScore){
         this.bestScore = score;
-        this.bestScoreText.text = this.bestScore;
         localStorage.setItem('bestScore', score);
       }
     }
@@ -110,7 +122,7 @@ export class PlayUI extends Container{
         this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w, 32, 27);
         this.graphicLevel.endFill();
   
-        this.graphicLevel.beginFill(0xFF007F);
+        this.graphicLevel.beginFill(0xea3956);
         this.graphicLevel.drawRoundedRect((GameConstant.GAME_WIDTH - w) / 2,100, w* percent, 32, 27);
         this.graphicLevel.endFill();
       }
@@ -135,11 +147,8 @@ export class PlayUI extends Container{
     }
   
     resize() {
-      this.scoreText.x =  50;
-      this.scoreText.y = 50;
-
-      this.bestScoreText.x = 50;
-      this.bestScoreText.y = 100;
+      this.scoreText.x =  20;
+      this.scoreText.y = 10;
 
     }
   }
