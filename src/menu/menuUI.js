@@ -76,8 +76,8 @@ export class MenuUI extends Container {
   }
 
   _initMoney(){
-    const money = new Money();
-    this.addChild(money);
+    this.money = new Money();
+    this.addChild(this.money);
   }
 
   bestScore(){
@@ -242,6 +242,8 @@ export class MenuUI extends Container {
 
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
+
+    this.money.updateText();
   }
 
   _initBackGround() {

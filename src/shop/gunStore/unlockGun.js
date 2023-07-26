@@ -19,8 +19,18 @@ export class UnlockGun extends Container{
     }
 
     _init(){
+        let money = localStorage.getItem('money');
         this._initUnlockRandom();
+        this._LockRandomGun();
         this._initWatchPR();
+        
+        if (money < 250) {
+            this.lockRandom.visible = true;
+            this.btnRandomGun.visible = false;
+        } else {
+            this.lockRandom.visible = false;
+            this.btnRandomGun.visible = true;
+        } 
     }
 
     _initUnlockRandom() {
@@ -47,14 +57,20 @@ export class UnlockGun extends Container{
         this.btnRandomGun.cursor = "pointer";
         let tmp = 1;
         this.btnRandomGun.on("pointerdown", () => {
-            if(tmp == 1){
+            let money = localStorage.getItem('money');
+                money = money - 250;
+                if(money < 250){
+                    tmp = 0;
+                }
+                localStorage.setItem('money', money);
+                this.parent.money.updateText();
+            if(tmp == 0){
                 scaleTween.stop();
                 translateTween.stop();
                 this.btnRandomGun.scale.set(0.6);
                 this.btnRandomGun.position.set(70, GameConstant.GAME_HEIGHT - 120);
-                tmp = 0;
-                this._LockRandomGun();
-                console.log("lock random gun");
+                this.lockRandom.visible = true;
+                this.btnRandomGun.visible = false;
             }
         });
     }
@@ -73,11 +89,20 @@ export class UnlockGun extends Container{
     }
 
     _LockRandomGun() {
-        const lockRandomGun = new Graphics();
-        lockRandomGun.beginFill(0x000000, 0.7);
-        lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, this.btnRandomGun.width+1,  this.btnRandomGun.height, 17);
-        lockRandomGun.endFill();
-        this.addChild(lockRandomGun);
+        this.lockRandom = new Container();
+        
+        this.btnRandomGun1 = Sprite.from(Assets.get("unlockRandom"));
+        this.btnRandomGun1.position.set(70, GameConstant.GAME_HEIGHT - 120);
+        this.btnRandomGun1.scale.set(0.6)
+        this.lockRandom.addChild(this.btnRandomGun1);
+
+        this.lockRandomGun = new Graphics();
+        this.lockRandomGun.beginFill(0x000000, 0.7);
+        this.lockRandomGun.drawRoundedRect(70, GameConstant.GAME_HEIGHT - 120, this.btnRandomGun.width+1,  this.btnRandomGun.height, 17);
+        this.lockRandomGun.endFill();
+        this.lockRandom.addChild(this.lockRandomGun);
+
+        this.addChild(this.lockRandom);
     }
 
     show(){

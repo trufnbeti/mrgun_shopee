@@ -119,6 +119,7 @@ export class PlayScene extends Container{
             this.menu.update(dt);
         }
 
+        this.playUI.money.updateText();
     }
     
     hitStair(){

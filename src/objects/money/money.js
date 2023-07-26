@@ -8,6 +8,7 @@ import {
   Sprite,
 } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
+import { UnlockGun } from "../../shop/gunStore/unlockGun";
 
 export class Money extends Container{
 
@@ -29,6 +30,7 @@ export class Money extends Container{
           money = 0;
           localStorage.setItem('money', 0);
         } 
+
         this.moneyText = new PIXI.Text(money,{ 
           fontFamily: "Triomphe Bold Autoinstr",
           fontSize: 30,
@@ -37,6 +39,11 @@ export class Money extends Container{
         this.moneyText.x = this.moneySprite.width + 10;
         this.money.addChild(this.moneyText);
         this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
+    }
+    updateText(){
+      let money = localStorage.getItem('money');
+
+      this.moneyText.text = money;
     }
 
     show(){

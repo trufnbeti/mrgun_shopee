@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { Container, Text, TextStyle, Graphics, Sprite, Assets } from "pixi.js";
 import { Game } from "../game";
 import { GameConstant } from "../gameConstant";
+import { Money } from "../objects/money/money";
 
 export class PlayUI extends Container{
     constructor() {
@@ -70,20 +71,8 @@ export class PlayUI extends Container{
     }
 
     _initMoney() {
-      this.money = new Container();
+      this.money = new Money();
       this.addChild(this.money);
-      this.moneySprite = Sprite.from(Assets.get("money"));
-      this.money.addChild(this.moneySprite);
-      this.moneySprite.scale.set(0.4);
-
-      let money = localStorage.getItem('money');
-      if(money == null){
-        money = 0;
-        localStorage.setItem('money', 0);
-      } 
-      this.moneyText = new Text(money,this.textStyle);
-      this.moneyText.x = this.moneySprite.width + 10;
-      this.money.addChild(this.moneyText)
     }
 
     updateBossHp(){
@@ -135,7 +124,6 @@ export class PlayUI extends Container{
       let moneyString = localStorage.getItem('money'); 
       let moneyNumber = parseInt(moneyString);
       localStorage.setItem('money', moneyNumber + 1);
-      this.moneyText.text = localStorage.getItem('money');
     }
   
     hide() {
@@ -153,6 +141,5 @@ export class PlayUI extends Container{
       this.bestScoreText.x = 50;
       this.bestScoreText.y = 100;
 
-      this.money.position.set(GameConstant.GAME_WIDTH - 130, 60);
     }
   }
