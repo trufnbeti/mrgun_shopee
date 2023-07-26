@@ -117,9 +117,6 @@ export class PlayScene extends Container{
         }   
         else if (this.state == GameState.Menu){
             this.menu.update(dt);
-        }else if(this.state == GameState.GameOver){
-            //update game over UI
-            this.gameOverUI.update(dt);
         }
 
     }

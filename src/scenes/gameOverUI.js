@@ -139,13 +139,10 @@ export class GameOverUI extends Container {
 
   show() {
     this.visible = true;
+    this.score.text = localStorage.getItem('bestScore');
   }
   hide(){
     this.visible = false;
-  }
-
-  update(delta) {
-    this.score.text = localStorage.getItem('bestScore');
   }
 
 }
