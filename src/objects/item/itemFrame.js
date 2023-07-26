@@ -21,11 +21,13 @@ export class ItemFrame extends Container{
 
                 item.position.set(100 + j  * (GameConstant.ITEM_WIDTH + 40),100 + i * (GameConstant.ITEM_HEIGHT + 40));
                 
-                // console.log(item.isLock);
-                if(item.isLock){
+                if(item.isLock == "false"){
                     item.interactive = true;
                     item.cursor = "pointer";
                     item.on("pointerdown", () => this._onPointdown(item));
+                }
+                else {
+                    item.lock.visible = true;
                 }
             }
         }
