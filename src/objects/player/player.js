@@ -2,6 +2,7 @@ import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Gun } from "./gun";
 import { sound } from "@pixi/sound";
+import { Game } from "../../game";
 
 export class Player extends Container {
     constructor(parent){
@@ -97,7 +98,7 @@ export class Player extends Container {
                 this.isMoving = false;
                 this.gun.isShot = false;
             }
-            
+            if(Game.playScene.end) Game.playScene._init();
         } 
     }
     
@@ -130,6 +131,16 @@ export class Player extends Container {
         this.jumpStep = nextStair.stepNumber;
         this.path1 = width - wallDistance - this.path2*3;
         this.needFlip = true;
+    }
+
+    endPath(nextStair){
+        const width = GameConstant.GAME_WIDTH;
+        const size = GameConstant.Step_Size;
+        const wallDistance = this.direction === 1 ? this.x : width-this.x;
+        this.jumpStep = nextStair.stepNumber;
+        this.path1 = width - wallDistance - nextStair.stepNumber * size*3;
+        this.path2 = nextStair.stepNumber * size*2;
+        this.needFlip = false;
     }
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;

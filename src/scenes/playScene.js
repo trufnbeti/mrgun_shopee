@@ -9,6 +9,8 @@ import { BulletManager } from "../manager/bulletManager";
 import { InputEvent, InputManager } from "../input/inputManager";
 import { HitEffect } from "../objects/enemy/hitEffect";
 import { Util } from "../helper/utils";
+import { GameConstant } from "../gameConstant";
+import { EndPortal } from "../objects/effect/endEffect";
 
 export const GameState = Object.freeze({
     Menu: "menu",
@@ -45,6 +47,7 @@ export class PlayScene extends Container{
 
     _init(){
         this.state = GameState.Menu;
+        this.end = false;
         this.map = new Map(this, this.app);
         this.addChild(this.map);
         this.player = new Player(this.map);
@@ -59,7 +62,8 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Util.random(8, 12);
+        this.killNeed = 0
+        // Util.random(8, 12);
 
         this.player.score = 0;
     }
@@ -79,10 +83,11 @@ export class PlayScene extends Container{
     _initEnemies(){
         this.enemyManager = new EnemyManager(this.map);
         this.addChild(this.enemyManager);
-        this.enemyManager.on(EnemyManagerEvent.Hit, this._onEnemyHit, this);
+        this.enemyManager.on(EnemyManagerEvent.Hit, this.onEnemyHit, this);
+        this.enemyManager.on(EnemyManagerEvent.End, this.onEnd, this);
     }
 
-    _onEnemyHit(){
+    onEnemyHit(){
 
         if(this.killCount < this.killNeed - 1) {
             this.killCount++;
@@ -102,8 +107,18 @@ export class PlayScene extends Container{
             }
         }
         this.playUI.updateLevel(this.killCount / (this.killNeed))
-        if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
+        if(!this.end && !this.player.isMoving) this.player.calPath(this.map.nextStair());
         this.enemyManager.enemy.isShooted = true;
+    }
+
+    onEnd(){
+        this.end = true;
+        const stair = this.map.stairs[this.map.currentIndex + 1];
+        if(!this.player.isMoving){
+            this.player.endPath(stair);
+        } 
+        let x = this.player.direction == -1 ? 0 : GameConstant.GAME_WIDTH - 50; 
+        this.map.addChild(new EndPortal(x,stair.y));
     }
 
     update(dt) {

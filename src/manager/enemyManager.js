@@ -9,6 +9,7 @@ import { Game } from "../game";
 
 export const EnemyManagerEvent = Object.freeze({
     Hit: "enemymanager:hit",
+    End: "enemymanager:end"
   })
   
   export class EnemyManager extends Container{
@@ -78,12 +79,16 @@ export const EnemyManagerEvent = Object.freeze({
         this.bonus = bonus;
         this.emit(EnemyManagerEvent.Hit);
     }
+
+    _onEnd(){
+        this.emit(EnemyManagerEvent.End);
+    }
   
     _onBossHit(){
         const nextStair = this.map.stairs[this.map.currentIndex+2];
         this.enemy.takeDmg(this.player.gun.damage * this.bonus);
         if(this.enemy.hp <= 0) {
-            Game._initScene();
+            this._onEnd();
             return;
         }
         if(!this.enemy.isMoving){
