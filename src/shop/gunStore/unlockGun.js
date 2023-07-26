@@ -10,14 +10,12 @@ import {
 import { GameConstant } from "../../gameConstant";
 import { Game } from "../../game";
 import * as TWEEN from "@tweenjs/tween.js";
-import { Money } from "../../objects/money/money";
 
 export class UnlockGun extends Container{
 
     constructor() {
         super();
         this._init();
-        const money = new Money();
     }
 
     _init(){
