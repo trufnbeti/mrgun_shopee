@@ -130,7 +130,7 @@ export class Gun extends Container{
     shoot(dt){
         if(this.type == "rapid"){
             let index = 0;
-            new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000*Math.abs(1-dt)).repeat(this.bulletNumber).onRepeat(()=> {
+            new TWEEN.Tween({t: 0}).to({t: 1}, 25*1000).repeat(this.bulletNumber).onRepeat(()=> {
                 this.isShooting = true; 
                 this.shootingEffect.play();
                 this.bullets[index]._init();

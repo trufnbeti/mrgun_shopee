@@ -28,6 +28,7 @@ export class BulletManager extends Container {
         for(let i = 0; i < 6; i++){
             this._spawnBloods();
         }
+
         this.effectManager = new EffectManager(map, player, enemyManager);
         this.addChild(this.effectManager);
     }
@@ -36,9 +37,11 @@ export class BulletManager extends Container {
         let bullets = this.player.gun.bullets;
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
         let bonus = 1;
+        let hit = false;
         bullets.forEach(bullet => {
             bullet.update(dt);
             if(!bullet.isDestroyed && (Util.checkCollision(bullet, this.enemyManager.enemy.head) || Util.checkCollision(bullet, this.enemyManager.enemy.body)) ){ // kiểm tra va chạm giữa đạn và địch                
+                hit = true;
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){ 
                     if(!this.enemyManager.enemy.isShooted){
 
@@ -82,6 +85,15 @@ export class BulletManager extends Container {
                 })
             }
         });
+
+        if(hit){
+            if(!this.playScene.end && !this.player.isMoving) this.player.calPath(this.map.nextStair());
+
+            if(this.playScene.state == GameState.BossFight){
+                if(this.enemyManager.enemy.hp <= 0) this.enemyManager._onEnd();
+                this.enemyManager.BossMove();
+            }   
+        }
 
         // enemy bullet
         if(this.enemyManager.enemy.weapon.isShot){
@@ -132,7 +144,7 @@ export class BulletManager extends Container {
     }
 
     update(dt){
-        this._checkBullets(dt);
+        if(this.player.gun.isShot)this._checkBullets(dt);
         //enemy ngã xuống thì spawn thằng mới
         if (this.enemyManager.enemy.name === "Normal")
             if (this.enemyManager.enemy.y > GameConstant.GAME_HEIGHT)

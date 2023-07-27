@@ -106,18 +106,18 @@ export class PlayScene extends Container{
             }
         }
         this.playUI.updateLevel(this.killCount / (this.killNeed))
-        if(!this.end && !this.player.isMoving) this.player.calPath(this.map.nextStair());
         this.enemyManager.enemy.isShooted = true;
     }
 
     onEnd(){
         this.end = true;
-        const stair = this.map.stairs[this.map.currentIndex + 1];
+        const stair = this.map.stairs[this.map.currentIndex];
         if(!this.player.isMoving){
             this.player.endPath(stair);
         } 
-        let x = this.player.direction == -1 ? 0 : GameConstant.GAME_WIDTH - 50; 
-        this.map.addChild(new EndPortal(x,stair.y));
+        let x = this.player.direction == -1 ? 0 : GameConstant.GAME_WIDTH; 
+        this.map.addChild(new EndPortal(x,this.enemyManager.whereBossDied(),this.player.direction));
+        this.enemyManager.onBossDied();
     }
 
     update(dt) {

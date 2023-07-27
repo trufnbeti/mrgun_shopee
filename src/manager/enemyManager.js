@@ -31,7 +31,7 @@ export const EnemyManagerEvent = Object.freeze({
   
     _spawnEnemy(player) {
       
-      const nextStair = this.map.stairs[this.map.currentIndex+2];
+      const nextStair = this.map.stairs[this.map.currentIndex+1];
       const size = GameConstant.Step_Size;
       const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2 + 25  : nextStair.stepNumber*size*2 - 25;
       const x = (player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
@@ -63,7 +63,7 @@ export const EnemyManagerEvent = Object.freeze({
     }
 
     _spawnBoss(player){
-        const nextStair = this.map.stairs[this.map.currentIndex+2];
+        const nextStair = this.map.stairs[this.map.currentIndex+1];
         const size = GameConstant.Step_Size;
         const xMax = player.direction == -1 ? GameConstant.GAME_WIDTH - nextStair.stepNumber*size*2 + 25  : nextStair.stepNumber*size*2 - 25;
         const x = (player.direction == -1) ? GameConstant.GAME_WIDTH + 50 : -60;
@@ -73,6 +73,7 @@ export const EnemyManagerEvent = Object.freeze({
         this.map.removeChild(this.enemy);
         this.enemy = new Boss(x, y,  player.direction, xMax); 
         this.map.addChild(this.enemy);
+
     }
 
     _onHit(bonus){
@@ -85,17 +86,24 @@ export const EnemyManagerEvent = Object.freeze({
     }
   
     _onBossHit(){
-        const nextStair = this.map.stairs[this.map.currentIndex+2];
         this.enemy.takeDmg(this.player.gun.damage * this.bonus);
-        if(this.enemy.hp <= 0) {
-            this._onEnd();
-            return;
-        }
+
+    }
+    BossMove(){
+        if(this.enemy.hp <= 0) return;
+        const nextStair = this.map.stairs[this.map.currentIndex+1];
         if(!this.enemy.isMoving){
-            if(!this.enemy.isShooted) this.enemy.calPath(nextStair);
+            this.enemy.calPath(nextStair);
             this.enemy.reCooldown();
         }
+    }
 
+    onBossDied(){
+        this.enemy.destroy();
+    }
+
+    whereBossDied(){
+        return this.enemy.y + this.enemy.height/2;
     }
 
     _onPlayerShoot(){

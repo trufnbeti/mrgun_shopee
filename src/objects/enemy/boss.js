@@ -69,8 +69,6 @@ export class Boss extends Enemy{
     
     takeDmg(amout){
         this.hp -= amout;
-        if (this.hp <= 0 )
-            this.destroy();
     }
     move(dt){
         if (this.timer > 1){
@@ -185,7 +183,7 @@ export class Boss extends Enemy{
     }
     
     calPath(nextStair){
-        if(this.destroyed) return;
+        if(this.hp <= 0) return;
         const width = GameConstant.GAME_WIDTH;
         const size = GameConstant.Step_Size;
         const wallDistance = this.direction === 1 ? this.x : width-this.x + this.width/2;

@@ -149,7 +149,7 @@ export class Player extends Container {
         const wallDistance = this.direction === 1 ? this.x : width-this.x;
         this.jumpStep = nextStair.stepNumber;
         this.path1 = width - wallDistance - nextStair.stepNumber * size*3;
-        this.path2 = nextStair.stepNumber * size*2;
+        this.path2 = nextStair.stepNumber * size*2.5;
         this.needFlip = false;
     }
     flip(){
