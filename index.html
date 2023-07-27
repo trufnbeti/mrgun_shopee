@@ -4598,6 +4598,10 @@ const manifest = {
         {
           name: "wingame",
           srcs: "assets/images/layoutImg/wingame.png"
+        },
+        {
+          name: "dust",
+          srcs: "assets/images/layoutImg/dust.png"
         }
       ]
     },
@@ -4779,6 +4783,31 @@ const manifest = {
         {
           name: "boss_body_22",
           srcs: "assets/images/enemy/body/22.png"
+        }
+      ]
+    },
+    {
+      name: "map",
+      assets: [
+        {
+          name: "fence1",
+          srcs: "assets/images/map/fence1.png"
+        },
+        {
+          name: "fence2",
+          srcs: "assets/images/map/fence2.png"
+        },
+        {
+          name: "fence3",
+          srcs: "assets/images/map/fence3.png"
+        },
+        {
+          name: "lightPole",
+          srcs: "assets/images/map/light.png"
+        },
+        {
+          name: "pot",
+          srcs: "assets/images/map/pot.png"
         }
       ]
     }
@@ -5170,9 +5199,11 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     let bullets = this.player.gun.bullets;
     const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites;
     let bonus = 1;
+    let hit = false;
     bullets.forEach((bullet) => {
       bullet.update(dt);
       if (!bullet.isDestroyed && (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head) || _helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.body))) {
+        hit = true;
         if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head)) {
           if (!this.enemyManager.enemy.isShooted) {
             this.player.score += 50;
@@ -5206,6 +5237,15 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         });
       }
     });
+    if (hit) {
+      if (!this.playScene.end && !this.player.isMoving)
+        this.player.calPath(this.map.nextStair());
+      if (this.playScene.state == _scenes_playScene__WEBPACK_IMPORTED_MODULE_4__.GameState.BossFight) {
+        if (this.enemyManager.enemy.hp <= 0)
+          this.enemyManager._onEnd();
+        this.enemyManager.BossMove();
+      }
+    }
     if (this.enemyManager.enemy.weapon.isShot) {
       let eBullet = this.enemyManager.enemy.weapon.bullet;
       if (!eBullet.destroyed) {
@@ -5249,7 +5289,8 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
   }
   update(dt) {
-    this._checkBullets(dt);
+    if (this.player.gun.isShot)
+      this._checkBullets(dt);
     if (this.enemyManager.enemy.name === "Normal") {
       if (this.enemyManager.enemy.y > _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_HEIGHT)
         this.enemyManager._onHit();
@@ -5409,7 +5450,7 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bonus = 1;
   }
   _spawnEnemy(player) {
-    const nextStair = this.map.stairs[this.map.currentIndex + 2];
+    const nextStair = this.map.stairs[this.map.currentIndex + 1];
     const size = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.Step_Size;
     const xMax = player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - nextStair.stepNumber * size * 2 + 25 : nextStair.stepNumber * size * 2 - 25;
     const x = player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH + 50 : -60;
@@ -5439,7 +5480,7 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     return enemy;
   }
   _spawnBoss(player) {
-    const nextStair = this.map.stairs[this.map.currentIndex + 2];
+    const nextStair = this.map.stairs[this.map.currentIndex + 1];
     const size = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.Step_Size;
     const xMax = player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - nextStair.stepNumber * size * 2 + 25 : nextStair.stepNumber * size * 2 - 25;
     const x = player.direction == -1 ? _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH + 50 : -60;
@@ -5457,17 +5498,22 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.emit(EnemyManagerEvent.End);
   }
   _onBossHit() {
-    const nextStair = this.map.stairs[this.map.currentIndex + 2];
     this.enemy.takeDmg(this.player.gun.damage * this.bonus);
-    if (this.enemy.hp <= 0) {
-      this._onEnd();
+  }
+  BossMove() {
+    if (this.enemy.hp <= 0)
       return;
-    }
+    const nextStair = this.map.stairs[this.map.currentIndex + 1];
     if (!this.enemy.isMoving) {
-      if (!this.enemy.isShooted)
-        this.enemy.calPath(nextStair);
+      this.enemy.calPath(nextStair);
       this.enemy.reCooldown();
     }
+  }
+  onBossDied() {
+    this.enemy.destroy();
+  }
+  whereBossDied() {
+    return this.enemy.y + this.enemy.height / 2;
   }
   _onPlayerShoot() {
     this.enemy.isReady = true;
@@ -6030,11 +6076,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 
 class EndPortal extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor(x, y) {
+  constructor(x, y, direction) {
     super();
-    this.graphics = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("wingame"));
-    this.graphics.position.set(0, 0);
-    this.addChild(this.graphics);
+    this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("wingame"));
+    this.sprite.anchor.set(0.5, 0);
+    this.sprite.scale.x *= direction;
+    this.addChild(this.sprite);
     this.x = x;
     this.y = y - this.height;
     this.zIndex = 3;
@@ -6208,8 +6255,6 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   }
   takeDmg(amout) {
     this.hp -= amout;
-    if (this.hp <= 0)
-      this.destroy();
   }
   move(dt) {
     if (this.timer > 1) {
@@ -6306,7 +6351,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     }
   }
   calPath(nextStair) {
-    if (this.destroyed)
+    if (this.hp <= 0)
       return;
     const width = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH;
     const size = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.Step_Size;
@@ -6518,6 +6563,9 @@ __webpack_require__.r(__webpack_exports__);
 class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super();
+    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.addChild(this.head, this.body);
     this._init(x, y, direction, maxX, color);
   }
   _init(x, y, direction, maxX, color) {
@@ -6527,7 +6575,6 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.color = color;
     this.drawHead();
     this.drawBody();
-    this.addChild(this.head, this.body);
     this.position.set(x, y - (this.head.height + this.body.height) / 2);
     const centerX = this.body.width / 2;
     const centerY = (this.head.height + this.body.height) / 2;
@@ -6535,7 +6582,7 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.equipWeapon();
     this.isLeanRight = true;
     this.isLeanLeft = false;
-    this.angleLean = 1;
+    this.angleLean = 3;
     this.timer = 0;
   }
   move(dt) {
@@ -6553,13 +6600,11 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     }
   }
   drawHead() {
-    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.head.beginFill(16777215);
     this.head.drawRect(0, 0, 40, 25);
     this.head.endFill();
   }
   drawBody() {
-    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.body.beginFill(this.color);
     this.body.drawRect(-5, 25, 50, 30);
     this.body.endFill();
@@ -6609,16 +6654,18 @@ __webpack_require__.r(__webpack_exports__);
 class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super();
+    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.addChild(this.head, this.body);
     this._init(x, y, direction, maxX, color);
   }
   _init(x, y, direction, maxX, color) {
     this.direction = direction;
-    this.speed = this.direction * 4;
+    this.speed = this.direction * 7;
     this.color = color;
     this.maxX = maxX;
     this.drawHead();
     this.drawBody();
-    this.addChild(this.head, this.body);
     this.position.set(x, y - (this.head.height + this.body.height) / 2);
     const centerX = this.body.width / 2;
     const centerY = (this.head.height + this.body.height) / 2;
@@ -6636,13 +6683,11 @@ class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     }
   }
   drawHead() {
-    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.head.beginFill(16777215);
     this.head.drawRect(0, 0, 40, 30);
     this.head.endFill();
   }
   drawBody() {
-    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.body.beginFill(this.color);
     this.body.drawRect(5, 30, 30, 30);
     this.body.endFill();
@@ -6674,6 +6719,9 @@ __webpack_require__.r(__webpack_exports__);
 class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   constructor(x, y, direction, maxX, color) {
     super(x, y);
+    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.addChild(this.head, this.body);
     this._init(x, y, direction, maxX, color);
   }
   _init(x, y, direction, maxX, color) {
@@ -6683,7 +6731,6 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.maxX = maxX;
     this.drawHead();
     this.drawBody();
-    this.addChild(this.head, this.body);
     this.position.set(x, y - (this.head.height + this.body.height) / 2);
     const centerX = this.body.width / 2;
     const centerY = (this.head.height + this.body.height) / 2;
@@ -6720,13 +6767,11 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     pixi_js__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared.add(tick);
   }
   drawHead() {
-    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.head.beginFill(16777215);
     this.head.drawRect(0, 0, 20, 20);
     this.head.endFill();
   }
   drawBody() {
-    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.body.beginFill(this.color);
     this.body.drawRect(0, 20, 20, 40);
     this.body.endFill();
@@ -6889,6 +6934,57 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/objects/map/decoration.js":
+/*!***************************************!*\
+  !*** ./src/objects/map/decoration.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Decoration: () => (/* binding */ Decoration)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _helper_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../helper/utils */ "./src/helper/utils.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
+
+
+
+class Decoration {
+  constructor() {
+  }
+  random() {
+    const key = Math.floor(_helper_utils__WEBPACK_IMPORTED_MODULE_1__.Util.random(0, 6));
+    switch (key) {
+      case 1:
+        return this.addDecor("fence1");
+        break;
+      case 2:
+        return this.addDecor("fence2");
+        break;
+      case 3:
+        return this.addDecor("fence3");
+        break;
+      case 4:
+        return this.addDecor("lightPole");
+        break;
+      case 5:
+        return this.addDecor("pot");
+        break;
+      default:
+        break;
+    }
+  }
+  addDecor(name) {
+    const decor = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get(name));
+    return decor;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/objects/map/map.js":
 /*!********************************!*\
   !*** ./src/objects/map/map.js ***!
@@ -6904,6 +7000,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stair__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stair */ "./src/objects/map/stair.js");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _helper_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helper/utils */ "./src/helper/utils.js");
+/* harmony import */ var _decoration__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./decoration */ "./src/objects/map/decoration.js");
+
 
 
 
@@ -6916,6 +7014,7 @@ class Map extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _init() {
     this.sortableChildren = true;
+    this.decor = new _decoration__WEBPACK_IMPORTED_MODULE_4__.Decoration();
     this.color = this.randomColor();
     this.stairs = [];
     this.genStairs();
@@ -7025,6 +7124,7 @@ class Stair extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.graphics);
     this._initSprite();
     this._initShade();
+    this._initDecor();
   }
   _initSprite() {
     this.stairSprites = [];
@@ -7038,12 +7138,25 @@ class Stair extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.shade = this.drawStair();
     this.addChild(this.shade);
   }
+  _initDecor() {
+    this.decor = this.parent.decor.random();
+    if (this.decor) {
+      this.addChild(this.decor);
+      this.decor.anchor.set(0.5, 0);
+      this.decor.scale.x *= this.direction;
+      this.decor.x = this.direction == -1 ? this.decor.width / 2 : _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.decor.width / 2;
+      this.decor.y -= this.decor.height;
+      this.decor.tint = this.color;
+      this.decor.alpha = 1 - this.graphics.alpha - 0.2;
+    }
+  }
   updateShade(alpha) {
     this.graphics.beginFill("#000000");
     this.graphics.alpha = alpha;
     this.removeChild(this.shade);
     this.shade = this.drawStair();
     this.addChild(this.shade);
+    this.decor && (this.decor.alpha = 1 - alpha - 0.2);
   }
   drawStair() {
     const size = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.Step_Size;
@@ -7247,6 +7360,43 @@ class Bullet extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/objects/player/dustEffect.js":
+/*!******************************************!*\
+  !*** ./src/objects/player/dustEffect.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DustEffect: () => (/* binding */ DustEffect)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _assets_json_emitterDust_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/json/emitterDust.json */ "./assets/json/emitterDust.json");
+/* harmony import */ var _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pixi/particle-emitter */ "./node_modules/@pixi/particle-emitter/lib/particle-emitter.es.js");
+
+
+
+class DustEffect extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this.texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("dust");
+    this.emitterDust = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_2__.Emitter(this, (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_2__.upgradeConfig)(_assets_json_emitterDust_json__WEBPACK_IMPORTED_MODULE_1__, [this.texture]));
+    this.emitterDust.autoUpdate = true;
+    this.emitterDust.emit = false;
+    this.emitterDust.rotation = Math.PI;
+  }
+  play() {
+    const distanceBehindPlayer = 20;
+    this.position.set(-this.parent.direction * distanceBehindPlayer, 60);
+    this.scale.x *= this.parent.direction;
+    this.emitterDust.emit = true;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/objects/player/gun.js":
 /*!***********************************!*\
   !*** ./src/objects/player/gun.js ***!
@@ -7381,7 +7531,7 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   shoot(dt) {
     if (this.type == "rapid") {
       let index = 0;
-      new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].Tween({ t: 0 }).to({ t: 1 }, 100 * 1e3 * Math.abs(1 - dt)).repeat(this.bulletNumber).onRepeat(() => {
+      new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].Tween({ t: 0 }).to({ t: 1 }, 25 * 1e3).repeat(this.bulletNumber).onRepeat(() => {
         this.isShooting = true;
         this.shootingEffect.play();
         this.bullets[index]._init();
@@ -7424,6 +7574,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gun__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gun */ "./src/objects/player/gun.js");
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var _dustEffect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dustEffect */ "./src/objects/player/dustEffect.js");
+
 
 
 
@@ -7433,9 +7585,17 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(parent) {
     super();
     this.parent = parent;
+    this._initEffectDust();
     this._initAbility();
     this._initCharacter();
     this._initGun();
+    this.dustEffect.visible = true;
+  }
+  //hieu ung bui khi di chuyen
+  _initEffectDust() {
+    this.dustEffect = new _dustEffect__WEBPACK_IMPORTED_MODULE_5__.DustEffect();
+    this.addChild(this.dustEffect);
+    this.dustEffect.visible = false;
   }
   _initCharacter() {
     this.sortableChildren = true;
@@ -7539,6 +7699,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.y = this.minY;
       _pixi_sound__WEBPACK_IMPORTED_MODULE_3__.sound.play("jumpSound");
     }
+    this.dustEffect.play();
   }
   calPath(nextStair) {
     const width = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH;
@@ -7555,7 +7716,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const wallDistance = this.direction === 1 ? this.x : width - this.x;
     this.jumpStep = nextStair.stepNumber;
     this.path1 = width - wallDistance - nextStair.stepNumber * size * 3;
-    this.path2 = nextStair.stepNumber * size * 2;
+    this.path2 = nextStair.stepNumber * size * 2.5;
     this.needFlip = false;
   }
   flip() {
@@ -8009,6 +8170,7 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonBack.on("pointerdown", () => {
       this.hide();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initGun();
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.bulletManager.effectManager.updateText();
     });
   }
   _initTextTitle() {
@@ -8401,18 +8563,17 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
     }
     this.playUI.updateLevel(this.killCount / this.killNeed);
-    if (!this.end && !this.player.isMoving)
-      this.player.calPath(this.map.nextStair());
     this.enemyManager.enemy.isShooted = true;
   }
   onEnd() {
     this.end = true;
-    const stair = this.map.stairs[this.map.currentIndex + 1];
+    const stair = this.map.stairs[this.map.currentIndex];
     if (!this.player.isMoving) {
       this.player.endPath(stair);
     }
-    let x = this.player.direction == -1 ? 0 : _gameConstant__WEBPACK_IMPORTED_MODULE_11__.GameConstant.GAME_WIDTH - 50;
-    this.map.addChild(new _objects_effect_endEffect__WEBPACK_IMPORTED_MODULE_12__.EndPortal(x, stair.y));
+    let x = this.player.direction == -1 ? 0 : _gameConstant__WEBPACK_IMPORTED_MODULE_11__.GameConstant.GAME_WIDTH;
+    this.map.addChild(new _objects_effect_endEffect__WEBPACK_IMPORTED_MODULE_12__.EndPortal(x, this.enemyManager.whereBossDied(), this.player.direction));
+    this.enemyManager.onBossDied();
   }
   update(dt) {
     this.dt = dt;
@@ -48377,6 +48538,17 @@ module.exports = JSON.parse('{"1887":{"radius":100,"speed":1.2,"type":"shotgun",
 
 "use strict";
 module.exports = JSON.parse('{"alpha":{"start":0.6,"end":0.2},"scale":{"start":0.4,"end":1,"minimumScaleMultiplier":0.6},"color":{"start":"#8a7104","end":"#000000"},"speed":{"start":80,"end":40,"minimumSpeedMultiplier":0.04},"acceleration":{"x":0,"y":0},"maxSpeed":0,"startRotation":{"min":20,"max":360},"noRotation":true,"rotationSpeed":{"min":14,"max":8},"lifetime":{"min":0.3,"max":0.5},"blendMode":"normal","frequency":0.002,"emitterLifetime":0.1,"maxParticles":5,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"point"}');
+
+/***/ }),
+
+/***/ "./assets/json/emitterDust.json":
+/*!**************************************!*\
+  !*** ./assets/json/emitterDust.json ***!
+  \**************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"alpha":{"start":0.9,"end":1},"scale":{"start":0.3,"end":0.6,"minimumScaleMultiplier":0.4},"color":{"start":"#1cf018","end":"#12e90e"},"speed":{"start":20,"end":10,"minimumSpeedMultiplier":10},"acceleration":{"x":0,"y":0},"maxSpeed":20,"startRotation":{"min":10,"max":70},"noRotation":true,"rotationSpeed":{"min":14,"max":8},"lifetime":{"min":0.4,"max":0.6},"blendMode":"normal","frequency":0.002,"emitterLifetime":0.05,"maxParticles":4,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"point"}');
 
 /***/ })
 
