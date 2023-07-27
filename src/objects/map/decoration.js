@@ -9,7 +9,7 @@ export class Decoration {
 
 
     random(){
-        const key = Math.floor(Util.random(0, 6));
+        const key = Math.floor(Util.random(0, 8));
         switch (key) {
             case 1:
                 return  this.addDecor("fence1");
@@ -25,6 +25,12 @@ export class Decoration {
                 break;
             case 5:
                 return this.addDecor("pot"); 
+                break;
+            case 6:
+                return this.addDecor("lightPole2"); 
+                break;
+            case 7:
+                return this.addDecor("car"); 
                 break;
             default:
                 break;

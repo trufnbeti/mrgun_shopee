@@ -464,9 +464,18 @@ export const manifest = {
                 {
                     name: "lightPole",
                     srcs: 'assets/images/map/light.png'
-                },{
+                },
+                {
                     name: "pot",
                     srcs: 'assets/images/map/pot.png'
+                },
+                {
+                    name: "lightPole2",
+                    srcs: 'assets/images/map/light2.png'
+                },
+                {
+                    name: "car",
+                    srcs: 'assets/images/map/car.png'
                 },
             ]
         }
