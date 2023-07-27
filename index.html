@@ -4426,10 +4426,6 @@ const manifest = {
         {
           name: "TINY",
           srcs: "assets/images/character/sprinter.png"
-        },
-        {
-          name: "heart",
-          srcs: "assets/images/character/heart.png"
         }
       ]
     },
@@ -4590,6 +4586,18 @@ const manifest = {
         {
           name: "bllive",
           srcs: "assets/images/layoutImg/bllive.png"
+        },
+        {
+          name: "heart",
+          srcs: "assets/images/layoutImg/heart.png"
+        },
+        {
+          name: "bossIcon",
+          srcs: "assets/images/layoutImg/bossIcon.png"
+        },
+        {
+          name: "wingame",
+          srcs: "assets/images/layoutImg/wingame.png"
         }
       ]
     },
@@ -4866,7 +4874,7 @@ class Game {
               this.loadingScene.setProgress(totalProgress);
             });
             resolve();
-          }), 300);
+          }), 50);
         });
       }
     });
@@ -4879,7 +4887,6 @@ class Game {
       conhac = 1;
       localStorage.setItem("musicStage", 1);
     }
-    console.log(localStorage.getItem("musicStage"));
     if (conhac == 1) {
       bgMusic.volume = 0.3;
     } else {
@@ -5118,7 +5125,7 @@ const InputEvent = Object.freeze({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BulletManager: () => (/* binding */ BulletManager),
-/* harmony export */   ManagerEvent: () => (/* binding */ ManagerEvent)
+/* harmony export */   BulletManagerEvent: () => (/* binding */ BulletManagerEvent)
 /* harmony export */ });
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
@@ -5128,6 +5135,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _objects_blood_blood__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../objects/blood/blood */ "./src/objects/blood/blood.js");
 /* harmony import */ var _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../objects/enemy/hitEffect */ "./src/objects/enemy/hitEffect.js");
 /* harmony import */ var _objects_effect_headshotEffect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../objects/effect/headshotEffect */ "./src/objects/effect/headshotEffect.js");
+/* harmony import */ var _effectManager__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./effectManager */ "./src/manager/effectManager.js");
 
 
 
@@ -5136,8 +5144,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ManagerEvent = Object.freeze({
-  Removed: "manager:remove"
+
+const BulletManagerEvent = Object.freeze({
+  HitEnemyBody: "hit:enemybody",
+  HitEnemyHead: "hit:enemyhead",
+  HitPlayer: "hit:player"
 });
 class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
   constructor(player, map, enemyManager, playScene) {
@@ -5152,93 +5163,58 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     for (let i = 0; i < 6; i++) {
       this._spawnBloods();
     }
-    this._initEffect();
-  }
-  _initEffect() {
-    this.hitBodyEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 40);
-    this.hitBodyEffect._initText(this.player.gun.damage);
-    this.map.addChild(this.hitBodyEffect);
-    this.hitHeadEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_6__.HitEffect(this.enemyManager.enemy, 70);
-    this.hitHeadEffect._initText(this.player.gun.damage * 2);
-    this.map.addChild(this.hitHeadEffect);
-    this.headshotEffect = new _objects_effect_headshotEffect__WEBPACK_IMPORTED_MODULE_7__.HeadshotEffect();
-    this.addChild(this.headshotEffect);
+    this.effectManager = new _effectManager__WEBPACK_IMPORTED_MODULE_8__.EffectManager(map, player, enemyManager);
+    this.addChild(this.effectManager);
   }
   _checkBullets(dt) {
     let bullets = this.player.gun.bullets;
-    let bulletsToRemove = [];
     const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites;
     let bonus = 1;
     bullets.forEach((bullet) => {
       bullet.update(dt);
-      const bound = bullet.getBounds();
-      if ((_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head) || _helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.body)) && !this.enemyManager.enemy.isShooted) {
+      if (!bullet.isDestroyed && (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head) || _helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.body))) {
         if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head)) {
           if (!this.enemyManager.enemy.isShooted) {
-            this.hitHeadEffect._initEnemy(this.enemyManager.enemy);
-            this.hitHeadEffect.playOnce();
-            this.headshotEffect._onHeadshot();
-            this.headshotEffect.updateText();
-            this.headshotEffect.count++;
+            this.player.score += 50;
+            this.effectManager.updateHeadshotCount();
             this.playScene.playUI.updateMoney();
           }
-          this.player.score += 50;
+          this.effectManager._onHitEnemyHead();
           bonus = 2;
-          _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("hitSound");
-          _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("headshotSound");
         } else {
-          this.hitBodyEffect._initEnemy(this.enemyManager.enemy);
-          this.hitBodyEffect.playOnce();
-          this.headshotEffect.count = 0;
-          this.headshotEffect.updateText();
-          this.player.score += 25;
-          _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("hitSound");
+          if (!this.enemyManager.enemy.isShooted) {
+            this.player.score += 25;
+            this.effectManager.resetHeadshotCount();
+          }
+          this.effectManager._onHitEnemyBody();
         }
         this.playScene.playUI.updateScore(this.player.score);
-        for (let i = this.currentBloodIndex * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++) {
-          this.bloods[i]._initEnemy(this.enemyManager.enemy);
-          this.bloods[i]._initForce(bullet.damage * 2);
-          this.bloods[i]._initPlatform(steps);
+        this.updateBloods(this.enemyManager.enemy, bullet);
+        if (this.enemyManager.enemy.name === "Normal") {
+          this.enemyManager.enemy.deaded = true;
+          this.enemyManager.enemy.isReady = false;
+        } else {
+          this.enemyManager._onHit(bonus);
         }
-        this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
-        bulletsToRemove.push(bullet);
-        if (!this.enemyManager.enemy.isShooted) {
-          if (this.enemyManager.enemy.name === "Normal") {
-            this.enemyManager.enemy.deaded = true;
-            this.enemyManager.enemy.isReady = false;
-          } else {
-            this.enemyManager._onHit();
-          }
-        } else
-          this.enemyManager.enemy.takeDmg(this.player.gun.damage * bonus);
+        bullet._onDestroyed();
       } else {
         steps.forEach((step) => {
-          if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(step, bullet)) {
-            bulletsToRemove.push(bullet);
+          if (!bullet.isDestroyed && _helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(step, bullet)) {
+            bullet._onDestroyed();
             _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("hitWallSound");
           }
         });
       }
-      if (bound.x < 0 || bound.x > _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_WIDTH)
-        bulletsToRemove.push(bullet);
-    });
-    bulletsToRemove.forEach((bullet) => {
-      const index = bullets.indexOf(bullet);
-      if (index > -1) {
-        bullets.splice(index, 1);
-      }
-      bullet.destroy();
     });
     if (this.enemyManager.enemy.weapon.isShot) {
       let eBullet = this.enemyManager.enemy.weapon.bullet;
       if (!eBullet.destroyed) {
         eBullet.update(dt);
         if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(eBullet, this.player.sprite)) {
-          _pixi_sound__WEBPACK_IMPORTED_MODULE_0__.sound.play("hitSound");
           this.player.hp -= 1;
-          eBullet.destroy();
+          eBullet._onDestroyed();
           this.enemyManager.enemy.reCooldown();
-          this.enemyManager.enemy.weapon.restart();
+          this.effectManager._onHitPlayer();
           this.player.gun.isShot = false;
           this.playScene.playUI.updatePlayerHp();
           if (this.player.hp == 0) {
@@ -5246,17 +5222,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             this.playScene.state = _scenes_playScene__WEBPACK_IMPORTED_MODULE_4__.GameState.GameOver;
             this.playScene.gameOverUI.show();
           }
-          this.hitHeadEffect._initEnemy(this.player);
-          this.hitHeadEffect.playOnce();
-          for (let i = this.currentBloodIndex * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++) {
-            this.bloods[i]._initEnemy(this.player);
-            this.bloods[i]._initForce(eBullet.damage * 2);
-            let index = this.map.currentIndex;
-            if (index < 0)
-              index = 0;
-            this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
-          }
-          this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
+          this.updateBloods(this.player, eBullet);
         }
       }
     }
@@ -5269,14 +5235,18 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       this.bloods.push(blood);
     }
   }
-  removeBlood(blood) {
-    let index = this.bloods.indexOf(blood);
-    if (index >= 0) {
-      this.bloods.splice(index, 1);
-      this.map.removeChild(blood);
-      this.emit(ManagerEvent.Removed, blood);
-      blood.destroy();
+  updateBloods(enemy, bullet) {
+    for (let i = this.currentBloodIndex * this.bloodNumber; i < (this.currentBloodIndex + 1) * this.bloodNumber; i++) {
+      this.bloods[i]._initEnemy(enemy);
+      this.bloods[i]._initForce(bullet.damage * 2);
+      let index = this.map.currentIndex;
+      if (enemy == this.enemyManager.enemy)
+        index++;
+      if (index < 0)
+        index = 0;
+      this.bloods[i]._initPlatform(this.map.stairs[index].stairSprites);
     }
+    this.currentBloodIndex = (this.currentBloodIndex + 1) % 6;
   }
   update(dt) {
     this._checkBullets(dt);
@@ -5284,12 +5254,107 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
       if (this.enemyManager.enemy.y > _gameConstant__WEBPACK_IMPORTED_MODULE_3__.GameConstant.GAME_HEIGHT)
         this.enemyManager._onHit();
     }
-    this.hitBodyEffect.update(dt);
-    this.hitHeadEffect.update(dt);
-    this.headshotEffect.update(dt);
+    this.effectManager.update(dt);
     this.bloods.forEach((blood) => {
       blood && blood.update(dt);
     });
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/manager/effectManager.js":
+/*!**************************************!*\
+  !*** ./src/manager/effectManager.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EffectManager: () => (/* binding */ EffectManager)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../objects/enemy/hitEffect */ "./src/objects/enemy/hitEffect.js");
+/* harmony import */ var _objects_effect_headshotEffect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../objects/effect/headshotEffect */ "./src/objects/effect/headshotEffect.js");
+/* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+/* harmony import */ var _bulletManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bulletManager */ "./src/manager/bulletManager.js");
+
+
+
+
+
+
+class EffectManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(map, player, enemyManager) {
+    super();
+    this.map = map;
+    this.player = player;
+    this.enemy = enemyManager.enemy;
+    this._init();
+    this.on(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitEnemyBody, this.onBodyHit);
+    this.on(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitEnemyHead, this.onHeadHit);
+    this.on(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitPlayer, this.onPlayerHit);
+  }
+  _init() {
+    this.hitBodyEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_2__.HitEffect(this.enemy, 40);
+    this.map.addChild(this.hitBodyEffect);
+    this.hitHeadEffect = new _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_2__.HitEffect(this.enemy, 70);
+    this.map.addChild(this.hitHeadEffect);
+    this.headshotEffect = new _objects_effect_headshotEffect__WEBPACK_IMPORTED_MODULE_3__.HeadshotEffect();
+    this.addChild(this.headshotEffect);
+    this._initText();
+  }
+  _initText() {
+    this.hitBodyEffect._initText(this.player.gun.damage);
+    this.hitHeadEffect._initText(this.player.gun.damage * 2);
+  }
+  _onHitEnemyHead() {
+    this.emit(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitEnemyHead);
+  }
+  _onHitEnemyBody() {
+    this.emit(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitEnemyBody);
+  }
+  _onHitPlayer() {
+    this.emit(_bulletManager__WEBPACK_IMPORTED_MODULE_5__.BulletManagerEvent.HitPlayer);
+  }
+  onHeadHit() {
+    this.enemy = _game__WEBPACK_IMPORTED_MODULE_1__.Game.playScene.bulletManager.enemyManager.enemy;
+    this.hitHeadEffect._initEnemy(this.enemy);
+    this.hitHeadEffect.playOnce();
+    this.headshotEffect._onHeadshot();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("hitSound");
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("headshotSound");
+  }
+  onBodyHit() {
+    this.enemy = _game__WEBPACK_IMPORTED_MODULE_1__.Game.playScene.bulletManager.enemyManager.enemy;
+    this.hitBodyEffect._initEnemy(this.enemy);
+    this.hitBodyEffect.playOnce();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("hitSound");
+  }
+  onPlayerHit() {
+    this.hitHeadEffect._initEnemy(this.player);
+    this.hitHeadEffect.playOnce();
+    _pixi_sound__WEBPACK_IMPORTED_MODULE_4__.sound.play("hitSound");
+  }
+  updateHeadshotCount() {
+    this.headshotEffect.updateText();
+    this.headshotEffect.count++;
+  }
+  resetHeadshotCount() {
+    this.headshotEffect.count = 0;
+    this.headshotEffect.updateText();
+  }
+  updateText() {
+    this.hitBodyEffect.updateText(this.player.gun.damage);
+    this.hitHeadEffect.updateText(this.player.gun.damage * 2);
+  }
+  update(dt) {
+    this.hitBodyEffect.update(dt);
+    this.hitHeadEffect.update(dt);
+    this.headshotEffect.update(dt);
   }
 }
 
@@ -5325,7 +5390,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const EnemyManagerEvent = Object.freeze({
-  Hit: "enemymanager:hit"
+  Hit: "enemymanager:hit",
+  End: "enemymanager:end"
 });
 class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(map) {
@@ -5340,6 +5406,7 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.enemy = this.randomEnemy();
     this.enemy._init(0, this.map.stairs[0].y, 1, 75, _helper_utils__WEBPACK_IMPORTED_MODULE_1__.Util.randomColor());
     this.map.addChild(this.enemy);
+    this.bonus = 1;
   }
   _spawnEnemy(player) {
     const nextStair = this.map.stairs[this.map.currentIndex + 2];
@@ -5382,14 +5449,18 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.enemy = new _objects_enemy_boss__WEBPACK_IMPORTED_MODULE_6__.Boss(x, y, player.direction, xMax);
     this.map.addChild(this.enemy);
   }
-  _onHit() {
+  _onHit(bonus) {
+    this.bonus = bonus;
     this.emit(EnemyManagerEvent.Hit);
+  }
+  _onEnd() {
+    this.emit(EnemyManagerEvent.End);
   }
   _onBossHit() {
     const nextStair = this.map.stairs[this.map.currentIndex + 2];
-    this.enemy.takeDmg(this.player.gun.damage);
+    this.enemy.takeDmg(this.player.gun.damage * this.bonus);
     if (this.enemy.hp <= 0) {
-      _game__WEBPACK_IMPORTED_MODULE_7__.Game._initScene();
+      this._onEnd();
       return;
     }
     if (!this.enemy.isMoving) {
@@ -5397,6 +5468,10 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.enemy.calPath(nextStair);
       this.enemy.reCooldown();
     }
+  }
+  _onPlayerShoot() {
+    this.enemy.isReady = true;
+    this.enemy.isShooted = false;
   }
   update(dt) {
     this.enemy.update(dt);
@@ -5463,6 +5538,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scenes_outFitsScene__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../scenes/outFitsScene */ "./src/scenes/outFitsScene.js");
 /* harmony import */ var _scenes_gunStoreScene__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../scenes/gunStoreScene */ "./src/scenes/gunStoreScene.js");
 /* harmony import */ var _scenes_settingScene__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../scenes/settingScene */ "./src/scenes/settingScene.js");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _objects_money_money__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../objects/money/money */ "./src/objects/money/money.js");
+
+
 
 
 
@@ -5520,24 +5599,8 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.textLevel);
   }
   _initMoney() {
-    this.money = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_9__.Money();
     this.addChild(this.money);
-    this.moneySprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
-    this.money.addChild(this.moneySprite);
-    this.moneySprite.scale.set(0.4);
-    let money = localStorage.getItem("money");
-    if (money == null) {
-      money = 0;
-      localStorage.setItem("money", 0);
-    }
-    this.moneyText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(money, {
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 30,
-      fill: ["#ffffff"]
-    });
-    this.moneyText.x = this.moneySprite.width + 10;
-    this.money.addChild(this.moneyText);
-    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - 130, 60);
   }
   bestScore() {
     this.bestScore = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
@@ -5652,6 +5715,7 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonContainer.addChild(this.buttonGuns);
     this.buttonGuns.interactive = true;
     this.buttonGuns.cursor = "pointer";
+    this._pulsingAnimation(this.buttonGuns);
     this.buttonGuns.on("pointerdown", () => {
       this._onAnotherScene();
       _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.removeChild(this.gunStoreScene);
@@ -5659,9 +5723,14 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       _game__WEBPACK_IMPORTED_MODULE_3__.Game.app.stage.addChild(this.gunStoreScene);
     });
   }
+  _pulsingAnimation(button) {
+    const scaleTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_8__.Tween(button).to({ scale: { x: 1.1, y: 1.1 }, position: { x: button.x - button.width * 0.05, y: button.y - button.height * 0.075 } }, 300).easing(_tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_8__.Easing.Quadratic.InOut).repeat(Infinity).yoyo(true).start();
+  }
   update(delta) {
+    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_8__.update();
     this.blinkCounter += delta * 0.1;
     this.gameReloadText.alpha = Math.abs(Math.sin(this.blinkCounter));
+    this.money.updateText();
   }
   _initBackGround() {
     const background = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
@@ -5696,7 +5765,7 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonBlacklist.interactive = true;
     this.buttonOutfits.interactive = true;
     this.buttonSetting.interactive = true;
-    _game__WEBPACK_IMPORTED_MODULE_3__.Game.playScene.bulletManager._initEffect();
+    _game__WEBPACK_IMPORTED_MODULE_3__.Game.playScene.bulletManager.effectManager.updateText();
   }
 }
 
@@ -5717,6 +5786,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _objects_money_money__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../objects/money/money */ "./src/objects/money/money.js");
+
 
 
 
@@ -5724,10 +5795,20 @@ __webpack_require__.r(__webpack_exports__);
 class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
+    this._initTextNormal();
+    this._initTextBig();
     this._initScore();
     this._initLevel();
     this._initMoney();
+    this._bossIcon();
+    this.bossIcon.visible = false;
     this.resize();
+  }
+  _bossIcon() {
+    this.bossIcon = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bossIcon"));
+    this.bossIcon.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 216, 100 - this.bossIcon.height / 20);
+    this.bossIcon.scale.set(0.15);
+    this.addChild(this.bossIcon);
   }
   _initLevel() {
     this.graphicLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
@@ -5736,84 +5817,71 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.graphicLevel.drawRoundedRect((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - w) / 2, 100, w, 32, 27);
     this.graphicLevel.endFill();
     this.addChild(this.graphicLevel);
-    this._initTextNormal();
     this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL 1", this.normalTextStyle);
     this.textLevel.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
     this.addChild(this.textLevel);
   }
   _initTextNormal() {
     this.normalTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Triomphe Regular Autoinstr",
+      fontFamily: "Triomphe Light Autoinstr",
       fontSize: 25,
       fill: ["#ffffff"]
     });
   }
+  _initTextBig() {
+    this.BigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Triomphe Bold Autoinstr",
+      fontSize: 55,
+      fill: ["#ffffff"]
+    });
+  }
   _initScore() {
-    this.textStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 30,
-      fill: ["#ffffff"]
-    });
-    this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`Score: 0`, this.textStyle);
+    this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`0`, this.BigTextStyle);
     this.addChild(this.scoreText);
-    let textStyle2 = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 20,
-      fill: ["#ffffff"]
-    });
     this.bestScore = localStorage.getItem("bestScore");
-    this.bestScoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.bestScore, textStyle2);
-    this.addChild(this.bestScoreText);
   }
   _initBossHp(boss) {
     this.enemy = boss;
+    this.bossHpBG = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.bossHpBG.beginFill(5395026);
+    this.bossHpBG.drawRoundedRect(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 175, 100, 350, 12, 10);
+    this.bossHpBG.endFill();
+    this.addChild(this.bossHpBG);
     this.bossHp = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.addChild(this.bossHp);
     this.updateBossHp();
+    this.bossIcon.visible = true;
   }
   _initPlayerHp(player) {
     this.player = player;
     this.healthBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.healthBar.position.set(50, 150);
     this.addChild(this.healthBar);
     this.updatePlayerHp();
   }
   _initMoney() {
-    this.money = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_3__.Money();
     this.addChild(this.money);
-    this.moneySprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
-    this.money.addChild(this.moneySprite);
-    this.moneySprite.scale.set(0.4);
-    let money = localStorage.getItem("money");
-    if (money == null) {
-      money = 0;
-      localStorage.setItem("money", 0);
-    }
-    this.moneyText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(money, this.textStyle);
-    this.moneyText.x = this.moneySprite.width + 10;
-    this.money.addChild(this.moneyText);
   }
   updateBossHp() {
     this.bossHp.clear();
-    this.bossHp.lineStyle(1, 16777215);
-    this.bossHp.drawRect(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 150, 100, 300, 25);
-    this.bossHp.beginFill(16711680);
-    this.bossHp.drawRect(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 150, 100, 300 * (this.enemy.hp / this.enemy.maxHp), 25);
+    this.bossHp.beginFill(8141296);
+    this.bossHp.drawRoundedRect(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2 - 175, 100, 350 * (this.enemy.hp / this.enemy.maxHp), 12, 10);
     this.bossHp.endFill();
   }
   updatePlayerHp() {
     this.healthBar.removeChildren();
     for (let i = 0; i < this.player.hp; i++) {
       let heart = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("heart"));
+      heart.scale.set(0.5);
       this.healthBar.addChild(heart);
+      this.healthBar.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - heart.width * i / 2 - 40 * i) / 2, 45);
       heart.x = i * 40;
     }
   }
   updateScore(score) {
-    this.scoreText.text = `Score: ${score}`;
+    this.scoreText.text = `${score}`;
     if (score > this.bestScore) {
       this.bestScore = score;
-      this.bestScoreText.text = this.bestScore;
       localStorage.setItem("bestScore", score);
     }
   }
@@ -5824,7 +5892,7 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       const w = 350;
       this.graphicLevel.drawRoundedRect((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - w) / 2, 100, w, 32, 27);
       this.graphicLevel.endFill();
-      this.graphicLevel.beginFill(16711807);
+      this.graphicLevel.beginFill(15350102);
       this.graphicLevel.drawRoundedRect((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - w) / 2, 100, w * percent, 32, 27);
       this.graphicLevel.endFill();
     } else
@@ -5837,7 +5905,6 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     let moneyString = localStorage.getItem("money");
     let moneyNumber = parseInt(moneyString);
     localStorage.setItem("money", moneyNumber + 1);
-    this.moneyText.text = localStorage.getItem("money");
   }
   hide() {
     this.visible = false;
@@ -5846,11 +5913,8 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.visible = true;
   }
   resize() {
-    this.scoreText.x = 50;
-    this.scoreText.y = 50;
-    this.bestScoreText.x = 50;
-    this.bestScoreText.y = 100;
-    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - 130, 60);
+    this.scoreText.x = 20;
+    this.scoreText.y = 10;
   }
 }
 
@@ -5952,6 +6016,34 @@ class Blood extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/objects/effect/endEffect.js":
+/*!*****************************************!*\
+  !*** ./src/objects/effect/endEffect.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EndPortal: () => (/* binding */ EndPortal)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+
+class EndPortal extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(x, y) {
+    super();
+    this.graphics = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("wingame"));
+    this.graphics.position.set(0, 0);
+    this.addChild(this.graphics);
+    this.x = x;
+    this.y = y - this.height;
+    this.zIndex = 3;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/objects/effect/headshotEffect.js":
 /*!**********************************************!*\
   !*** ./src/objects/effect/headshotEffect.js ***!
@@ -5996,7 +6088,7 @@ class HeadshotEffect extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _onHeadshot() {
     this.show();
-    const effectDuration = 300 * 1e3;
+    const effectDuration = 400 * 1e3;
     const finalTextScale = 1;
     const finalAlpha = 0;
     this.rect.scale.set(1);
@@ -6293,11 +6385,11 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   //     this.timeRotateDead = 0;
   // }
   equipWeapon() {
+    this.removeChild(this.weapon);
     this.weapon.sprite.scale.x = this.direction;
-    this.weapon.restart();
     this.reCooldown();
-    this.weapon.x = this.width / 2;
-    this.weapon.y = this.height / 2;
+    this.weapon.x = this.body.width / 2;
+    this.weapon.y = this.head.height + this.body.height / 4;
     this.addChild(this.weapon);
   }
   update(dt) {
@@ -6332,6 +6424,7 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.velocity.y = 0;
     this.timeRotateDead = 0;
     this.isDead = false;
+    this.weapon.restart();
   }
 }
 
@@ -6384,6 +6477,9 @@ class HitEffect extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics {
     this.text.scale.set(0.1);
     this.addChild(this.text);
   }
+  updateText(damage) {
+    this.text.text = damage;
+  }
   playOnce() {
     const effectDuration = 300 * 1e3;
     const finalScale = this.maxRadius / 5;
@@ -6432,9 +6528,9 @@ class ShortFatEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.drawHead();
     this.drawBody();
     this.addChild(this.head, this.body);
-    this.position.set(x, y - this.height / 2);
-    const centerX = this.width / 2;
-    const centerY = this.height / 2;
+    this.position.set(x, y - (this.head.height + this.body.height) / 2);
+    const centerX = this.body.width / 2;
+    const centerY = (this.head.height + this.body.height) / 2;
     this.pivot.set(centerX, centerY);
     this.equipWeapon();
     this.isLeanRight = true;
@@ -6523,9 +6619,9 @@ class ShortSkinnyEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.drawHead();
     this.drawBody();
     this.addChild(this.head, this.body);
-    this.position.set(x, y - this.height / 2);
-    const centerX = this.width / 2;
-    const centerY = this.height / 2;
+    this.position.set(x, y - (this.head.height + this.body.height) / 2);
+    const centerX = this.body.width / 2;
+    const centerY = (this.head.height + this.body.height) / 2;
     this.pivot.set(centerX, centerY);
     this.equipWeapon();
   }
@@ -6588,9 +6684,9 @@ class TallEnemy extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.drawHead();
     this.drawBody();
     this.addChild(this.head, this.body);
-    this.position.set(x, y - this.height / 2);
-    const centerX = this.width / 2;
-    const centerY = this.height / 2;
+    this.position.set(x, y - (this.head.height + this.body.height) / 2);
+    const centerX = this.body.width / 2;
+    const centerY = (this.head.height + this.body.height) / 2;
     this.pivot.set(centerX, centerY);
     this.equipWeapon();
     this.isJumping = false;
@@ -6676,22 +6772,24 @@ class Item extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initFrame() {
     this.frame = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    let yellowc = 15970877;
+    this.frame.lineStyle(10, yellowc);
+    this.frame.drawRoundedRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT, 20);
     this.addChild(this.frame);
-    this.frame.lineStyle(10, 16037188);
-    this.frame.drawRoundedRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT);
   }
   _initBg() {
     this.bg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    let yellowc = 15970877;
+    this.bg.beginFill(yellowc);
+    this.bg.drawRoundedRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT, 20);
     this.addChild(this.bg);
-    this.bg.beginFill(16037188);
-    this.bg.drawRoundedRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT);
     this.bg.visible = false;
   }
   _initLock() {
     this.lock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.addChild(this.lock);
     this.lock.beginFill(0, 0.5);
-    this.lock.drawRoundedRect(-4, -4, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH + 8, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT + 8);
+    this.lock.drawRoundedRect(-5, -5, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH + 10, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT + 10, 20);
+    this.addChild(this.lock);
     this.isLock = localStorage.getItem(this.name);
     if (this.isLock == null) {
       this.isLock = true;
@@ -6710,9 +6808,8 @@ class Item extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initTextSmall() {
     this.smallTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Triomphe Bold Autoinstr",
-      fontSize: 25,
-      fontStyle: "bold",
+      fontFamily: "Triomphe Light Autoinstr",
+      fontSize: 20,
       fill: ["#ffffff"]
     });
   }
@@ -6725,7 +6822,7 @@ class Item extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.sprite.x = this.width / 2 - this.sprite.width / 4;
     this.sprite.y = this.height / 2 - this.sprite.height / 2 + 40;
     this.text.x = this.width / 2 - this.text.width / 2;
-    this.text.y = this.height / 4 - this.text.height + 10;
+    this.text.y = this.height / 4 - this.text.height;
   }
 }
 
@@ -6766,10 +6863,12 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.addChild(item);
         this.items.push(item);
         item.position.set(100 + j * (_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.ITEM_WIDTH + 40), 100 + i * (_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.ITEM_HEIGHT + 40));
-        if (item.isLock) {
+        if (item.isLock == "false") {
           item.interactive = true;
           item.cursor = "pointer";
           item.on("pointerdown", () => this._onPointdown(item));
+        } else {
+          item.lock.visible = true;
         }
       }
     }
@@ -6983,6 +7082,62 @@ class Stair extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/objects/money/money.js":
+/*!************************************!*\
+  !*** ./src/objects/money/money.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Money: () => (/* binding */ Money)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _shop_gunStore_unlockGun__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../shop/gunStore/unlockGun */ "./src/shop/gunStore/unlockGun.js");
+
+
+
+
+class Money extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this.show();
+    this._initMoney();
+  }
+  _initMoney() {
+    this.money = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.addChild(this.money);
+    this.moneySprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
+    this.money.addChild(this.moneySprite);
+    this.moneySprite.scale.set(0.4);
+    let money = localStorage.getItem("money");
+    if (money == null) {
+      money = 0;
+      localStorage.setItem("money", 0);
+    }
+    this.moneyText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(money, {
+      fontFamily: "Triomphe Bold Autoinstr",
+      fontSize: 30,
+      fill: ["#ffffff"]
+    });
+    this.moneyText.x = this.moneySprite.width + 10;
+    this.money.addChild(this.moneyText);
+    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 130, 30);
+  }
+  updateText() {
+    let money = localStorage.getItem("money");
+    this.moneyText.text = money;
+  }
+  show() {
+    this.visible = true;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/objects/player/bullet.js":
 /*!**************************************!*\
   !*** ./src/objects/player/bullet.js ***!
@@ -6992,7 +7147,8 @@ class Stair extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Bullet: () => (/* binding */ Bullet)
+/* harmony export */   Bullet: () => (/* binding */ Bullet),
+/* harmony export */   BulletEvent: () => (/* binding */ BulletEvent)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
@@ -7000,16 +7156,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const BulletEvent = Object.freeze({
+  Shoot: "shoot",
+  Destroyed: "destroyed"
+});
 class Bullet extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor(parent) {
+  constructor() {
     super();
-    this.parent = parent;
-    this._init();
-  }
-  _init() {
-    this.parent.addChild(this);
     this.graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.addChild(this.graphics);
+    this.on(BulletEvent.Shoot, this.show);
+    this.on(BulletEvent.Destroyed, this.hide);
+  }
+  _init() {
     this.direction = this.parent.direction;
     this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge;
     this.speed = this.parent.bulletSpeed;
@@ -7017,8 +7176,8 @@ class Bullet extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.damage = this.parent.damage;
     const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
     this.type = this.parent.type;
-    this.x += this.direction * this.parent.sprite.width / 4 * Math.cos(this.beta * Math.PI / 180);
-    this.y += this.direction * this.parent.sprite.width / 4 * Math.sin(this.beta * Math.PI / 180);
+    this.x = this.direction * this.parent.sprite.width / 4 * Math.cos(this.beta * Math.PI / 180);
+    this.y = this.direction * this.parent.sprite.width / 4 * Math.sin(this.beta * Math.PI / 180);
     switch (this.type) {
       case "rapid":
         const pistolSound = _pixi_sound__WEBPACK_IMPORTED_MODULE_2__.sound.find("pistolSound");
@@ -7048,23 +7207,40 @@ class Bullet extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       default:
         break;
     }
+    this._onShoot();
+    this.drawBullet();
   }
   update(dt) {
-    if (this.destroyed) {
+    if (this.isDestroyed) {
       return;
     }
     const realspeed = this.speed * this.direction;
     this.x += realspeed * Math.cos(this.beta * Math.PI / 180) * dt;
     this.y += realspeed * Math.sin(this.beta * Math.PI / 180) * dt;
-    this.drawBullet();
   }
   drawBullet() {
     this.graphics.clear();
     this.graphics.beginFill(16777215);
-    this.graphics.drawCircle(this.x, this.y, this.parent.bulletRadius);
+    this.graphics.drawCircle(0, 0, this.parent.bulletRadius);
   }
   destroy() {
     super.destroy();
+  }
+  _onShoot() {
+    this.emit(BulletEvent.Shoot);
+  }
+  _onDestroyed() {
+    this.emit(BulletEvent.Destroyed);
+  }
+  hide() {
+    this.visible = false;
+    this.isDestroyed = true;
+    this.x = 0;
+    this.y = 0;
+  }
+  show() {
+    this.visible = true;
+    this.isDestroyed = false;
   }
 }
 
@@ -7100,19 +7276,31 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.name = name;
     this.dt = 0;
     this._init();
-    this._initEffect();
   }
   _init() {
     this.sortableChildren = true;
-    this.graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.addChild(this.graphics);
-    this.parent.addChild(this);
+    this._initSprite();
+    this._initData();
+    this._initEffect();
+    this._initBullet();
+    this.currentAnlge = 0;
+    this.maxAngle = 45;
+    this.isIncresing = true;
+    this.isShot = false;
+    this.isShooting = false;
+  }
+  _initSprite() {
     this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get(this.name));
     this.sprite.scale.x *= this.parent.direction;
     this.x = 10 * this.parent.direction;
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5);
     this.sprite.zIndex = 2;
+    this.graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.addChild(this.graphics);
+    this.parent.addChild(this);
+  }
+  _initData() {
     const gunData = _assets_json_data_json__WEBPACK_IMPORTED_MODULE_2__[this.name];
     this.type = gunData.type;
     this.radius = gunData.radius;
@@ -7122,16 +7310,18 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bulletNumber = gunData.bulletNumber;
     this.bulletSpeed = gunData.bulletSpeed;
     this.deviation = gunData.deviation;
-    this.currentAnlge = 0;
-    this.maxAngle = 45;
-    this.isIncresing = true;
-    this.isShot = false;
-    this.isShooting = false;
-    this.bullets = [];
   }
   _initEffect() {
     this.shootingEffect = new _shootingEffect__WEBPACK_IMPORTED_MODULE_4__.ShootingEffect();
     this.addChild(this.shootingEffect);
+  }
+  _initBullet() {
+    this.bullets = [];
+    for (let i = 0; i < this.bulletNumber; i++) {
+      let bullet = new _bullet__WEBPACK_IMPORTED_MODULE_1__.Bullet();
+      this.addChild(bullet);
+      this.bullets.push(bullet);
+    }
   }
   update(dt) {
     this.flip();
@@ -7190,16 +7380,18 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   shoot(dt) {
     if (this.type == "rapid") {
+      let index = 0;
       new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__["default"].Tween({ t: 0 }).to({ t: 1 }, 100 * 1e3 * Math.abs(1 - dt)).repeat(this.bulletNumber).onRepeat(() => {
         this.isShooting = true;
-        this.bullets.push(new _bullet__WEBPACK_IMPORTED_MODULE_1__.Bullet(this));
         this.shootingEffect.play();
+        this.bullets[index]._init();
+        index++;
       }).start(this.dt * 1e3).onComplete(() => {
         this.isShooting = false;
       });
     } else
       for (let i = 0; i < this.bulletNumber; i++)
-        this.bullets.push(new _bullet__WEBPACK_IMPORTED_MODULE_1__.Bullet(this));
+        this.bullets[i]._init();
     this.isShot = true;
     this._onShootAnimation();
   }
@@ -7231,6 +7423,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _gun__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gun */ "./src/objects/player/gun.js");
 /* harmony import */ var _pixi_sound__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sound */ "./node_modules/@pixi/sound/lib/index.mjs");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+
 
 
 
@@ -7321,6 +7515,8 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.isMoving = false;
         this.gun.isShot = false;
       }
+      if (_game__WEBPACK_IMPORTED_MODULE_4__.Game.playScene.end)
+        _game__WEBPACK_IMPORTED_MODULE_4__.Game.playScene._init();
     }
   }
   jump(dt) {
@@ -7353,21 +7549,17 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.path1 = width - wallDistance - this.path2 * 3;
     this.needFlip = true;
   }
+  endPath(nextStair) {
+    const width = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH;
+    const size = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.Step_Size;
+    const wallDistance = this.direction === 1 ? this.x : width - this.x;
+    this.jumpStep = nextStair.stepNumber;
+    this.path1 = width - wallDistance - nextStair.stepNumber * size * 3;
+    this.path2 = nextStair.stepNumber * size * 2;
+    this.needFlip = false;
+  }
   flip() {
     this.direction = this.direction == 1 ? -1 : 1;
-  }
-  changeClothes(name) {
-    this.sprite.destroy();
-    this.removeChild(this.sprite);
-    this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get(name));
-    this.sprite.zIndex = 0;
-    this.sprite.anchor.set(0.5, 0);
-    this.addChild(this.sprite);
-  }
-  changeGun(name) {
-    this.gun.destroy();
-    this.removeChild(this.gun);
-    this.gun = new _gun__WEBPACK_IMPORTED_MODULE_2__.Gun(this, name);
   }
 }
 
@@ -7439,6 +7631,8 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.runAngle = 0;
     this.isShot = false;
     this.speed = 1.2;
+    this.bullet = new _player_bullet__WEBPACK_IMPORTED_MODULE_2__.Bullet();
+    this.addChild(this.bullet);
   }
   update(dt) {
     if (this.runAngle < this.currentAnlge * 1.4) {
@@ -7468,6 +7662,7 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.sprite.angle = 0;
     this.runAngle = 0;
     this.speed = 1.2;
+    this.bullet._onDestroyed();
   }
   shoot() {
     if (!this.isShot) {
@@ -7480,7 +7675,7 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.bulletNumber = gunData.bulletNumber;
       this.bulletSpeed = gunData.bulletSpeed;
       this.deviation = 0;
-      this.bullet = new _player_bullet__WEBPACK_IMPORTED_MODULE_2__.Bullet(this);
+      this.bullet._init();
     }
   }
 }
@@ -7626,6 +7821,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.js");
+/* harmony import */ var _objects_money_money__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../objects/money/money */ "./src/objects/money/money.js");
+
 
 
 
@@ -7670,9 +7867,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.textLevel);
   }
   _initMoney() {
-    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
-    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
+    this.money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_5__.Money();
     this.addChild(this.money);
   }
   _initTextBestScore() {
@@ -7730,12 +7925,10 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   show() {
     this.visible = true;
+    this.score.text = localStorage.getItem("bestScore");
   }
   hide() {
     this.visible = false;
-  }
-  update(delta) {
-    this.score.text = localStorage.getItem("bestScore");
   }
 }
 
@@ -7759,6 +7952,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _objects_item_itemFrame__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../objects/item/itemFrame */ "./src/objects/item/itemFrame.js");
 /* harmony import */ var _shop_gunStore_lamp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shop/gunStore/lamp */ "./src/shop/gunStore/lamp.js");
 /* harmony import */ var _shop_gunStore_unlockGun__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shop/gunStore/unlockGun */ "./src/shop/gunStore/unlockGun.js");
+/* harmony import */ var _objects_money_money__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../objects/money/money */ "./src/objects/money/money.js");
+/* harmony import */ var _objects_player_player__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../objects/player/player */ "./src/objects/player/player.js");
+
+
 
 
 
@@ -7779,6 +7976,16 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initMoney();
     this._initUnlockGun();
     this._initGun();
+    this.stairs = [];
+    this.stairs.push(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Point(0, 0));
+    this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_7__.Player(this);
+    this.addChild(this.player);
+    this.player.scale.set(2);
+    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - 108);
+    this.interactive = true;
+    this.on("pointerdown", () => {
+      this.player._initGun();
+    });
   }
   _initLamp() {
     const lamp = new _shop_gunStore_lamp__WEBPACK_IMPORTED_MODULE_4__.Lamp();
@@ -7789,9 +7996,7 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(unlockGun);
   }
   _initMoney() {
-    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
-    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
+    this.money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_6__.Money();
     this.addChild(this.money);
   }
   _initButtonBack() {
@@ -7802,8 +8007,8 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonBack.interactive = true;
     this.buttonBack.cursor = "pointer";
     this.buttonBack.on("pointerdown", () => {
-      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initGun();
       this.hide();
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initGun();
     });
   }
   _initTextTitle() {
@@ -7964,6 +8169,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
 /* harmony import */ var _objects_item_itemFrame__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../objects/item/itemFrame */ "./src/objects/item/itemFrame.js");
+/* harmony import */ var _shop_gunStore_unlockGun__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shop/gunStore/unlockGun */ "./src/shop/gunStore/unlockGun.js");
+/* harmony import */ var _objects_money_money__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../objects/money/money */ "./src/objects/money/money.js");
+/* harmony import */ var _objects_player_player__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../objects/player/player */ "./src/objects/player/player.js");
+
+
+
 
 
 
@@ -7976,10 +8187,32 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initTextBig();
     this._initTextSmall();
     this._initTextTitle();
+    this._initLight();
     this._initButtonBack();
-    this._initMoney();
     this._initBGOutfits();
+    this._initMoney();
     this._initOutfit();
+    this.stairs = [];
+    this.stairs.push(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Point(0, 0));
+    this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_6__.Player(this);
+    this.addChild(this.player);
+    this.player.scale.set(2);
+    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - 108);
+    this.interactive = true;
+    this.on("pointerdown", () => {
+      this.player._initCharacter();
+    });
+  }
+  _initMoney() {
+    const money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_5__.Money();
+    this.addChild(money);
+  }
+  _initLight() {
+    this.lightImg = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("light"));
+    this.lightImg.scale.y = 1.55;
+    this.lightImg.scale.x = 1.15;
+    this.lightImg.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.lightImg.width) / 2 + 11, 0);
+    this.addChild(this.lightImg);
   }
   _initBGOutfits() {
     const bGOutfits = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
@@ -7987,12 +8220,6 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     bGOutfits.drawRect(0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT);
     bGOutfits.endFill();
     this.addChild(bGOutfits);
-  }
-  _initMoney() {
-    this.money = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("money"));
-    this.money.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 130, 60);
-    this.money.scale.set(0.4);
-    this.addChild(this.money);
   }
   _initButtonBack() {
     this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
@@ -8002,8 +8229,8 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonBack.interactive = true;
     this.buttonBack.cursor = "pointer";
     this.buttonBack.on("pointerdown", () => {
-      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initCharacter();
       this.hide();
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initCharacter();
     });
   }
   _initTextTitle() {
@@ -8087,6 +8314,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _input_inputManager__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../input/inputManager */ "./src/input/inputManager.js");
 /* harmony import */ var _objects_enemy_hitEffect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../objects/enemy/hitEffect */ "./src/objects/enemy/hitEffect.js");
 /* harmony import */ var _helper_utils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../helper/utils */ "./src/helper/utils.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _objects_effect_endEffect__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../objects/effect/endEffect */ "./src/objects/effect/endEffect.js");
+
+
 
 
 
@@ -8115,18 +8346,17 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     _input_inputManager__WEBPACK_IMPORTED_MODULE_8__.InputManager.emitter.on(_input_inputManager__WEBPACK_IMPORTED_MODULE_8__.InputEvent.MouseDown, this._onPointerDown, this);
   }
   _onPointerDown(pos) {
-    if (this.state == GameState.Menu) {
+    if (this.state == GameState.Playing || this.state == GameState.BossFight) {
+      if (!this.player.isMoving) {
+        this.enemyManager._onPlayerShoot();
+        this.player.onPointerDown(this.dt);
+      }
+    } else
       return;
-    }
-    if (this.state == GameState.GameOver) {
-      return;
-    }
-    this.enemyManager.enemy.isReady = true;
-    this.enemyManager.enemy.isShooted = false;
-    this.player.onPointerDown(this.dt);
   }
   _init() {
     this.state = GameState.Menu;
+    this.end = false;
     this.map = new _objects_map_map__WEBPACK_IMPORTED_MODULE_2__.Map(this, this.app);
     this.addChild(this.map);
     this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_1__.Player(this.map);
@@ -8137,7 +8367,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bulletManager = new _manager_bulletManager__WEBPACK_IMPORTED_MODULE_7__.BulletManager(this.player, this.map, this.enemyManager, this);
     this.addChild(this.bulletManager);
     this.killCount = 0;
-    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(8, 12);
+    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(7, 10);
     this.player.score = 0;
   }
   _initUI() {
@@ -8152,9 +8382,10 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initEnemies() {
     this.enemyManager = new _manager_enemyManager__WEBPACK_IMPORTED_MODULE_5__.EnemyManager(this.map);
     this.addChild(this.enemyManager);
-    this.enemyManager.on(_manager_enemyManager__WEBPACK_IMPORTED_MODULE_5__.EnemyManagerEvent.Hit, this._onEnemyHit, this);
+    this.enemyManager.on(_manager_enemyManager__WEBPACK_IMPORTED_MODULE_5__.EnemyManagerEvent.Hit, this.onEnemyHit, this);
+    this.enemyManager.on(_manager_enemyManager__WEBPACK_IMPORTED_MODULE_5__.EnemyManagerEvent.End, this.onEnd, this);
   }
-  _onEnemyHit() {
+  onEnemyHit() {
     if (this.killCount < this.killNeed - 1) {
       this.killCount++;
       this.enemyManager._spawnEnemy(this.player);
@@ -8170,9 +8401,18 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       }
     }
     this.playUI.updateLevel(this.killCount / this.killNeed);
-    if (!this.player.isMoving)
+    if (!this.end && !this.player.isMoving)
       this.player.calPath(this.map.nextStair());
     this.enemyManager.enemy.isShooted = true;
+  }
+  onEnd() {
+    this.end = true;
+    const stair = this.map.stairs[this.map.currentIndex + 1];
+    if (!this.player.isMoving) {
+      this.player.endPath(stair);
+    }
+    let x = this.player.direction == -1 ? 0 : _gameConstant__WEBPACK_IMPORTED_MODULE_11__.GameConstant.GAME_WIDTH - 50;
+    this.map.addChild(new _objects_effect_endEffect__WEBPACK_IMPORTED_MODULE_12__.EndPortal(x, stair.y));
   }
   update(dt) {
     this.dt = dt;
@@ -8185,9 +8425,8 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.enemyManager.enemy.weapon.attack(this.player);
     } else if (this.state == GameState.Menu) {
       this.menu.update(dt);
-    } else if (this.state == GameState.GameOver) {
-      this.gameOverUI.update(dt);
     }
+    this.playUI.money.updateText();
   }
   hitStair() {
     console.log("hit the wall");
@@ -8425,6 +8664,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
 
 
 
@@ -8435,22 +8676,43 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._init();
   }
   _init() {
+    let money = localStorage.getItem("money");
     this._initUnlockRandom();
+    this._LockRandomGun();
     this._initWatchPR();
+    if (money < 250) {
+      this.lockRandom.visible = true;
+      this.btnRandomGun.visible = false;
+    } else {
+      this.lockRandom.visible = false;
+      this.btnRandomGun.visible = true;
+    }
   }
   _initUnlockRandom() {
     this.btnRandomGun = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("unlockRandom"));
     this.btnRandomGun.position.set(70, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120);
     this.btnRandomGun.scale.set(0.6);
     this.addChild(this.btnRandomGun);
+    const scaleTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.Tween(this.btnRandomGun.scale).to({ x: 0.7, y: 0.7 }, 300).easing(_tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.Easing.Quadratic.InOut).repeat(Infinity).yoyo(true).start();
+    const translateTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.Tween(this.btnRandomGun.position).to({ x: this.btnRandomGun.x - 15, y: this.btnRandomGun.y - 10 }, 300).easing(_tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.Easing.Quadratic.InOut).repeat(Infinity).yoyo(true).start();
     this.btnRandomGun.interactive = true;
     this.btnRandomGun.cursor = "pointer";
     let tmp = 1;
     this.btnRandomGun.on("pointerdown", () => {
-      if (tmp == 1) {
+      let money = localStorage.getItem("money");
+      money = money - 250;
+      if (money < 250) {
         tmp = 0;
-        this._LockRandomGun();
-        console.log("lock random gun");
+      }
+      localStorage.setItem("money", money);
+      this.parent.money.updateText();
+      if (tmp == 0) {
+        scaleTween.stop();
+        translateTween.stop();
+        this.btnRandomGun.scale.set(0.6);
+        this.btnRandomGun.position.set(70, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120);
+        this.lockRandom.visible = true;
+        this.btnRandomGun.visible = false;
       }
     });
   }
@@ -8466,17 +8728,26 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
   }
   _LockRandomGun() {
-    const lockRandomGun = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    lockRandomGun.beginFill(0, 0.7);
-    lockRandomGun.drawRoundedRect(70, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120, 333, 97, 16);
-    lockRandomGun.endFill();
-    this.addChild(lockRandomGun);
+    this.lockRandom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.btnRandomGun1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("unlockRandom"));
+    this.btnRandomGun1.position.set(70, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120);
+    this.btnRandomGun1.scale.set(0.6);
+    this.lockRandom.addChild(this.btnRandomGun1);
+    this.lockRandomGun = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.lockRandomGun.beginFill(0, 0.7);
+    this.lockRandomGun.drawRoundedRect(70, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120, this.btnRandomGun.width + 1, this.btnRandomGun.height, 17);
+    this.lockRandomGun.endFill();
+    this.lockRandom.addChild(this.lockRandomGun);
+    this.addChild(this.lockRandom);
   }
   show() {
     this.visible = true;
   }
   hide() {
     this.visible = false;
+  }
+  update(delta) {
+    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.update();
   }
 }
 
@@ -48094,7 +48365,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"1887":{"radius":100,"speed":1.2,"type":"shotgun","bulletNumber":4,"bulletRadius":2,"bulletSpeed":7,"deviation":15,"damage":3},"AK-47":{"radius":150,"speed":0.6,"type":"rapid","bulletNumber":3,"bulletRadius":4,"bulletSpeed":9,"deviation":10,"damage":5},"AUG":{"radius":200,"speed":0.6,"type":"rapid","bulletNumber":2,"bulletRadius":3,"bulletSpeed":10,"deviation":5,"damage":4},"DE":{"radius":80,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":15,"deviation":5,"damage":10},"R8":{"radius":90,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":3,"bulletSpeed":8,"deviation":5,"damage":4},"MP5":{"radius":100,"speed":0.7,"type":"rapid","bulletNumber":4,"bulletRadius":2,"bulletSpeed":8,"deviation":20,"damage":2},"NEGEV":{"radius":120,"speed":0.8,"type":"rapid","bulletNumber":8,"bulletRadius":2,"bulletSpeed":8,"deviation":30,"damage":1},"SCOUT":{"radius":250,"speed":0.7,"type":"sniper","bulletNumber":1,"bulletRadius":3,"bulletSpeed":18,"deviation":5,"damage":5},"USP-S":{"radius":80,"speed":0.8,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":8,"deviation":5,"damage":4}}');
+module.exports = JSON.parse('{"1887":{"radius":100,"speed":1.2,"type":"shotgun","bulletNumber":4,"bulletRadius":2,"bulletSpeed":11,"deviation":15,"damage":3},"AK-47":{"radius":150,"speed":0.6,"type":"rapid","bulletNumber":3,"bulletRadius":4,"bulletSpeed":12,"deviation":12,"damage":3},"AUG":{"radius":200,"speed":0.6,"type":"rapid","bulletNumber":2,"bulletRadius":3,"bulletSpeed":12,"deviation":5,"damage":4},"DE":{"radius":80,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":17,"deviation":5,"damage":10},"R8":{"radius":90,"speed":0.6,"type":"singer","bulletNumber":1,"bulletRadius":3,"bulletSpeed":12,"deviation":5,"damage":4},"MP5":{"radius":100,"speed":0.7,"type":"rapid","bulletNumber":4,"bulletRadius":2,"bulletSpeed":10,"deviation":20,"damage":2},"NEGEV":{"radius":120,"speed":0.8,"type":"rapid","bulletNumber":8,"bulletRadius":2,"bulletSpeed":10,"deviation":30,"damage":1},"SCOUT":{"radius":250,"speed":0.7,"type":"sniper","bulletNumber":1,"bulletRadius":3,"bulletSpeed":20,"deviation":5,"damage":5},"USP-S":{"radius":80,"speed":0.8,"type":"singer","bulletNumber":1,"bulletRadius":4,"bulletSpeed":10,"deviation":5,"damage":4}}');
 
 /***/ }),
 
