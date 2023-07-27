@@ -3,15 +3,24 @@ import { GameConstant } from "../../gameConstant";
 import { Gun } from "./gun";
 import { sound } from "@pixi/sound";
 import { Game } from "../../game";
+import { DustEffect } from "./dustEffect";
 
 export class Player extends Container {
     constructor(parent){
         super();
         this.parent = parent;
+        this._initEffectDust();
         this._initAbility();
         this._initCharacter();
         this._initGun();
     }
+
+    //hieu ung bui khi di chuyen
+    _initEffectDust(){
+        this.dustEffect = new DustEffect();
+        this.addChild(this.dustEffect);
+    }
+
     _initCharacter(){
         this.sortableChildren = true;
         let outfitName = localStorage.getItem('outfit');
@@ -90,7 +99,7 @@ export class Player extends Container {
                     this.x += this.direction * this.speed * dt;
                 }
             }
-            
+        
         } else{
             if (this.needFlip) {
                 this.flip();
@@ -121,6 +130,7 @@ export class Player extends Container {
             this.y = this.minY;
             sound.play("jumpSound");
         }
+        this.dustEffect.play();
     }
     
     calPath(nextStair){

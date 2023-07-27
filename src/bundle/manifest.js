@@ -258,6 +258,10 @@ export const manifest = {
                     name: 'wingame',
                     srcs: 'assets/images/layoutImg/wingame.png'
                 },
+                {
+                    name: 'dust',
+                    srcs: 'assets/images/layoutImg/dust.png'
+                },
             ]
         },
         {
