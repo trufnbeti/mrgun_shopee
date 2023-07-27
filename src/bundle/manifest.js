@@ -445,6 +445,30 @@ export const manifest = {
                 }
                 
             ]
+        },
+        {
+            name: "map",
+            assets: [
+                {
+                    name: "fence1",
+                    srcs: 'assets/images/map/fence1.png'
+                },
+                {
+                    name: "fence2",
+                    srcs: 'assets/images/map/fence2.png'
+                },
+                {
+                    name: "fence3",
+                    srcs: 'assets/images/map/fence3.png'
+                },
+                {
+                    name: "lightPole",
+                    srcs: 'assets/images/map/light.png'
+                },{
+                    name: "pot",
+                    srcs: 'assets/images/map/pot.png'
+                },
+            ]
         }
     ],
 };

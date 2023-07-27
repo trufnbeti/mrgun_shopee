@@ -2,6 +2,7 @@ import { Container, Graphics, Ticker } from "pixi.js";
 import { Stair } from "./stair";
 import { GameConstant } from "../../gameConstant";
 import { Util } from "../../helper/utils";
+import { Decoration } from "./decoration";
 
 export class Map extends Container{
     constructor(app){
@@ -11,6 +12,7 @@ export class Map extends Container{
     }
     _init(){
         this.sortableChildren = true;
+        this.decor = new Decoration();
         this.color = this.randomColor();
         this.stairs = [];
         this.genStairs();

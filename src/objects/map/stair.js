@@ -21,6 +21,7 @@ export class Stair extends Container{
         this.addChild(this.graphics);
         this._initSprite(); 
         this._initShade();
+        this._initDecor();
     }
 
     _initSprite(){
@@ -37,12 +38,26 @@ export class Stair extends Container{
         this.shade =  this.drawStair();
         this.addChild(this.shade);
     }
+    _initDecor(){
+        this.decor = this.parent.decor.random();
+        if(this.decor){
+            this.addChild(this.decor);
+            this.decor.anchor.set(0.5, 0)
+            this.decor.scale.x*=this.direction;
+            this.decor.x = this.direction == -1 ? this.decor.width/2 : GameConstant.GAME_WIDTH - this.decor.width/2;
+            this.decor.y -= this.decor.height;
+            this.decor.tint = this.color;
+            this.decor.alpha =  1 - this.graphics.alpha - 0.2;
+        }
+
+    }
     updateShade(alpha){
         this.graphics.beginFill("#000000");
         this.graphics.alpha = (alpha);
         this.removeChild(this.shade);
         this.shade =  this.drawStair();
         this.addChild(this.shade);
+        this.decor && (this.decor.alpha = 1 - alpha - 0.2);
     }
     drawStair(){
         const size = GameConstant.Step_Size;

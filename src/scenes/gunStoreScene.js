@@ -64,6 +64,7 @@ export class GunStoreScene extends Container{
     this.buttonBack.on("pointerdown", () => {
         this.hide();
         Game.playScene.player._initGun();
+        Game.playScene.bulletManager.effectManager.updateText();
     });
   }
 
