@@ -9,7 +9,7 @@ export class ShortSkinnyEnemy extends Enemy{
     }
     _init(x, y, direction, maxX, color){
         this.direction = direction;
-        this.speed = this.direction * 4;
+        this.speed = this.direction * 7;
         this.color = color;
         this.maxX = maxX;
         this.drawHead();

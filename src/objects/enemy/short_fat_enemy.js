@@ -21,7 +21,7 @@ export class ShortFatEnemy extends Enemy{
         this.equipWeapon();
         this.isLeanRight = true;
         this.isLeanLeft = false;
-        this.angleLean = 1;
+        this.angleLean = 3;
         this.timer = 0;
         
     }
