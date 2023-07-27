@@ -13,12 +13,14 @@ export class Player extends Container {
         this._initAbility();
         this._initCharacter();
         this._initGun();
+        this.dustEffect.visible = true;
     }
 
     //hieu ung bui khi di chuyen
     _initEffectDust(){
         this.dustEffect = new DustEffect();
         this.addChild(this.dustEffect);
+        this.dustEffect.visible = false;
     }
 
     _initCharacter(){
