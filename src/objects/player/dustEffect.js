@@ -17,7 +17,8 @@ export class DustEffect extends Container{
     play(){
         // Điều chỉnh vị trí của Emitter để xuất hiện từ phía sau nhân vật
         const distanceBehindPlayer = 20; // Điều chỉnh khoảng cách bụi xuất hiện phía sau nhân vật
-        this.position.set(- this.parent.direction * distanceBehindPlayer, 55);
+        this.position.set(- this.parent.direction * distanceBehindPlayer, 60);
+        this.scale.x *= this.parent.direction;
         
         this.emitterDust.emit = true;
     }

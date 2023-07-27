@@ -5,6 +5,9 @@ import { Enemy } from "./enemy";
 export class TallEnemy extends Enemy{
     constructor(x, y, direction, maxX, color){
         super(x, y);
+        this.head = new Graphics();
+        this.body = new Graphics();
+        this.addChild(this.head, this.body);
         this._init(x, y, direction, maxX, color);
     }
     _init(x, y, direction, maxX, color){
@@ -14,7 +17,6 @@ export class TallEnemy extends Enemy{
         this.maxX = maxX;
         this.drawHead();
         this.drawBody();
-        this.addChild(this.head, this.body);
         this.position.set(x, y - (this.head.height + this.body.height) / 2);
         const centerX = this.body.width / 2;
         const centerY = (this.head.height + this.body.height) / 2;
@@ -52,13 +54,11 @@ export class TallEnemy extends Enemy{
         Ticker.shared.add(tick);
     }
     drawHead(){
-        this.head = new Graphics();
         this.head.beginFill(0xffffff); //white
         this.head.drawRect(0, 0, 20, 20);
         this.head.endFill();
     }
     drawBody(){
-        this.body = new Graphics();
         this.body.beginFill(this.color); //red
         this.body.drawRect(0, 20, 20, 40);
         this.body.endFill();
