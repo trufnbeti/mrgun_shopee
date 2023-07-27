@@ -262,6 +262,10 @@ export const manifest = {
                     name: 'dust',
                     srcs: 'assets/images/layoutImg/dust.png'
                 },
+                {
+                    name: 'defeat',
+                    srcs: 'assets/images/layoutImg/defeat.png'
+                },
             ]
         },
         {

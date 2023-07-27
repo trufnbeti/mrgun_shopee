@@ -62,7 +62,7 @@ export class PlayScene extends Container{
         this.addChild(this.bulletManager);
 
         this.killCount= 0;
-        this.killNeed = Util.random(7, 10);
+        this.killNeed = Util.random(1, 1);
 
         this.player.score = 0;
     }
@@ -134,6 +134,7 @@ export class PlayScene extends Container{
         }
 
         this.playUI.money.updateText();
+        this.gameOverUI.money.updateText();
     }
     
     hitStair(){
