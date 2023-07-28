@@ -13,7 +13,12 @@ export class Player extends Container {
         this._initAbility();
         this._initCharacter();
         this._initGun();
+        this._initPosition();
         this.dustEffect.visible = true;
+    }
+    _initPosition(){
+        this.x = GameConstant.GAME_WIDTH/2;
+        this.y = this.parent.stairs[0].y + GameConstant.Step_Size*2 - this.sprite.height;
     }
 
     //hieu ung bui khi di chuyen
@@ -32,8 +37,10 @@ export class Player extends Container {
         } 
         localStorage.setItem(outfitName, false);
         this.removeChild(this.sprite);
-        this.sprite = Sprite.from(outfitName);
-        this.sprite.scale.x *= this.direction
+        this.sprite = Sprite.from(outfitName)
+        this.scaleRatio = 0.4;
+        this.sprite.scale.x = this.direction * this.scaleRatio;
+        this.sprite.scale.y =  this.scaleRatio;
         this.sprite.anchor.set(0.5, 0);
         this.addChild(this.sprite);
     }
@@ -49,8 +56,6 @@ export class Player extends Container {
         this.gun.zIndex = 1;
     }
     _initAbility(){
-        this.x = GameConstant.GAME_WIDTH/2;
-        this.y = this.parent.stairs[0].y + 50 - 55;
         this.zIndex = 1;
         this.color = 0xFF0000;
         this.direction = -1;
@@ -75,7 +80,6 @@ export class Player extends Container {
     update(delta){
         this.move(delta);
         this.gun.update(delta);
-        this.sprite.scale.x = this.direction === 1 ? 1 : -1
     }
 
     move(dt) {
@@ -156,6 +160,7 @@ export class Player extends Container {
     }
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;
+        this.sprite.scale.x = this.direction * this.scaleRatio;
     }
  
 }
