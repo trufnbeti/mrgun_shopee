@@ -6,6 +6,7 @@ import { ShortSkinnyEnemy } from "../objects/enemy/short_skinny_enemy";
 import { TallEnemy } from "../objects/enemy/tall_enemy";
 import { Boss } from "../objects/enemy/boss";
 import { Game } from "../game";
+import { BossCard } from "../shop/gunStore/bossCard";
 
 export const EnemyManagerEvent = Object.freeze({
     Hit: "enemymanager:hit",
@@ -17,6 +18,7 @@ export const EnemyManagerEvent = Object.freeze({
       super();
       this.map = map;
       this._init();
+      this.bossStage = new BossCard();
     }
 
     _init(){
@@ -100,6 +102,10 @@ export const EnemyManagerEvent = Object.freeze({
 
     onBossDied(){
         this.enemy.destroy();
+        
+        // this.bossCard._initBoss(i);
+        this.bossStage._initBoss()
+        this.bossStage._updateStage();
     }
 
     whereBossDied(){

@@ -7,11 +7,19 @@ import { Boss } from "../../objects/enemy/boss";
 export class BossCard extends Container {
     constructor() {
         super();  
-
+        this.bossIndex = new Boss();
         this._stageBoss(); // hien thi trang thai boss
 
         this._bossDefeat();
 
+    }
+
+    _updateStage(i){
+        if(i == this.bossIndex.index){
+            this.live.visible = false;
+            this.defeat.visible = true;
+            this.defeated.visible = true;
+        }
     }
   
     _stageBoss(){

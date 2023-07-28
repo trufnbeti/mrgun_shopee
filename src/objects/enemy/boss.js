@@ -8,6 +8,7 @@ export class Boss extends Enemy{
     constructor(x, y, direction, maxX){
         super();
         this._init(x, y, direction, maxX);
+        this.index = 0;
     }
     _init(x, y, direction, maxX){
         this.name = "Boss";
@@ -43,6 +44,8 @@ export class Boss extends Enemy{
         this.body.y = this.head.height;
         this.head.x = 0;
         this.addChild(this.head, this.body);
+        this.index = indexR;
+        // console.log(this.index);
     }
     _initAbility(){
         this.appeared = false;
