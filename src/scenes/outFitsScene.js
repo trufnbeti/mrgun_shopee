@@ -13,6 +13,7 @@ import { ItemFrame } from "../objects/item/itemFrame";
 import { UnlockGun } from "../shop/gunStore/unlockGun";
 import { Money } from "../objects/money/money";
 import { Player } from "../objects/player/player";
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class OutfitsScene extends Container{
 
@@ -58,7 +59,30 @@ export class OutfitsScene extends Container{
       this.lightImg.scale.x = 1.15;
       this.lightImg.position.set((GameConstant.GAME_WIDTH - this.lightImg.width)/2 + 11, 0);
       this.addChild(this.lightImg);
-    }
+      this.lightImg.alpha = 1;
+
+      const alphaTween = new TWEEN.Tween(this.lightImg)
+      .to({ alpha: 0.3 }, 300) // Thời gian chuyển từ sáng sang tối là 300ms
+      .easing(TWEEN.Easing.Quadratic.InOut);
+
+      alphaTween.onComplete(() => {
+          this.lightImg.alpha = 1; 
+          this.lightCount++; 
+          // Nếu đã nhấp nháy đèn 5 lần thì không cần tiếp tục nữa.
+          if (this.lightCount >= 10) {
+              return;
+          }
+          alphaTween.start();
+      });
+      // Bắt đầu tween ban đầu để bắt đầu nháy đèn.
+      alphaTween.start();
+
+      this.lightCount = 1; 
+   }
+
+   update(delta) {
+     TWEEN.update();
+   }
 
     _initBGOutfits(){
         //add background with color follow stair random
