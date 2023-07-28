@@ -64,7 +64,6 @@ export class PlayScene extends Container{
         this.killCount= 0;
         this.killNeed = Util.random(8, 10);
 
-        this.player.score = 0;
     }
     
     _initUI(){
@@ -121,6 +120,7 @@ export class PlayScene extends Container{
         
         const level = localStorage.getItem("level");
         localStorage.setItem('level', parseInt(level)+1);
+        localStorage.setItem('score', this.player.score);
     }
 
     update(dt) {
