@@ -4881,8 +4881,6 @@ var __async = (__this, __arguments, generator) => {
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
-      resolution: window.devicePixelRatio || 1,
-      autoDensity: true,
       width: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH,
       height: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT,
       backgroundColor: 1087931
@@ -5209,6 +5207,11 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
     }
     this.effectManager = new _effectManager__WEBPACK_IMPORTED_MODULE_8__.EffectManager(map, player, enemyManager);
     this.addChild(this.effectManager);
+    this.level = localStorage.getItem("level");
+    if (!this.level) {
+      localStorage.setItem("level", 1);
+      this.level = 1;
+    }
   }
   _checkBullets(dt) {
     let bullets = this.player.gun.bullets;
@@ -5221,7 +5224,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
         hit = true;
         if (_helper_utils__WEBPACK_IMPORTED_MODULE_2__.Util.checkCollision(bullet, this.enemyManager.enemy.head)) {
           if (!this.enemyManager.enemy.isShooted) {
-            this.player.score += 50;
+            this.player.score += parseInt(this.level) * 2;
             this.effectManager.updateHeadshotCount();
             this.playScene.playUI.updateMoney();
           }
@@ -5229,7 +5232,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
           bonus = 2;
         } else {
           if (!this.enemyManager.enemy.isShooted) {
-            this.player.score += 25;
+            this.player.score += parseInt(this.level);
             this.effectManager.resetHeadshotCount();
           }
           this.effectManager._onHitEnemyBody();
@@ -5437,6 +5440,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _objects_enemy_tall_enemy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../objects/enemy/tall_enemy */ "./src/objects/enemy/tall_enemy.js");
 /* harmony import */ var _objects_enemy_boss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../objects/enemy/boss */ "./src/objects/enemy/boss.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _shop_gunStore_bossCard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../shop/gunStore/bossCard */ "./src/shop/gunStore/bossCard.js");
+
 
 
 
@@ -5526,6 +5531,7 @@ class EnemyManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   onBossDied() {
     this.enemy.destroy();
+    localStorage.setItem(this.enemy.index, "true");
   }
   whereBossDied() {
     return this.enemy.y + this.enemy.height / 2;
@@ -5655,7 +5661,12 @@ class MenuUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     graphicLevel.endFill();
     this.addChild(graphicLevel);
     this._initTextNormal();
-    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL 1", this.normalTextStyle);
+    this.level = localStorage.getItem("level");
+    if (!this.level) {
+      localStorage.setItem("level", 1);
+      this.level = 1;
+    }
+    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL " + this.level, this.normalTextStyle);
     this.textLevel.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
     this.addChild(this.textLevel);
   }
@@ -5878,7 +5889,12 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.graphicLevel.drawRoundedRect((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - w) / 2, 100, w, 32, 27);
     this.graphicLevel.endFill();
     this.addChild(this.graphicLevel);
-    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL 1", this.normalTextStyle);
+    this.level = localStorage.getItem("level");
+    if (!this.level) {
+      localStorage.setItem("level", 1);
+      this.level = 1;
+    }
+    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL " + this.level, this.normalTextStyle);
     this.textLevel.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
     this.addChild(this.textLevel);
   }
@@ -6244,6 +6260,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.body.y = this.head.height;
     this.head.x = 0;
     this.addChild(this.head, this.body);
+    this.index = indexR;
   }
   _initAbility() {
     this.appeared = false;
@@ -6469,7 +6486,7 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.angle += this.deadAngle;
       this.timeRotateDead = 0;
     }
-    this.y += this.velocity.y;
+    this.y += this.velocity.y * dt;
     this.velocity.y += this.gravity;
     if (this.isDead)
       return;
@@ -8063,7 +8080,12 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.score);
   }
   _initLevel() {
-    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL: 1", this.normalTextStyle);
+    this.level = localStorage.getItem("level");
+    if (!this.level) {
+      localStorage.setItem("level", 1);
+      this.level = 1;
+    }
+    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL: " + this.level, this.normalTextStyle);
     this.textLevel.anchor.set(0.5);
     this.textLevel.zIndex = 2;
     this.textLevel.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2, 440);
@@ -8585,7 +8607,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bulletManager = new _manager_bulletManager__WEBPACK_IMPORTED_MODULE_7__.BulletManager(this.player, this.map, this.enemyManager, this);
     this.addChild(this.bulletManager);
     this.killCount = 0;
-    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(1, 1);
+    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(8, 10);
     this.player.score = 0;
   }
   _initUI() {
@@ -8630,6 +8652,8 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     let x = this.player.direction == -1 ? 0 : _gameConstant__WEBPACK_IMPORTED_MODULE_11__.GameConstant.GAME_WIDTH;
     this.map.addChild(new _objects_effect_endEffect__WEBPACK_IMPORTED_MODULE_12__.EndPortal(x, this.enemyManager.whereBossDied(), this.player.direction));
     this.enemyManager.onBossDied();
+    const level = localStorage.getItem("level");
+    localStorage.setItem("level", parseInt(level) + 1);
   }
   update(dt) {
     this.dt = dt;
@@ -8864,8 +8888,7 @@ class BlackList extends _pixi_ui__WEBPACK_IMPORTED_MODULE_3__.ScrollBox {
   }
   _initBossCard() {
     for (let i = 1; i < 23; i++) {
-      this.bossCard = new _bossCard__WEBPACK_IMPORTED_MODULE_2__.BossCard();
-      this.bossCard._initBoss(i);
+      this.bossCard = new _bossCard__WEBPACK_IMPORTED_MODULE_2__.BossCard(i);
       this.bossCard._initText(this.names[i - 1]);
       this.addItem(this.bossCard);
     }
@@ -8926,10 +8949,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class BossCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor() {
+  constructor(index) {
     super();
+    this.bossIndex = index;
     this._stageBoss();
     this._bossDefeat();
+    this.sortableChildren = true;
+    this._initBoss(index);
   }
   _stageBoss() {
     this.stageboss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
@@ -8948,7 +8974,12 @@ class BossCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.defeat.scale.set(0.76);
     this.addChild(this.defeat);
     this.defeat.position.set(this.stageboss.x, this.stageboss.y);
-    this.defeat.visible = false;
+    const isDefeated = localStorage.getItem(this.bossIndex);
+    if (isDefeated == "true") {
+      this.defeat.visible = true;
+    } else
+      this.defeat.visible = false;
+    this.defeat.zIndex = 2;
   }
   _initBoss(indexR) {
     this.boss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
@@ -8959,8 +8990,10 @@ class BossCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.body.scale.set(0.25);
     this.body.y = this.head.height;
     this.head.x = 0;
+    this.head.anchor.set(0.5, 0);
+    this.body.anchor.set(0.5, 0);
     this.boss.addChild(this.body);
-    this.boss.position.set(this.stageboss.x + 37, this.stageboss.y + (this.live.height * 0.76 - this.boss.height * 0.25) / 2 - 20);
+    this.boss.position.set(this.stageboss.x + this.boss.width, this.stageboss.y + (this.live.height * 0.76 - this.boss.height * 0.25) / 2 - 20);
     this.addChild(this.boss);
   }
   _initText(names) {
@@ -9086,7 +9119,7 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initWatchPR() {
     this.btnWatchPR = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("watchPR"));
-    this.btnWatchPR.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 225, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120);
+    this.btnWatchPR.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - 250, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 120);
     this.btnWatchPR.scale.set(0.6);
     this.addChild(this.btnWatchPR);
     this.btnWatchPR.interactive = true;
@@ -9094,7 +9127,7 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.btnWatchPR.on("pointerdown", () => {
       let money = localStorage.getItem("money");
       money = parseInt(money, 10);
-      money = money + 35;
+      money = money + 350;
       localStorage.setItem("money", money);
       this.parent.money.updateText();
       this.checkMoney();
