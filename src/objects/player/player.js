@@ -69,7 +69,7 @@ export class Player extends Container {
         this.minY = this.y;
         this.gravity = 0.3;
 
-        this.hp = 5;
+        this.hp = 2;
         const score = localStorage.getItem('score');
         if(score != null){
             this.score = parseInt(score);
