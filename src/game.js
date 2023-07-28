@@ -10,8 +10,6 @@ import { SettingScene } from "./scenes/settingScene";
 export class Game {
     static init() {
         this.app = new Application({
-          resolution: window.devicePixelRatio || 1,
-          autoDensity: true,
           width: GameConstant.GAME_WIDTH,
           height: GameConstant.GAME_HEIGHT,
           backgroundColor: 0x1099bb,
