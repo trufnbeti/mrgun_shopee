@@ -45,7 +45,12 @@ export class GameOverUI extends Container {
   }
 
   _initLevel() {
-    this.textLevel = new PIXI.Text("LEVEL: 1", this.normalTextStyle);
+    this.level = localStorage.getItem("level");
+    if(!this.level){
+        localStorage.setItem("level", 1);
+        this.level = 1;
+    } 
+    this.textLevel = new PIXI.Text("LEVEL: "+this.level, this.normalTextStyle);
     this.textLevel.anchor.set(0.5);
     this.textLevel.zIndex = 2;
     this.textLevel.position.set(GameConstant.GAME_WIDTH/2, 440);
