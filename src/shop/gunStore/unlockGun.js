@@ -84,7 +84,11 @@ export class UnlockGun extends Container{
         this.btnWatchPR.cursor = "pointer";
 
         this.btnWatchPR.on("pointerdown", () => {
-            console.log("watch pr");
+            let money = localStorage.getItem('money');
+            money = parseInt(money, 10); 
+            money = money + 35;
+            localStorage.setItem('money', money);
+            this.parent.money.updateText();
         });
     }
 
