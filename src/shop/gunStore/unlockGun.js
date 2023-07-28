@@ -19,18 +19,12 @@ export class UnlockGun extends Container{
     }
 
     _init(){
-        let money = localStorage.getItem('money');
+        
         this._initUnlockRandom();
         this._LockRandomGun();
         this._initWatchPR();
         
-        if (money < 250) {
-            this.lockRandom.visible = true;
-            this.btnRandomGun.visible = false;
-        } else {
-            this.lockRandom.visible = false;
-            this.btnRandomGun.visible = true;
-        } 
+        this.checkMoney();
     }
 
     _initUnlockRandom() {
@@ -72,6 +66,7 @@ export class UnlockGun extends Container{
                 this.lockRandom.visible = true;
                 this.btnRandomGun.visible = false;
             }
+            if(this.parent.items.lockItems.length > 0) this.parent.items.unlockRandom();
         });
     }
 
@@ -89,7 +84,16 @@ export class UnlockGun extends Container{
             money = money + 35;
             localStorage.setItem('money', money);
             this.parent.money.updateText();
+
+            this.checkMoney();
+
+            this.openLinkInBrowser('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
         });
+    }
+
+    openLinkInBrowser(url) {
+        const win = window.open(url, '_blank');
+        win.focus();
     }
 
     _LockRandomGun() {
@@ -120,5 +124,25 @@ export class UnlockGun extends Container{
       update(delta) {
         TWEEN.update();
       }
+
+    checkMoney(){
+        let money = localStorage.getItem('money');
+        if (money < 250) {
+            this.unlockHide();
+        } else {
+            this.unlockShow();
+        } 
+
+    }
+
+    unlockShow(){
+        this.lockRandom.visible = false;
+        this.btnRandomGun.visible = true;
+    }
+
+    unlockHide(){
+        this.lockRandom.visible = true;
+        this.btnRandomGun.visible = false;
+    }
 
 }

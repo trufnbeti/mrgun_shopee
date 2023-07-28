@@ -52,8 +52,8 @@ export class Enemy extends Container{
         this.weapon.sprite.scale.x = this.direction * 0.3;
         this.reCooldown();
     
-        this.weapon.x = this.body.width / 4;
-        this.weapon.y = this.head.height + this.body.height/4;
+        this.weapon.x = this.body.width / 2;
+        this.weapon.y = this.head.height + this.body.height / 4;
         
         this.addChild(this.weapon);
     }

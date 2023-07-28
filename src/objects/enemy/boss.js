@@ -122,7 +122,7 @@ export class Boss extends Enemy{
     }
     equipWeapon(){            
     
-        this.weapon.x = this.width / 2;
+        this.weapon.x = 0;
         this.weapon.y = this.height / 2;
         
         this.addChild(this.weapon);

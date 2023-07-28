@@ -29,6 +29,7 @@ export class OutfitsScene extends Container{
         this._initBGOutfits();
         this._initMoney();
        this._initOutfit();
+       this._initUnlockGun();
 
        this.stairs = [];
        this.stairs.push(new PIXI.Point(0,0))
@@ -47,8 +48,8 @@ export class OutfitsScene extends Container{
     }
 
     _initMoney(){
-      const money = new Money();
-      this.addChild(money);
+      this.money = new Money();
+      this.addChild(this.money);
     }
 
     _initLight() {
@@ -66,6 +67,11 @@ export class OutfitsScene extends Container{
         bGOutfits.drawRect(0, GameConstant.GAME_HEIGHT / 3, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT);
         bGOutfits.endFill();
         this.addChild(bGOutfits);
+    }
+
+    _initUnlockGun() {
+      const unlockGun = new UnlockGun(); 
+      this.addChild(unlockGun); // Add the UnlockGun to the GunStoreScene container
     }
 
     _initButtonBack() {

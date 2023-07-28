@@ -52,39 +52,39 @@ export const manifest = {
             assets :[
                 {
                     name: 'CLASSIC',
-                    srcs: 'assets/images/character/CLASSIC.png'
+                    srcs: 'assets/images/character/classic.png'
                 },
                 {
                     name: 'HITMAN',
-                    srcs: 'assets/images/character/HITMAN.png'
+                    srcs: 'assets/images/character/hitman.png'
                 },
                 {
                     name: 'ATIS',
-                    srcs: 'assets/images/character/ATIS.png'
+                    srcs: 'assets/images/character/atis.png'
                 },
                 {
                     name: 'DARKA',
-                    srcs: 'assets/images/character/DARKA.png'
+                    srcs: 'assets/images/character/darka.png'
                 },
                 {
                     name: 'TRUG',
-                    srcs: 'assets/images/character/TRUG.png'
+                    srcs: 'assets/images/character/trug.png'
                 },
                 {
                     name: 'PIXI',
-                    srcs: 'assets/images/character/PIXI.png'
+                    srcs: 'assets/images/character/pixi.png'
                 },
                 {
                     name: 'MRKIN',
-                    srcs: 'assets/images/character/MRKIN.png'
+                    srcs: 'assets/images/character/mrkin.png'
                 },
                 {
                     name: 'MRKHIM',
-                    srcs: 'assets/images/character/MRKHIM.png'
+                    srcs: 'assets/images/character/mrkhim.png'
                 },
                 {
                     name: 'TINY',
-                    srcs: 'assets/images/character/TINY.png'
+                    srcs: 'assets/images/character/tiny.png'
                 },
             ]
         },
