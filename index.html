@@ -5279,6 +5279,7 @@ class BulletManager extends pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container {
             this.map.removeChild(this.player);
             this.playScene.state = _scenes_playScene__WEBPACK_IMPORTED_MODULE_4__.GameState.GameOver;
             this.playScene.gameOverUI.show();
+            localStorage.setItem("score", 0);
           }
           this.updateBloods(this.player, eBullet);
         }
@@ -5913,7 +5914,10 @@ class PlayUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
   }
   _initScore() {
-    this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`0`, this.BigTextStyle);
+    let score = localStorage.getItem("score");
+    if (score == null)
+      score = 0;
+    this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(score, this.BigTextStyle);
     this.addChild(this.scoreText);
     this.bestScore = localStorage.getItem("bestScore");
   }
@@ -7689,7 +7693,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initGun() {
     let gunName = localStorage.getItem("gun");
     if (gunName == null) {
-      gunName = "AUG";
+      gunName = "SCOUT";
       localStorage.setItem("gun", gunName);
     }
     localStorage.setItem(gunName, false);
@@ -7711,6 +7715,11 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.minY = this.y;
     this.gravity = 0.3;
     this.hp = 5;
+    const score = localStorage.getItem("score");
+    if (score != null) {
+      this.score = parseInt(score);
+    } else
+      this.score = 0;
   }
   onPointerDown(dt) {
     if (!this.gun.isShot)
@@ -8608,7 +8617,6 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.bulletManager);
     this.killCount = 0;
     this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(8, 10);
-    this.player.score = 0;
   }
   _initUI() {
     this.playUI = new _menu_playUI__WEBPACK_IMPORTED_MODULE_6__.PlayUI();
@@ -8654,6 +8662,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.enemyManager.onBossDied();
     const level = localStorage.getItem("level");
     localStorage.setItem("level", parseInt(level) + 1);
+    localStorage.setItem("score", this.player.score);
   }
   update(dt) {
     this.dt = dt;
@@ -9028,8 +9037,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
-/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
-
 
 
 
@@ -9044,38 +9051,14 @@ class Lamp extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.lampImg.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.lampImg.width * 0.6) / 2, 0);
     this.lampImg.scale.set(0.6);
     this.addChild(this.lampImg);
-    let moveCount = 0;
-    const moveTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Tween(this.lampImg.position).to({ x: this.lampImg.x, y: this.lampImg.y + 10 }, 300).easing(_tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Easing.Quadratic.InOut);
-    moveTween.onComplete(() => {
-      moveCount++;
-      if (moveCount >= 6) {
-        moveTween.stop();
-      } else {
-        moveTween.yoyo(true).start();
-      }
-    });
-    moveTween.start();
   }
   _initLight() {
     this.lightImg = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("light"));
     this.lightImg.position.set((_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.lightImg.width * 0.72) / 2, 230);
     this.lightImg.scale.set(0.75);
     this.addChild(this.lightImg);
-    this.lightImg.alpha = 1;
-    const alphaTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Tween(this.lightImg).to({ alpha: 0.3 }, 300).easing(_tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Easing.Quadratic.InOut);
-    alphaTween.onComplete(() => {
-      this.lightImg.alpha = 1;
-      this.lightCount++;
-      if (this.lightCount >= 10) {
-        return;
-      }
-      alphaTween.start();
-    });
-    alphaTween.start();
-    this.lightCount = 1;
   }
   update(delta) {
-    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.update();
   }
 }
 
