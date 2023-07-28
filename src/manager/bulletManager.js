@@ -31,6 +31,12 @@ export class BulletManager extends Container {
 
         this.effectManager = new EffectManager(map, player, enemyManager);
         this.addChild(this.effectManager);
+
+        this.level = localStorage.getItem("level");
+        if(!this.level){
+            localStorage.setItem("level", 1);
+            this.level = 1;
+        } 
     }
 
     _checkBullets(dt){
@@ -45,7 +51,7 @@ export class BulletManager extends Container {
                 if(Util.checkCollision(bullet, this.enemyManager.enemy.head)){ 
                     if(!this.enemyManager.enemy.isShooted){
 
-                        this.player.score += 50;
+                        this.player.score += parseInt(this.level)*2;
 
                         this.effectManager.updateHeadshotCount();
     
@@ -57,7 +63,7 @@ export class BulletManager extends Container {
                 } 
                 else{
                     if(!this.enemyManager.enemy.isShooted){
-                        this.player.score += 25;
+                        this.player.score += parseInt(this.level);
                         this.effectManager.resetHeadshotCount();
                     }
                     this.effectManager._onHitEnemyBody();

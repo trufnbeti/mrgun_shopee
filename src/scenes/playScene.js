@@ -118,6 +118,9 @@ export class PlayScene extends Container{
         let x = this.player.direction == -1 ? 0 : GameConstant.GAME_WIDTH; 
         this.map.addChild(new EndPortal(x,this.enemyManager.whereBossDied(),this.player.direction));
         this.enemyManager.onBossDied();
+        
+        const level = localStorage.getItem("level");
+        localStorage.setItem('level', parseInt(level)+1);
     }
 
     update(dt) {

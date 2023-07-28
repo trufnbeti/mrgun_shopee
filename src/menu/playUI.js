@@ -33,7 +33,12 @@ export class PlayUI extends Container{
       this.graphicLevel.endFill();
       this.addChild(this.graphicLevel);
 
-      this.textLevel = new PIXI.Text("LEVEL 1", this.normalTextStyle);
+      this.level = localStorage.getItem("level");
+        if(!this.level){
+            localStorage.setItem("level", 1);
+            this.level = 1;
+        } 
+      this.textLevel = new PIXI.Text("LEVEL "+this.level, this.normalTextStyle);
       this.textLevel.position.set((GameConstant.GAME_WIDTH - this.textLevel.width) / 2, 100);
       this.addChild(this.textLevel);
     }
