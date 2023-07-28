@@ -10,15 +10,14 @@ import { SettingScene } from "./scenes/settingScene";
 export class Game {
     static init() {
         this.app = new Application({
-            width: GameConstant.GAME_WIDTH,
-            height: GameConstant.GAME_HEIGHT,
-            backgroundColor: 0x1099bb,
+          width: GameConstant.GAME_WIDTH,
+          height: GameConstant.GAME_HEIGHT,
+          backgroundColor: 0x1099bb,
         });
         document.body.appendChild(this.app.view);
         const viewStyle = this.app.view.style;
-        viewStyle.position = "absolute";
-        viewStyle.display = "block";
-        viewStyle.padding = "0px 0px 0px 0px"; 
+        viewStyle.width = "100%";
+        viewStyle.height = "100%"
 
         this.loadingScene = new LoadingScene();
         this.app.stage.addChild(this.loadingScene);
