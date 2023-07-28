@@ -3,6 +3,8 @@
       padding: 0;
       background: black;
       overflow: hidden;
+      width: 100%;
+      height: 100%;
     }
   
     #game {
@@ -4397,35 +4399,35 @@ const manifest = {
         },
         {
           name: "HITMAN",
-          srcs: "assets/images/character/camouflage.png"
-        },
-        {
-          name: "ATIS",
-          srcs: "assets/images/character/charged.png"
-        },
-        {
-          name: "DARKA",
-          srcs: "assets/images/character/commando.png"
-        },
-        {
-          name: "TRUG",
-          srcs: "assets/images/character/cowboy.png"
-        },
-        {
-          name: "PIXI",
-          srcs: "assets/images/character/gunner.png"
-        },
-        {
-          name: "MRKIN",
           srcs: "assets/images/character/hitman.png"
         },
         {
+          name: "ATIS",
+          srcs: "assets/images/character/atis.png"
+        },
+        {
+          name: "DARKA",
+          srcs: "assets/images/character/darka.png"
+        },
+        {
+          name: "TRUG",
+          srcs: "assets/images/character/trug.png"
+        },
+        {
+          name: "PIXI",
+          srcs: "assets/images/character/pixi.png"
+        },
+        {
+          name: "MRKIN",
+          srcs: "assets/images/character/mrkin.png"
+        },
+        {
           name: "MRKHIM",
-          srcs: "assets/images/character/sniper.png"
+          srcs: "assets/images/character/mrkhim.png"
         },
         {
           name: "TINY",
-          srcs: "assets/images/character/sprinter.png"
+          srcs: "assets/images/character/tiny.png"
         }
       ]
     },
@@ -4602,6 +4604,10 @@ const manifest = {
         {
           name: "dust",
           srcs: "assets/images/layoutImg/dust.png"
+        },
+        {
+          name: "defeat",
+          srcs: "assets/images/layoutImg/defeat.png"
         }
       ]
     },
@@ -4808,6 +4814,14 @@ const manifest = {
         {
           name: "pot",
           srcs: "assets/images/map/pot.png"
+        },
+        {
+          name: "lightPole2",
+          srcs: "assets/images/map/light2.png"
+        },
+        {
+          name: "car",
+          srcs: "assets/images/map/car.png"
         }
       ]
     }
@@ -4867,15 +4881,16 @@ var __async = (__this, __arguments, generator) => {
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
+      resolution: window.devicePixelRatio || 1,
+      autoDensity: true,
       width: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH,
       height: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT,
       backgroundColor: 1087931
     });
     document.body.appendChild(this.app.view);
     const viewStyle = this.app.view.style;
-    viewStyle.position = "absolute";
-    viewStyle.display = "block";
-    viewStyle.padding = "0px 0px 0px 0px";
+    viewStyle.width = "100%";
+    viewStyle.height = "100%";
     this.loadingScene = new _scenes_loadingScene__WEBPACK_IMPORTED_MODULE_5__.LoadingScene();
     this.app.stage.addChild(this.loadingScene);
     this._loadGameAssets().then((asset) => {
@@ -6244,7 +6259,6 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
   }
   update(dt) {
     super.update(dt);
-    this.weapon.x = 10 * this.direction;
     if (this.destroyed)
       return;
     this.timer += dt;
@@ -6297,7 +6311,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.angle += this.angleRotation;
   }
   equipWeapon() {
-    this.weapon.x = this.width / 2;
+    this.weapon.x = 0;
     this.weapon.y = this.height / 2;
     this.addChild(this.weapon);
   }
@@ -6366,6 +6380,7 @@ class Boss extends _enemy__WEBPACK_IMPORTED_MODULE_1__.Enemy {
     this.head.scale.x *= -1;
     this.body.scale.x *= -1;
     this.weapon.sprite.scale.x *= -1;
+    this.weapon.x = 0;
   }
 }
 
@@ -6431,7 +6446,7 @@ class Enemy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   // }
   equipWeapon() {
     this.removeChild(this.weapon);
-    this.weapon.sprite.scale.x = this.direction;
+    this.weapon.sprite.scale.x = this.direction * 0.3;
     this.reCooldown();
     this.weapon.x = this.body.width / 2;
     this.weapon.y = this.head.height + this.body.height / 4;
@@ -6818,7 +6833,7 @@ class Item extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initFrame() {
     this.frame = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     let yellowc = 15970877;
-    this.frame.lineStyle(10, yellowc);
+    this.frame.lineStyle(9, yellowc);
     this.frame.drawRoundedRect(0, 0, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_WIDTH, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.ITEM_HEIGHT, 20);
     this.addChild(this.frame);
   }
@@ -6862,9 +6877,9 @@ class Item extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bg.visible = !this.bg.visible;
   }
   resize() {
-    this.sprite.scale.set(1.45);
+    this.sprite.scale.set(0.52);
     this.sprite.anchor.set(0.5);
-    this.sprite.x = this.width / 2 - this.sprite.width / 4;
+    this.sprite.x = this.width / 2 - this.sprite.width / 4 - 2;
     this.sprite.y = this.height / 2 - this.sprite.height / 2 + 40;
     this.text.x = this.width / 2 - this.text.width / 2;
     this.text.y = this.height / 4 - this.text.height;
@@ -6888,6 +6903,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./item */ "./src/objects/item/item.js");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _helper_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helper/utils */ "./src/helper/utils.js");
+
 
 
 
@@ -6897,6 +6914,7 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.type = type;
     this.itemsName = items;
     this.items = [];
+    this.lockItems = [];
     this.y = 400;
     this._init();
   }
@@ -6907,6 +6925,7 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         let item = new _item__WEBPACK_IMPORTED_MODULE_1__.Item(this.itemsName[k]);
         this.addChild(item);
         this.items.push(item);
+        item.bg.visible = false;
         item.position.set(100 + j * (_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.ITEM_WIDTH + 40), 100 + i * (_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.ITEM_HEIGHT + 40));
         if (item.isLock == "false") {
           item.interactive = true;
@@ -6914,6 +6933,7 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
           item.on("pointerdown", () => this._onPointdown(item));
         } else {
           item.lock.visible = true;
+          this.lockItems.push(item);
         }
       }
     }
@@ -6927,7 +6947,31 @@ class ItemFrame extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       item2.bg.visible = false;
     });
     item.bg.visible = true;
+    item.lock.visible = false;
     localStorage.setItem(this.type, item.name);
+  }
+  selectItem(targetItem) {
+    localStorage.setItem(this.type, targetItem.name);
+    localStorage.setItem(targetItem.name, false);
+    targetItem.interactive = true;
+    targetItem.cursor = "pointer";
+    targetItem.on("pointerdown", () => this._onPointdown(targetItem));
+    this._onPointdown(targetItem);
+  }
+  resetButton() {
+    this.items.forEach((item) => {
+      if (item.isLock == "false") {
+        item.interactive = true;
+        item.cursor = "pointer";
+        item.on("pointerdown", () => this._onPointdown(item));
+      }
+    });
+  }
+  unlockRandom() {
+    const length = this.lockItems.length;
+    const index = Math.floor(_helper_utils__WEBPACK_IMPORTED_MODULE_3__.Util.random(0, length - 1));
+    this.selectItem(this.lockItems[index]);
+    this.lockItems.splice(index, 1);
   }
 }
 
@@ -6955,7 +6999,7 @@ class Decoration {
   constructor() {
   }
   random() {
-    const key = Math.floor(_helper_utils__WEBPACK_IMPORTED_MODULE_1__.Util.random(0, 6));
+    const key = Math.floor(_helper_utils__WEBPACK_IMPORTED_MODULE_1__.Util.random(0, 8));
     switch (key) {
       case 1:
         return this.addDecor("fence1");
@@ -6971,6 +7015,12 @@ class Decoration {
         break;
       case 5:
         return this.addDecor("pot");
+        break;
+      case 6:
+        return this.addDecor("lightPole2");
+        break;
+      case 7:
+        return this.addDecor("car");
         break;
       default:
         break;
@@ -7441,7 +7491,8 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initSprite() {
     this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get(this.name));
-    this.sprite.scale.x *= this.parent.direction;
+    this.sprite.scale.x *= this.parent.direction * 0.3;
+    this.sprite.scale.y *= 0.3;
     this.x = 10 * this.parent.direction;
     this.addChild(this.sprite);
     this.sprite.anchor.set(0.5);
@@ -7526,7 +7577,7 @@ class Gun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.graphics.endFill();
   }
   flip() {
-    this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
+    this.sprite.scale.x = this.parent.direction == 1 ? 0.3 : -0.3;
   }
   shoot(dt) {
     if (this.type == "rapid") {
@@ -7589,7 +7640,12 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initAbility();
     this._initCharacter();
     this._initGun();
+    this._initPosition();
     this.dustEffect.visible = true;
+  }
+  _initPosition() {
+    this.x = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2;
+    this.y = this.parent.stairs[0].y + _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.Step_Size * 2 - this.sprite.height;
   }
   //hieu ung bui khi di chuyen
   _initEffectDust() {
@@ -7607,7 +7663,9 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     localStorage.setItem(outfitName, false);
     this.removeChild(this.sprite);
     this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(outfitName);
-    this.sprite.scale.x *= this.direction;
+    this.scaleRatio = 0.4;
+    this.sprite.scale.x = this.direction * this.scaleRatio;
+    this.sprite.scale.y = this.scaleRatio;
     this.sprite.anchor.set(0.5, 0);
     this.addChild(this.sprite);
   }
@@ -7623,8 +7681,6 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.gun.zIndex = 1;
   }
   _initAbility() {
-    this.x = _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2;
-    this.y = this.parent.stairs[0].y + 50 - 55;
     this.zIndex = 1;
     this.color = 16711680;
     this.direction = -1;
@@ -7646,7 +7702,6 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   update(delta) {
     this.move(delta);
     this.gun.update(delta);
-    this.sprite.scale.x = this.direction === 1 ? 1 : -1;
   }
   move(dt) {
     if (this.path2 > 0) {
@@ -7721,6 +7776,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   flip() {
     this.direction = this.direction == 1 ? -1 : 1;
+    this.sprite.scale.x = this.direction * this.scaleRatio;
   }
 }
 
@@ -7786,8 +7842,8 @@ class Weapon extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(texture) {
     super();
     this.sprite = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(texture);
+    this.sprite.scale.set(0.3);
     this.sprite.anchor.set(0, 0.5);
-    this.sprite.scale.set(1.2);
     this.addChild(this.sprite);
     this.runAngle = 0;
     this.isShot = false;
@@ -7858,6 +7914,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gameConstant */ "./src/gameConstant.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../game */ "./src/game.js");
+/* harmony import */ var _shop_gunStore_blackList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shop/gunStore/blackList */ "./src/shop/gunStore/blackList.js");
+
 
 
 
@@ -7872,27 +7930,11 @@ class BlackListScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initBGListBoss();
     this._iniTextList();
     this._initButtonCancel();
-    this.listBoss();
+    this._initBlackList();
   }
-  listBoss() {
-    let h = 0;
-    for (let i = 0; i < 4; i++) {
-      this.stageBoss(h);
-      h = h + 200;
-    }
-  }
-  stageBoss(h) {
-    this.stageboss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.defeated = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bldefeated"));
-    this.defeated.scale.set(0.76);
-    this.stageboss.addChild(this.defeated);
-    this.live = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bllive"));
-    this.live.scale.set(0.76);
-    this.stageboss.addChild(this.live);
-    const x = (_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH - this.defeated.width) / 2;
-    const y = this.textList.y + 100;
-    this.stageboss.position.set(x, y + h);
-    this.addChild(this.stageboss);
+  _initBlackList() {
+    this.blacklist = new _shop_gunStore_blackList__WEBPACK_IMPORTED_MODULE_3__.BlackList();
+    this.addChild(this.blacklist);
   }
   _initButtonCancel() {
     this.buttonCancel = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("cancel"));
@@ -8021,7 +8063,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.score);
   }
   _initLevel() {
-    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL: ", this.normalTextStyle);
+    this.textLevel = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("LEVEL: 1", this.normalTextStyle);
     this.textLevel.anchor.set(0.5);
     this.textLevel.zIndex = 2;
     this.textLevel.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / 2, 440);
@@ -8140,12 +8182,16 @@ class GunStoreScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.stairs = [];
     this.stairs.push(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Point(0, 0));
     this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_7__.Player(this);
+    this.player.sprite.scale.set(1);
+    this.player.gun.sprite.scale.set(0.7);
+    this.player.gun.position.set(20, 75);
     this.addChild(this.player);
-    this.player.scale.set(2);
-    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - 108);
+    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - this.player.sprite.height);
     this.interactive = true;
     this.on("pointerdown", () => {
       this.player._initGun();
+      this.player.gun.sprite.scale.set(0.7);
+      this.player.gun.position.set(20, 75);
     });
   }
   _initLamp() {
@@ -8354,20 +8400,25 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initBGOutfits();
     this._initMoney();
     this._initOutfit();
+    this._initUnlockGun();
     this.stairs = [];
     this.stairs.push(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Point(0, 0));
     this.player = new _objects_player_player__WEBPACK_IMPORTED_MODULE_6__.Player(this);
+    this.player.sprite.scale.set(1);
+    this.player.gun.sprite.scale.set(0.7);
+    this.player.gun.position.set(20, 75);
     this.addChild(this.player);
-    this.player.scale.set(2);
-    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - 108);
+    this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - this.player.sprite.height);
     this.interactive = true;
     this.on("pointerdown", () => {
       this.player._initCharacter();
+      this.player.sprite.scale.set(1);
+      this.player.position.set(_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2, _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT / 3 - this.player.sprite.height);
     });
   }
   _initMoney() {
-    const money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_5__.Money();
-    this.addChild(money);
+    this.money = new _objects_money_money__WEBPACK_IMPORTED_MODULE_5__.Money();
+    this.addChild(this.money);
   }
   _initLight() {
     this.lightImg = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("light"));
@@ -8383,6 +8434,10 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     bGOutfits.endFill();
     this.addChild(bGOutfits);
   }
+  _initUnlockGun() {
+    const unlockGun = new _shop_gunStore_unlockGun__WEBPACK_IMPORTED_MODULE_4__.UnlockGun();
+    this.addChild(unlockGun);
+  }
   _initButtonBack() {
     this.buttonBack = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("back"));
     this.buttonBack.position.set(30, 60);
@@ -8393,6 +8448,7 @@ class OutfitsScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.buttonBack.on("pointerdown", () => {
       this.hide();
       _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initCharacter();
+      _game__WEBPACK_IMPORTED_MODULE_2__.Game.playScene.player._initPosition();
     });
   }
   _initTextTitle() {
@@ -8529,7 +8585,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.bulletManager = new _manager_bulletManager__WEBPACK_IMPORTED_MODULE_7__.BulletManager(this.player, this.map, this.enemyManager, this);
     this.addChild(this.bulletManager);
     this.killCount = 0;
-    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(7, 10);
+    this.killNeed = _helper_utils__WEBPACK_IMPORTED_MODULE_10__.Util.random(1, 1);
     this.player.score = 0;
   }
   _initUI() {
@@ -8588,6 +8644,7 @@ class PlayScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.menu.update(dt);
     }
     this.playUI.money.updateText();
+    this.gameOverUI.money.updateText();
   }
   hitStair() {
     console.log("hit the wall");
@@ -8770,6 +8827,161 @@ class SettingScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/shop/gunStore/blackList.js":
+/*!****************************************!*\
+  !*** ./src/shop/gunStore/blackList.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BlackList: () => (/* binding */ BlackList)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _pixi_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/ui */ "./node_modules/@pixi/ui/lib/ScrollBox.mjs");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _bossCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bossCard */ "./src/shop/gunStore/bossCard.js");
+
+
+
+
+
+class BlackList extends _pixi_ui__WEBPACK_IMPORTED_MODULE_3__.ScrollBox {
+  constructor() {
+    super({
+      width: _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH,
+      height: _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT - 470,
+      elementsMargin: 22,
+      vertPadding: 0
+    });
+    this._initProperties();
+    this._initName();
+    this._initBossCard();
+  }
+  _initProperties() {
+    this.position.set(105, 260);
+  }
+  _initBossCard() {
+    for (let i = 1; i < 23; i++) {
+      this.bossCard = new _bossCard__WEBPACK_IMPORTED_MODULE_2__.BossCard();
+      this.bossCard._initBoss(i);
+      this.bossCard._initText(this.names[i - 1]);
+      this.addItem(this.bossCard);
+    }
+  }
+  _initName() {
+    this.names = [
+      "KALISTA",
+      "LEE SIN",
+      "LISSANDRA",
+      "KATARINA",
+      "KENNEN",
+      "MALZAHAR",
+      "MISS FORTUNE",
+      "MASTER YI",
+      "MORDEKAISER",
+      "NOCTURNE",
+      "NAUTILUS",
+      "OLAF",
+      "QUINN",
+      "POPPY",
+      "TRYNDAMERE",
+      "SORAKA",
+      "TAHM KENCH",
+      "SKARRAR",
+      "S",
+      "VEIGAR",
+      "WARWICK",
+      "YASUO",
+      "ZAC",
+      "ZYRA",
+      "Ziggs",
+      "YONE"
+    ];
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/shop/gunStore/bossCard.js":
+/*!***************************************!*\
+  !*** ./src/shop/gunStore/bossCard.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BossCard: () => (/* binding */ BossCard)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _objects_player_gun__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../objects/player/gun */ "./src/objects/player/gun.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _objects_enemy_boss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../objects/enemy/boss */ "./src/objects/enemy/boss.js");
+
+
+
+
+
+class BossCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._stageBoss();
+    this._bossDefeat();
+  }
+  _stageBoss() {
+    this.stageboss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.live = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bllive"));
+    this.live.scale.set(0.76);
+    this.stageboss.addChild(this.live);
+    this.defeated = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bldefeated"));
+    this.defeated.scale.set(0.76);
+    this.stageboss.addChild(this.defeated);
+    this.defeated.visible = false;
+    this.stageboss.position.set(0, 0);
+    this.addChild(this.stageboss);
+  }
+  _bossDefeat() {
+    this.defeat = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("defeat"));
+    this.defeat.scale.set(0.76);
+    this.addChild(this.defeat);
+    this.defeat.position.set(this.stageboss.x, this.stageboss.y);
+    this.defeat.visible = false;
+  }
+  _initBoss(indexR) {
+    this.boss = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.head = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_head_" + indexR));
+    this.head.scale.set(0.25);
+    this.boss.addChild(this.head);
+    this.body = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("boss_body_" + indexR));
+    this.body.scale.set(0.25);
+    this.body.y = this.head.height;
+    this.head.x = 0;
+    this.boss.addChild(this.body);
+    this.boss.position.set(this.stageboss.x + 37, this.stageboss.y + (this.live.height * 0.76 - this.boss.height * 0.25) / 2 - 20);
+    this.addChild(this.boss);
+  }
+  _initText(names) {
+    this._initTextBig();
+    this.name = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(names, this.bigTextStyle);
+    this.name.position.set(200, this.live.height / 2 - 13);
+    this.addChild(this.name);
+  }
+  _initTextBig() {
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fontFamily: "Triomphe Bold Autoinstr",
+      fontSize: 25,
+      fontStyle: "bold",
+      fill: ["#ffffff"]
+    });
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/shop/gunStore/lamp.js":
 /*!***********************************!*\
   !*** ./src/shop/gunStore/lamp.js ***!
@@ -8837,17 +9049,10 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._init();
   }
   _init() {
-    let money = localStorage.getItem("money");
     this._initUnlockRandom();
     this._LockRandomGun();
     this._initWatchPR();
-    if (money < 250) {
-      this.lockRandom.visible = true;
-      this.btnRandomGun.visible = false;
-    } else {
-      this.lockRandom.visible = false;
-      this.btnRandomGun.visible = true;
-    }
+    this.checkMoney();
   }
   _initUnlockRandom() {
     this.btnRandomGun = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("unlockRandom"));
@@ -8875,6 +9080,8 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.lockRandom.visible = true;
         this.btnRandomGun.visible = false;
       }
+      if (this.parent.items.lockItems.length > 0)
+        this.parent.items.unlockRandom();
     });
   }
   _initWatchPR() {
@@ -8885,8 +9092,18 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.btnWatchPR.interactive = true;
     this.btnWatchPR.cursor = "pointer";
     this.btnWatchPR.on("pointerdown", () => {
-      console.log("watch pr");
+      let money = localStorage.getItem("money");
+      money = parseInt(money, 10);
+      money = money + 35;
+      localStorage.setItem("money", money);
+      this.parent.money.updateText();
+      this.checkMoney();
+      this.openLinkInBrowser("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     });
+  }
+  openLinkInBrowser(url) {
+    const win = window.open(url, "_blank");
+    win.focus();
   }
   _LockRandomGun() {
     this.lockRandom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
@@ -8909,6 +9126,22 @@ class UnlockGun extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   update(delta) {
     _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.update();
+  }
+  checkMoney() {
+    let money = localStorage.getItem("money");
+    if (money < 250) {
+      this.unlockHide();
+    } else {
+      this.unlockShow();
+    }
+  }
+  unlockShow() {
+    this.lockRandom.visible = false;
+    this.btnRandomGun.visible = true;
+  }
+  unlockHide() {
+    this.lockRandom.visible = true;
+    this.btnRandomGun.visible = false;
   }
 }
 
@@ -45812,6 +46045,939 @@ Object.defineProperties(_pixi_settings__WEBPACK_IMPORTED_MODULE_0__.settings, {
   }
 });
 //# sourceMappingURL=settings.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/List.mjs":
+/*!********************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/List.mjs ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   List: () => (/* binding */ List)
+/* harmony export */ });
+/* harmony import */ var _pixi_display__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/display */ "./node_modules/@pixi/display/lib/index.mjs");
+
+
+class List extends _pixi_display__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(options) {
+    super();
+    /** Returns all arranged elements. */
+    this.children = [];
+    if (options) {
+      this.init(options);
+    }
+    options?.items?.forEach((item) => this.addChild(item));
+    this.on("added", () => this.arrangeChildren());
+    this.on("childAdded", () => this.arrangeChildren());
+  }
+  /**
+   * Initiates list component.
+   * @param options
+   */
+  init(options) {
+    this.options = options;
+    if (options?.type) {
+      this.type = options.type;
+    }
+    if (options?.children) {
+      options.children.forEach((child) => this.addChild(child));
+    }
+  }
+  /**
+   * Set items arrange direction.
+   * @param type - Arrange direction.
+   */
+  set type(type) {
+    this._type = type;
+    this.arrangeChildren();
+  }
+  /**
+   * Get items arrange direction.
+   * @returns Arrange direction.
+   */
+  get type() {
+    return this._type;
+  }
+  /**
+   * Set element margin.
+   * @param margin - Margin between elements.
+   */
+  set elementsMargin(margin) {
+    this.options.elementsMargin = margin;
+    this.arrangeChildren();
+  }
+  /**
+   * Get element margin.
+   * @returns Margin between elements.
+   */
+  get elementsMargin() {
+    return this.options.elementsMargin;
+  }
+  /**
+   * Set vertical padding.
+   * @param padding - Vertical padding between list border and its elements.
+   */
+  set vertPadding(padding) {
+    this.options.vertPadding = padding;
+    this.arrangeChildren();
+  }
+  /**
+   * Get vertical padding.
+   * @returns Vertical padding between list border and its elements.
+   */
+  get vertPadding() {
+    return this.options.vertPadding;
+  }
+  /**
+   * Set horizontal padding.
+   * @param padding - Horizontal padding between list border and its elements.
+   */
+  set horPadding(padding) {
+    this.options.horPadding = padding;
+    this.arrangeChildren();
+  }
+  /**
+   * Get horizontal padding.
+   * @returns Horizontal padding between list border and its elements.
+   */
+  get horPadding() {
+    return this.options.horPadding;
+  }
+  /**
+   * Arrange all elements basing in their sizes and component options.
+   * Can be arranged vertically, horizontally or bidirectional.
+   */
+  arrangeChildren() {
+    let x = this.options?.horPadding ?? 0;
+    let y = this.options?.vertPadding ?? 0;
+    const elementsMargin = this.options?.elementsMargin ?? 0;
+    let maxWidth = this.parent?.width;
+    if (this.options?.horPadding) {
+      maxWidth -= this.options.horPadding;
+    }
+    this.children.forEach((child, id) => {
+      switch (this.type) {
+        case "vertical":
+          child.y = y;
+          child.x = x;
+          y += elementsMargin + child.height;
+          break;
+        case "horizontal":
+          child.x = x;
+          child.y = y;
+          x += elementsMargin + child.width;
+          break;
+        default:
+          child.x = x;
+          child.y = y;
+          if (child.x + child.width >= maxWidth && id > 0) {
+            y += elementsMargin + child.height;
+            x = this.options?.horPadding ?? 0;
+            child.x = x;
+            child.y = y;
+          }
+          x += elementsMargin + child.width;
+          break;
+      }
+    });
+  }
+}
+
+
+//# sourceMappingURL=List.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/ScrollBox.mjs":
+/*!*************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/ScrollBox.mjs ***!
+  \*************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollBox: () => (/* binding */ ScrollBox)
+/* harmony export */ });
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/core */ "./node_modules/@pixi/core/lib/index.mjs");
+/* harmony import */ var _pixi_display__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/display */ "./node_modules/@pixi/display/lib/index.mjs");
+/* harmony import */ var _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pixi/graphics */ "./node_modules/@pixi/graphics/lib/index.mjs");
+/* harmony import */ var _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sprite */ "./node_modules/@pixi/sprite/lib/index.mjs");
+/* harmony import */ var _List_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./List.mjs */ "./node_modules/@pixi/ui/lib/List.mjs");
+/* harmony import */ var _utils_trackpad_Trackpad_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/trackpad/Trackpad.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs");
+
+
+
+
+
+
+
+class ScrollBox extends _pixi_display__WEBPACK_IMPORTED_MODULE_1__.Container {
+  /**
+   * @param options
+   * @param {number} options.background - background color of the ScrollBox.
+   * @param {number} options.width - width of the ScrollBox.
+   * @param {number} options.height - height of the ScrollBox.
+   * @param {number} options.radius - radius of the ScrollBox and its masks corners.
+   * @param {number} options.elementsMargin - margin between elements.
+   * @param {number} options.vertPadding - vertical padding of the ScrollBox.
+   * @param {number} options.horPadding - horizontal padding of the ScrollBox.
+   * @param {number} options.padding - padding of the ScrollBox (same horizontal and vertical).
+   * @param {boolean} options.disableDynamicRendering - disables dynamic rendering of the ScrollBox,
+   * so even elements the are not visible will be rendered. Be careful with this options as it can impact performance.
+   */
+  constructor(options) {
+    super();
+    this.__width = 0;
+    this.__height = 0;
+    this.isDragging = 0;
+    this.interactiveStorage = [];
+    this.visibleItems = [];
+    this.ticker = _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared;
+    if (options) {
+      this.init(options);
+    }
+    this.ticker.add(this.update, this);
+    this.onMouseScrollBinded = this.onMouseScroll.bind(this);
+  }
+  /**
+   * Initiates ScrollBox.
+   * @param options
+   * @param {number} options.background - background color of the ScrollBox.
+   * @param {number} options.width - width of the ScrollBox.
+   * @param {number} options.height - height of the ScrollBox.
+   * @param {number} options.radius - radius of the ScrollBox and its masks corners.
+   * @param {number} options.elementsMargin - margin between elements.
+   * @param {number} options.vertPadding - vertical padding of the ScrollBox.
+   * @param {number} options.horPadding - horizontal padding of the ScrollBox.
+   * @param {number} options.padding - padding of the ScrollBox (same horizontal and vertical).
+   * @param {boolean} options.disableDynamicRendering - disables dynamic rendering of the ScrollBox,
+   * so even elements the are not visible will be rendered. Be careful with this options as it can impact performance.
+   */
+  init(options) {
+    this.options = options;
+    this.setBackground(options.background);
+    this.__width = options.width | this.background.width;
+    this.__height = options.height | this.background.height;
+    options.vertPadding = options.vertPadding ?? options.padding ?? 0;
+    options.horPadding = options.horPadding ?? options.padding ?? 0;
+    if (!this.list) {
+      this.list = new _List_mjs__WEBPACK_IMPORTED_MODULE_4__.List();
+      super.addChild(this.list);
+    }
+    this.list.init({
+      type: options.type,
+      elementsMargin: options.elementsMargin,
+      vertPadding: options.vertPadding,
+      horPadding: options.horPadding
+    });
+    this.addItems(options.items);
+    if (this.hasBounds) {
+      this.addMask();
+      this.makeScrollable();
+    }
+    this._trackpad.xAxis.value = 0;
+    this._trackpad.yAxis.value = 0;
+    this.resize();
+  }
+  get hasBounds() {
+    return !!this.__width || !!this.__height;
+  }
+  onChildrenChange() {
+  }
+  /**
+   *  Adds array of items to a scrollable list.
+   * @param {Container[]} items - items to add.
+   */
+  addItems(items) {
+    if (!items?.length)
+      return;
+    items.forEach((item) => this.addItem(item));
+  }
+  /** Remove all items from a scrollable list. */
+  removeItems() {
+    this.list.removeChildren();
+  }
+  /**
+   * Adds one or more items to a scrollable list.
+   * @param {Container} items - one or more items to add.
+   */
+  addItem(...items) {
+    if (items.length > 1) {
+      items.forEach((item) => this.addItem(item));
+    } else {
+      const child = items[0];
+      if (!child.width || !child.height) {
+        console.error("ScrollBox item should have size");
+      }
+      child.eventMode = "static";
+      this.list.addChild(child);
+      if (!this.options.disableDynamicRendering) {
+        child.renderable = this.isItemVisible(child);
+      }
+    }
+    this.resize();
+    return items[0];
+  }
+  /**
+   * Removes an item from a scrollable list.
+   * @param {number} itemID - id of the item to remove.
+   */
+  removeItem(itemID) {
+    const child = this.list.children[itemID];
+    if (!child) {
+      return;
+    }
+    this.list.removeChild(child);
+    this.resize();
+  }
+  /**
+   * Checks if the item is visible or scrolled out of the visible part of the view.* Adds an item to a scrollable list.
+   * @param {Container} item - item to check.
+   */
+  isItemVisible(item) {
+    const isVertical = this.options.type === "vertical" || !this.options.type;
+    let isVisible = false;
+    const list = this.list;
+    if (isVertical) {
+      const posY = item.y + list.y;
+      if (posY + item.height + this.options.vertPadding >= 0 && posY - this.options.vertPadding - this.options.elementsMargin <= this.options.height) {
+        isVisible = true;
+      }
+    } else {
+      const posX = item.x + list.x;
+      if (posX + item.width >= 0 && posX <= this.options.width) {
+        isVisible = true;
+      }
+    }
+    return isVisible;
+  }
+  /**
+   * Returns all inner items in a list.
+   * @returns {Array<Container> | Array} - list of items.
+   */
+  get items() {
+    return this.list?.children ?? [];
+  }
+  /**
+   * Set ScrollBox background.
+   * @param {number | string} background - background color or texture.
+   */
+  setBackground(background) {
+    if (this.background) {
+      this.removeChild(this.background);
+      if (this.background instanceof _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__.Sprite) {
+        this.background.destroy();
+      }
+    }
+    this.options.background = background;
+    this.background = background !== void 0 && typeof background === "string" ? _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__.Sprite.from(background) : new _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics();
+    this.addChildAt(this.background, 0);
+    this.resize();
+  }
+  addMask() {
+    if (!this.borderMask) {
+      this.borderMask = new _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics();
+      super.addChild(this.borderMask);
+      this.mask = this.borderMask;
+    }
+    this.resize();
+  }
+  makeScrollable() {
+    if (!this._trackpad) {
+      this._trackpad = new _utils_trackpad_Trackpad_mjs__WEBPACK_IMPORTED_MODULE_5__.Trackpad({
+        disableEasing: this.options.disableEasing
+      });
+    }
+    this.on("pointerdown", (e) => {
+      this.isDragging = 1;
+      const touchPoint = this.worldTransform.applyInverse(e.global);
+      this._trackpad.pointerDown(touchPoint);
+      const listTouchPoint = this.list.worldTransform.applyInverse(e.global);
+      this.visibleItems.forEach((item) => {
+        if (item.x < listTouchPoint.x && item.x + item.width > listTouchPoint.x && item.y < listTouchPoint.y && item.y + item.height > listTouchPoint.y) {
+          this.pressedChild = item;
+        }
+      });
+    });
+    this.on("pointerup", () => {
+      this.isDragging = 0;
+      this._trackpad.pointerUp();
+      this.restoreItemsInteractivity();
+      this.pressedChild = null;
+    });
+    this.on("pointerupoutside", () => {
+      this.isDragging = 0;
+      this._trackpad.pointerUp();
+      this.restoreItemsInteractivity();
+      this.pressedChild = null;
+    });
+    this.on("globalpointermove", (e) => {
+      const touchPoint = this.worldTransform.applyInverse(e.global);
+      this._trackpad.pointerMove(touchPoint);
+      if (!this.isDragging)
+        return;
+      if (this.pressedChild) {
+        this.revertClick(this.pressedChild);
+        this.pressedChild = null;
+      }
+    });
+    const { onMouseHover, onMouseOut } = this;
+    this.on("mouseover", onMouseHover, this).on("mouseout", onMouseOut, this);
+  }
+  setInteractive(interactive) {
+    this.eventMode = interactive ? "static" : "auto";
+  }
+  get listHeight() {
+    return this.list.height + this.options.vertPadding * 2;
+  }
+  get listWidth() {
+    return this.list.width + this.options.horPadding * 2;
+  }
+  /** Controls item positions and visibility. */
+  resize() {
+    if (!this.hasBounds)
+      return;
+    this.renderAllItems();
+    if (this.borderMask && (this.lastWidth !== this.listWidth || this.lastHeight !== this.listHeight)) {
+      const verPadding = this.options.vertPadding;
+      const horPadding = this.options.horPadding;
+      if (!this.options.width) {
+        this.__width += this.listWidth;
+      }
+      if (!this.options.height) {
+        this.__height += this.listHeight;
+      }
+      this.borderMask.clear().lineStyle(0).beginFill(16777215).drawRoundedRect(
+        0,
+        0,
+        this.__width,
+        this.__height,
+        this.options.radius | 0
+      );
+      this.borderMask.eventMode = "none";
+      if (this.background instanceof _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics) {
+        this.background.clear().lineStyle(0);
+        const color = this.options.background;
+        this.background.beginFill(
+          color ?? 0,
+          color ? 1 : 1e-7
+          // if color is not set, set alpha to 0 to be able to drag by click on bg
+        );
+        this.background.drawRect(
+          0,
+          0,
+          this.__width + horPadding,
+          this.__height + verPadding
+        );
+      }
+      if (this.options.type === "horizontal") {
+        this.setInteractive(this.listWidth > this.__width);
+      } else {
+        this.setInteractive(this.listHeight > this.__height);
+      }
+      this.lastWidth = this.listWidth;
+      this.lastHeight = this.listHeight;
+    }
+    if (this._trackpad) {
+      const maxWidth = this.borderMask.width - this.list.width - this.options.horPadding * 2;
+      const maxHeight = this.borderMask.height - this.list.height - this.options.vertPadding * 2;
+      if (this.options.type === "vertical") {
+        this._trackpad.yAxis.max = -Math.abs(maxHeight);
+      } else if (this.options.type === "horizontal") {
+        this._trackpad.xAxis.max = -Math.abs(maxWidth);
+      } else {
+        this._trackpad.yAxis.max = -Math.abs(maxHeight);
+        this._trackpad.xAxis.max = -Math.abs(maxWidth);
+      }
+    }
+    this.stopRenderHiddenItems();
+  }
+  onMouseHover() {
+    this.renderAllItems();
+    document.addEventListener("mousewheel", this.onMouseScrollBinded);
+    document.addEventListener("DOMMouseScroll", this.onMouseScrollBinded);
+  }
+  onMouseOut() {
+    this.stopRenderHiddenItems();
+    document.removeEventListener("mousewheel", this.onMouseScrollBinded);
+    document.removeEventListener(
+      "DOMMouseScroll",
+      this.onMouseScrollBinded
+    );
+  }
+  onMouseScroll(event) {
+    this.renderAllItems();
+    if (this.options.type === "horizontal" && (typeof event.deltaX !== "undefined" || typeof event.deltaY !== "undefined")) {
+      const targetPos = event.deltaY ? this.list.x - event.deltaY : this.list.x - event.deltaX;
+      if (targetPos < 0 && targetPos + this.listWidth + this.options.horPadding < this.__width) {
+        this._trackpad.xAxis.value = this.__width - this.listWidth;
+      } else if (targetPos > this.options.horPadding) {
+        this._trackpad.xAxis.value = 0;
+      } else {
+        this._trackpad.xAxis.value = targetPos;
+      }
+    } else if (typeof event.deltaY !== "undefined") {
+      const targetPos = this.list.y - event.deltaY;
+      if (targetPos < 0 && targetPos + this.listHeight + this.options.vertPadding < this.__height) {
+        this._trackpad.yAxis.value = this.__height - this.listHeight;
+      } else if (targetPos > this.options.vertPadding) {
+        this._trackpad.yAxis.value = 0;
+      } else {
+        this._trackpad.yAxis.value = targetPos;
+      }
+    }
+    this.stopRenderHiddenItems();
+  }
+  /** Makes it scroll down to the last element. */
+  scrollBottom() {
+    if (!this.interactive) {
+      this.scrollTop();
+    } else {
+      this.scrollTo(this.list.children.length - 1);
+    }
+  }
+  /** Makes it scroll up to the first element. */
+  scrollTop() {
+    this._trackpad.xAxis.value = 0;
+    this._trackpad.yAxis.value = 0;
+  }
+  renderAllItems() {
+    if (this.options.disableDynamicRendering) {
+      return;
+    }
+    this.items.forEach((child) => {
+      child.renderable = true;
+    });
+  }
+  stopRenderHiddenItems() {
+    if (this.options.disableDynamicRendering) {
+      return;
+    }
+    this.visibleItems.length = 0;
+    this.items.forEach((child) => {
+      child.renderable = this.isItemVisible(child);
+      this.visibleItems.push(child);
+    });
+  }
+  /**
+   * Scrolls to the element with the given ID.
+   * @param elementID
+   */
+  scrollTo(elementID) {
+    if (!this.interactive) {
+      return;
+    }
+    const target = this.list.children[elementID];
+    if (!target) {
+      return;
+    }
+    this._trackpad.xAxis.value = this.options.type === "horizontal" ? this.__width - target.x - target.width - this.options.horPadding : 0;
+    this._trackpad.yAxis.value = !this.options.type || this.options.type === "vertical" ? this.__height - target.y - target.height - this.options.vertPadding : 0;
+  }
+  /** Gets component height. */
+  get height() {
+    return this.__height;
+  }
+  /** Gets component width. */
+  get width() {
+    return this.__width;
+  }
+  update() {
+    if (!this.list)
+      return;
+    this._trackpad.update();
+    const type = this.options.type === "horizontal" ? "x" : "y";
+    if (this.list[type] !== this._trackpad[type]) {
+      this.list[type] = this._trackpad[type];
+    }
+  }
+  /** Destroys the component. */
+  destroy() {
+    this.ticker.remove(this.update, this);
+    this.background.destroy();
+    this.list.destroy();
+    super.destroy();
+  }
+  restoreItemsInteractivity() {
+    this.interactiveStorage.forEach((element) => {
+      element.item.eventMode = element.eventMode;
+    });
+    this.interactiveStorage.length = 0;
+  }
+  revertClick(item) {
+    if (item.eventMode !== "auto") {
+      _pixi_core__WEBPACK_IMPORTED_MODULE_0__.utils.isMobile.any ? item.emit("pointerupoutside", null) : item.emit("mouseupoutside", null);
+      this.interactiveStorage.push({
+        item,
+        eventMode: item.eventMode
+      });
+      item.eventMode = "auto";
+    }
+    if (item instanceof _pixi_display__WEBPACK_IMPORTED_MODULE_1__.Container && item.children) {
+      item.children.forEach((child) => this.revertClick(child));
+    }
+  }
+}
+
+
+//# sourceMappingURL=ScrollBox.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ScrollSpring)
+/* harmony export */ });
+/* harmony import */ var _Spring_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Spring.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs");
+
+
+class ScrollSpring {
+  constructor() {
+    this._spring = new _Spring_mjs__WEBPACK_IMPORTED_MODULE_0__.Spring();
+    this._pos = 0;
+    this.to = 0;
+  }
+  start(speed, pos, to) {
+    this._speed = speed;
+    this._pos = pos;
+    this.to = to;
+    this.done = false;
+    this._spring.x = this._pos;
+    this._spring.tx = this.to;
+    const diff = this.to - this._pos;
+    const toDirection = Math.abs(diff) / diff;
+    const currentDirection = Math.abs(this._speed) / this._speed;
+    if (toDirection !== currentDirection) {
+      this._correctSpeed = true;
+    } else {
+      this._correctSpeed = false;
+    }
+  }
+  update() {
+    if (this._correctSpeed) {
+      this._speed *= 0.6;
+      if (Math.abs(this._speed) < 2) {
+        this._correctSpeed = false;
+      }
+      this._pos += this._speed;
+      this._spring.x = this._pos;
+    } else {
+      const diff = this.to - this._pos;
+      if (Math.abs(diff) < 0.05) {
+        this._pos = this.to;
+        this.done = true;
+      } else {
+        this._spring.tx = this.to;
+        this._spring.update();
+        this._pos = this._spring.x;
+      }
+    }
+    return this._pos;
+  }
+  cancel() {
+  }
+}
+
+
+//# sourceMappingURL=ScrollSpring.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SlidingNumber: () => (/* binding */ SlidingNumber)
+/* harmony export */ });
+/* harmony import */ var _ScrollSpring_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ScrollSpring.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs");
+
+
+class SlidingNumber {
+  constructor(options = {}) {
+    this.position = 0;
+    this.constrain = true;
+    this.min = 0;
+    // the window width of the drag
+    this.max = 0;
+    // the window width of the drag
+    this.maxSpeed = 400;
+    this._offset = 0;
+    this._prev = 0;
+    this._speed = 0;
+    this._targetSpeed = 0;
+    this._speedChecker = 0;
+    this._grab = 0;
+    this.constrain = options.constrain ?? true;
+    this.maxSpeed = options.maxSpeed ?? 400;
+    this._ease = options.ease ?? new _ScrollSpring_mjs__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  }
+  set value(n) {
+    this._speed = 0;
+    this.position = n;
+  }
+  get value() {
+    return this.position;
+  }
+  grab(offset) {
+    this._grab = offset;
+    this._offset = this.position - offset;
+    this._speedChecker = 0;
+    this._targetSpeed = this._speed = 0;
+    this._hasStopped = false;
+  }
+  hold(newPosition) {
+    this._speedChecker++;
+    this.position = newPosition + this._offset;
+    if (this._speedChecker > 1) {
+      this._targetSpeed = this.position - this._prev;
+    }
+    this._speed += (this._targetSpeed - this._speed) / 2;
+    if (this._speed > this.maxSpeed)
+      this._speed = this.maxSpeed;
+    else if (this._speed < -this.maxSpeed)
+      this._speed = -this.maxSpeed;
+    this._prev = this.position;
+    if (this.constrain) {
+      this._activeEase = null;
+      if (this.position > this.min) {
+        this.position -= (this.position - this.min) / 1.5;
+      } else if (this.position < this.max) {
+        this.position += (this.max - this.position) / 1.5;
+      }
+    }
+  }
+  slide(instant = false) {
+    if (this._hasStopped)
+      return;
+    if (this.constrain) {
+      this._updateConstrain(instant);
+    } else {
+      this._updateDefault();
+    }
+  }
+  get moveAmount() {
+    return -(this.position - this._offset - this._grab);
+  }
+  _updateDefault() {
+    this._speed *= 0.9;
+    this.position += this._speed;
+    if ((this._speed < 0 ? this._speed * -1 : this._speed) < 0.01) {
+      this._hasStopped = true;
+    }
+  }
+  _updateConstrain(instant = false) {
+    const max = this.max;
+    if (instant) {
+      if (this.value > 0) {
+        this.value = 0;
+      }
+      if (this.value > 0) {
+        this.value = 0;
+      }
+      if (this.value < this.max) {
+        this.value = this.max;
+      }
+      if (this.value < this.max) {
+        this.value = this.max;
+      }
+    } else if (this.position > this.min || this.position < max || this._activeEase) {
+      if (!this._activeEase) {
+        this._activeEase = this._ease;
+        if (this.position > this.min) {
+          this._activeEase.start(this._speed, this.position, this.min);
+        } else {
+          this._activeEase.start(this._speed, this.position, max);
+        }
+      }
+      this.position = this._activeEase.update();
+      if (this._activeEase.done) {
+        this.position = this._activeEase.to;
+        this._speed = 0;
+        this._activeEase = null;
+      }
+    } else {
+      this._updateDefault();
+    }
+  }
+}
+
+
+//# sourceMappingURL=SlidingNumber.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs":
+/*!*************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Spring: () => (/* binding */ Spring)
+/* harmony export */ });
+class Spring {
+  constructor(options = {}) {
+    this.x = 0;
+    this.ax = 0;
+    this.dx = 0;
+    this.tx = 0;
+    this._options = options;
+    this._options.max = options.max || 160;
+    this._options.damp = options.damp || 0.8;
+    this._options.springiness = options.springiness || 0.1;
+  }
+  update() {
+    this.ax = (this.tx - this.x) * this._options.springiness;
+    this.dx += this.ax;
+    this.dx *= this._options.damp;
+    if (this.dx < -this._options.max)
+      this.dx = -this._options.max;
+    else if (this.dx > this._options.max)
+      this.dx = this._options.max;
+    this.x += this.dx;
+  }
+  reset() {
+    this.x = 0;
+    this.ax = 0;
+    this.dx = 0;
+    this.tx = 0;
+  }
+  get max() {
+    return this._options.max;
+  }
+  set max(value) {
+    this._options.max = value;
+  }
+  get damp() {
+    return this._options.damp;
+  }
+  set damp(value) {
+    this._options.damp = value;
+  }
+  get springiness() {
+    return this._options.springiness;
+  }
+  set springiness(value) {
+    this._options.springiness = value;
+  }
+}
+
+
+//# sourceMappingURL=Spring.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs":
+/*!***************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Trackpad: () => (/* binding */ Trackpad)
+/* harmony export */ });
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/core */ "./node_modules/@pixi/core/lib/index.mjs");
+/* harmony import */ var _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SlidingNumber.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs");
+
+
+
+class Trackpad {
+  constructor(options) {
+    this.disableEasing = false;
+    this.xAxis = new _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__.SlidingNumber({
+      ease: options.xEase,
+      maxSpeed: options.maxSpeed,
+      constrain: options.constrain
+    });
+    this.yAxis = new _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__.SlidingNumber({
+      ease: options.yEase,
+      maxSpeed: options.maxSpeed,
+      constrain: options.constrain
+    });
+    this.disableEasing = options.disableEasing ?? false;
+    this._frame = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Rectangle();
+    this._bounds = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Rectangle();
+    this._globalPosition = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Point();
+  }
+  pointerDown(pos) {
+    this._globalPosition = pos;
+    this.xAxis.grab(pos.x);
+    this.yAxis.grab(pos.y);
+    this._isDown = true;
+  }
+  pointerUp() {
+    this._isDown = false;
+  }
+  pointerMove(pos) {
+    this._globalPosition = pos;
+  }
+  update() {
+    if (this._dirty) {
+      this._dirty = false;
+      this.xAxis.min = this._bounds.left;
+      this.xAxis.min = this._bounds.right - this._frame.width;
+      this.xAxis.min = this._bounds.top;
+      this.xAxis.min = this._bounds.bottom - this._frame.height;
+    }
+    if (this._isDown) {
+      this.xAxis.hold(this._globalPosition.x);
+      this.yAxis.hold(this._globalPosition.y);
+    } else {
+      this.xAxis.slide(this.disableEasing);
+      this.yAxis.slide(this.disableEasing);
+    }
+  }
+  resize(w, h) {
+    this._frame.x = 0;
+    this._frame.width = w;
+    this._frame.y = 0;
+    this._frame.height = h;
+    this._dirty = true;
+  }
+  setBounds(minX, maxX, minY, maxY) {
+    this._bounds.x = minX;
+    this._bounds.width = maxX - minX;
+    this._bounds.y = minY;
+    this._bounds.height = maxY - minY;
+    this._dirty = true;
+  }
+  get x() {
+    return this.xAxis.value;
+  }
+  get y() {
+    return this.yAxis.value;
+  }
+}
+
+
+//# sourceMappingURL=Trackpad.mjs.map
 
 
 /***/ }),
