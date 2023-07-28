@@ -74,7 +74,7 @@ export class Enemy extends Container{
             this.angle += this.deadAngle;
             this.timeRotateDead = 0;
         }
-        this.y += this.velocity.y;
+        this.y += this.velocity.y * dt;
         this.velocity.y += this.gravity;
         
         if (this.isDead)    return;
