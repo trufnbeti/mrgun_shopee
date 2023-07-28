@@ -62,7 +62,7 @@ export class OutfitsScene extends Container{
       this.lightImg.alpha = 1;
 
       const alphaTween = new TWEEN.Tween(this.lightImg)
-      .to({ alpha: 0.3 }, 300) // Thời gian chuyển từ sáng sang tối là 300ms
+      .to({ alpha: 0.3 }, 600) // Thời gian chuyển từ sáng sang tối là 300ms
       .easing(TWEEN.Easing.Quadratic.InOut);
 
       alphaTween.onComplete(() => {
