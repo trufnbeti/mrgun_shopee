@@ -28,7 +28,7 @@ export class Lamp extends Container{
         let moveCount = 0; // Biến đếm số lần di chuyển
 
     const moveTween = new TWEEN.Tween(this.lampImg.position)
-        .to({ x: this.lampImg.x, y: this.lampImg.y + 10 }, 300)
+        .to({ x: this.lampImg.x, y: this.lampImg.y + 10 }, 600)
         .easing(TWEEN.Easing.Quadratic.InOut);
 
     // Sử dụng .onComplete() để khi kết thúc một lần tween, ta sẽ gọi lại để tiếp tục di chuyển hoặc dừng.
@@ -55,7 +55,7 @@ export class Lamp extends Container{
 
          // Tạo tween để thay đổi thuộc tính alpha của đèn sáng.
         const alphaTween = new TWEEN.Tween(this.lightImg)
-        .to({ alpha: 0.3 }, 300) // Thời gian chuyển từ sáng sang tối là 300ms
+        .to({ alpha: 0.3 }, 600) // Thời gian chuyển từ sáng sang tối là 300ms
         .easing(TWEEN.Easing.Quadratic.InOut);
 
     // Sử dụng .onComplete() để khi kết thúc một lần tween, ta sẽ gọi lại để tiếp tục nháy đèn.
