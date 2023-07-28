@@ -23,7 +23,7 @@ export class Item extends Container{
     _initFrame(){
         this.frame = new Graphics();
         let yellowc = 0xf3b23d;
-        this.frame.lineStyle(10, yellowc);
+        this.frame.lineStyle(9, yellowc);
         this.frame.drawRoundedRect(0,0, GameConstant.ITEM_WIDTH, GameConstant.ITEM_HEIGHT, 20);
         this.addChild(this.frame);
     }
@@ -76,9 +76,9 @@ export class Item extends Container{
         this.bg.visible = !this.bg.visible;
     }
     resize(){
-        this.sprite.scale.set(0.5)
+        this.sprite.scale.set(0.52)
         this.sprite.anchor.set(0.5);
-        this.sprite.x = this.width/2 - this.sprite.width/4;
+        this.sprite.x = this.width/2 - this.sprite.width/4 - 2;
         this.sprite.y = this.height/2 - this.sprite.height/2 + 40;
 
         this.text.x = this.width/2 - this.text.width/2;
