@@ -76,7 +76,7 @@ export class Item extends Container{
         this.bg.visible = !this.bg.visible;
     }
     resize(){
-        this.sprite.scale.set(1.45)
+        this.sprite.scale.set(0.5)
         this.sprite.anchor.set(0.5);
         this.sprite.x = this.width/2 - this.sprite.width/4;
         this.sprite.y = this.height/2 - this.sprite.height/2 + 40;
