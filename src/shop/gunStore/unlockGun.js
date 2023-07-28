@@ -72,7 +72,7 @@ export class UnlockGun extends Container{
 
     _initWatchPR(){
         this.btnWatchPR = Sprite.from(Assets.get("watchPR"));
-        this.btnWatchPR.position.set(GameConstant.GAME_WIDTH - 225, GameConstant.GAME_HEIGHT - 120);
+        this.btnWatchPR.position.set(GameConstant.GAME_WIDTH - 250, GameConstant.GAME_HEIGHT - 120);
         this.btnWatchPR.scale.set(0.6)
         this.addChild(this.btnWatchPR);
         this.btnWatchPR.interactive = true;
@@ -81,7 +81,7 @@ export class UnlockGun extends Container{
         this.btnWatchPR.on("pointerdown", () => {
             let money = localStorage.getItem('money');
             money = parseInt(money, 10); 
-            money = money + 35;
+            money = money + 350;
             localStorage.setItem('money', money);
             this.parent.money.updateText();
 
