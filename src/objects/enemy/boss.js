@@ -63,7 +63,6 @@ export class Boss extends Enemy{
     }
     update(dt){
         super.update(dt);
-        this.weapon.x = 10 * this.direction;
         if(this.destroyed) return;
         this.timer += dt;
         if(!this.appeared)this.move(dt);
@@ -200,5 +199,6 @@ export class Boss extends Enemy{
         this.head.scale.x *= -1;
         this.body.scale.x *= -1;
         this.weapon.sprite.scale.x *= -1;
+        this.weapon.x = 0;
     }
 }

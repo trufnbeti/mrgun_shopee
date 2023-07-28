@@ -29,12 +29,16 @@ export class GunStoreScene extends Container{
     this.stairs = [];
     this.stairs.push(new PIXI.Point(0,0))
     this.player = new Player(this);
-    this.player.scale.set(1);
+    this.player.sprite.scale.set(1);
+    this.player.gun.sprite.scale.set(0.7)
+    this.player.gun.position.set(20, 75);
     this.addChild(this.player);
-    this.player.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT/3 - 147);
+    this.player.position.set(GameConstant.GAME_WIDTH/2, GameConstant.GAME_HEIGHT/3 - this.player.sprite.height);
     this.interactive = true;
     this.on("pointerdown", () => {
       this.player._initGun();
+      this.player.gun.sprite.scale.set(0.7);
+      this.player.gun.position.set(20, 75);
     });
   }
 

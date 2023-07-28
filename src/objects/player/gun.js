@@ -30,7 +30,8 @@ export class Gun extends Container{
 
     _initSprite(){
         this.sprite = Sprite.from(Assets.get(this.name));
-        this.sprite.scale.x *= this.parent.direction;
+        this.sprite.scale.x *= this.parent.direction * 0.3;
+        this.sprite.scale.y *= 0.3;
         this.x = 10*this.parent.direction;
         this.addChild(this.sprite);
         this.sprite.anchor.set(0.5);
@@ -125,7 +126,7 @@ export class Gun extends Container{
         this.graphics.endFill(); // Thêm dòng này để kết thúc việc vẽ và điền màu
       }
     flip(){
-        this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
+        this.sprite.scale.x = this.parent.direction == 1 ? 0.3 : -0.3;
     }
     shoot(dt){
         if(this.type == "rapid"){

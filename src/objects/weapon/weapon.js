@@ -7,8 +7,8 @@ export class Weapon extends Container{
     constructor(texture){
         super();
         this.sprite = new Sprite(texture);
+        this.sprite.scale.set(0.3);
         this.sprite.anchor.set(0, 0.5);
-        this.sprite.scale.set(1.2);
         this.addChild(this.sprite);
         this.runAngle = 0;
         this.isShot = false;
