@@ -22,7 +22,6 @@ export class Boss extends Enemy{
         const centerY = this.height / 2;
         this.pivot.set(centerX, centerY);
         this.equipWeapon();
-        this.weapon.x = 0;
         this.head.scale.x *= direction;
         this.body.scale.x *= direction;
         this.weapon.sprite.scale.x *= direction;
@@ -120,7 +119,7 @@ export class Boss extends Enemy{
     }
     equipWeapon(){            
     
-        this.weapon.x = this.width / 2;
+        this.weapon.x = 0;
         this.weapon.y = this.height / 2;
         
         this.addChild(this.weapon);
