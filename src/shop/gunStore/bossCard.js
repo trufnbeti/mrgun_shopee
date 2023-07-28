@@ -5,21 +5,14 @@ import { GameConstant } from "../../gameConstant";
 import { Boss } from "../../objects/enemy/boss";
 
 export class BossCard extends Container {
-    constructor() {
+    constructor(index) {
         super();  
-        this.bossIndex = new Boss();
+        this.bossIndex = index;
         this._stageBoss(); // hien thi trang thai boss
 
         this._bossDefeat();
-
-    }
-
-    _updateStage(i){
-        if(i == this.bossIndex.index){
-            this.live.visible = false;
-            this.defeat.visible = true;
-            this.defeated.visible = true;
-        }
+        this.sortableChildren = true;
+        this._initBoss(index);
     }
   
     _stageBoss(){
@@ -45,7 +38,12 @@ export class BossCard extends Container {
         this.defeat.scale.set(0.76);
         this.addChild(this.defeat);
         this.defeat.position.set(this.stageboss.x, this.stageboss.y);
-        this.defeat.visible = false;
+        const isDefeated = localStorage.getItem(this.bossIndex);
+        if(isDefeated == "true"){
+            this.defeat.visible = true;
+        }
+        else this.defeat.visible = false;
+        this.defeat.zIndex = 2;
     }
 
     _initBoss(indexR){
@@ -59,10 +57,12 @@ export class BossCard extends Container {
         this.body.scale.set(0.25);
         this.body.y = this.head.height;
         this.head.x = 0;
+        this.head.anchor.set(0.5, 0);
+        this.body.anchor.set(0.5, 0);
 
         this.boss.addChild(this.body);
 
-        this.boss.position.set(this.stageboss.x + 37, this.stageboss.y + (this.live.height*0.76 - this.boss.height*0.25)/2 - 20);
+        this.boss.position.set(this.stageboss.x + this.boss.width, this.stageboss.y + (this.live.height*0.76 - this.boss.height*0.25)/2 - 20);
 
         this.addChild(this.boss);
     }

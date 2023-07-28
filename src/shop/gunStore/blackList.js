@@ -28,9 +28,8 @@ export class BlackList extends ScrollBox {
     _initBossCard() {
         for (let i = 1; i < 23; i++) {
 
-            this.bossCard = new BossCard();
+            this.bossCard = new BossCard(i);
             
-            this.bossCard._initBoss(i);
             this.bossCard._initText(this.names[i-1]);
 
             this.addItem(this.bossCard);

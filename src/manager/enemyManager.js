@@ -18,7 +18,6 @@ export const EnemyManagerEvent = Object.freeze({
       super();
       this.map = map;
       this._init();
-      this.bossStage = new BossCard();
     }
 
     _init(){
@@ -102,10 +101,8 @@ export const EnemyManagerEvent = Object.freeze({
 
     onBossDied(){
         this.enemy.destroy();
-        
-        // this.bossCard._initBoss(i);
-        this.bossStage._initBoss()
-        this.bossStage._updateStage();
+
+        localStorage.setItem(this.enemy.index, "true")
     }
 
     whereBossDied(){
