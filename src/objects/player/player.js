@@ -47,7 +47,7 @@ export class Player extends Container {
     _initGun(){
         let gunName = localStorage.getItem('gun');
         if(gunName == null){
-            gunName = "AUG";
+            gunName = "SCOUT";
             localStorage.setItem('gun', gunName);
         } 
         localStorage.setItem(gunName, false);
@@ -70,6 +70,12 @@ export class Player extends Container {
         this.gravity = 0.3;
 
         this.hp = 5;
+        const score = localStorage.getItem('score');
+        if(score != null){
+            this.score = parseInt(score);
+        }
+        else this.score = 0;
+        
     }
 
     onPointerDown(dt){

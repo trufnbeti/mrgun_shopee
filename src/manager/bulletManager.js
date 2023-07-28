@@ -120,7 +120,8 @@ export class BulletManager extends Container {
                     if(this.player.hp == 0){
                         this.map.removeChild(this.player);
                         this.playScene.state = GameState.GameOver;
-                        this.playScene.gameOverUI.show(); 
+                        this.playScene.gameOverUI.show();
+                        localStorage.setItem('score', 0) 
                     }
                     this.updateBloods(this.player, eBullet)       
                 }

@@ -59,7 +59,9 @@ export class PlayUI extends Container{
     }
 
     _initScore() {
-      this.scoreText = new Text(`0`, this.BigTextStyle);
+      let score = localStorage.getItem('score');
+      if(score == null) score = 0;
+      this.scoreText = new Text(score, this.BigTextStyle);
       this.addChild(this.scoreText);
 
       this.bestScore = localStorage.getItem('bestScore');
